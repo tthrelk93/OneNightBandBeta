@@ -68,7 +68,6 @@
 		3BCC0BAF1DDA66540008BF19 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCC0BAE1DDA66540008BF19 /* ChatViewController.swift */; };
 		3BD3236B1DAED8F1003ECA54 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD3236A1DAED8F1003ECA54 /* UIViewExtension.swift */; };
 		3BDCA9FA1EE9CE01006280E8 /* ChatContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDCA9F91EE9CE01006280E8 /* ChatContainer.swift */; };
-		3BDCA9FC1EEB193C006280E8 /* CityData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDCA9FB1EEB193C006280E8 /* CityData.swift */; };
 		3BDFEE321DCBC96B004B4FA1 /* SessionFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFEE311DCBC96B004B4FA1 /* SessionFeedViewController.swift */; };
 		3BDFEE351DCBDEDE004B4FA1 /* ONBGuitarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFEE341DCBDEDE004B4FA1 /* ONBGuitarButton.swift */; };
 		3BE29F141D9B256A007A326B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE29F131D9B256A007A326B /* AppDelegate.swift */; };
@@ -178,7 +177,6 @@
 		3BCC0BAE1DDA66540008BF19 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		3BD3236A1DAED8F1003ECA54 /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		3BDCA9F91EE9CE01006280E8 /* ChatContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatContainer.swift; sourceTree = "<group>"; };
-		3BDCA9FB1EEB193C006280E8 /* CityData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityData.swift; sourceTree = "<group>"; };
 		3BDFEE311DCBC96B004B4FA1 /* SessionFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionFeedViewController.swift; sourceTree = "<group>"; };
 		3BDFEE341DCBDEDE004B4FA1 /* ONBGuitarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ONBGuitarButton.swift; sourceTree = "<group>"; };
 		3BE29F101D9B256A007A326B /* OneNightBand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneNightBand.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -468,7 +466,6 @@
 				3BF995171DA976CA00ABF5CF /* SessionMakerViewController.swift */,
 				3BC9272D1DB2AC19005C753A /* CreateSessionPopup.swift */,
 				3BF995191DA9AB6F00ABF5CF /* ArtistFinderViewController.swift */,
-				3BDCA9FB1EEB193C006280E8 /* CityData.swift */,
 				3BCC0BAE1DDA66540008BF19 /* ChatViewController.swift */,
 				3BDCA9F91EE9CE01006280E8 /* ChatContainer.swift */,
 				3B1E046F1DEA221400DCDAA4 /* ArtistProfileViewController.swift */,
@@ -886,7 +883,6 @@
 				3BE29F141D9B256A007A326B /* AppDelegate.swift in Sources */,
 				3B8796511E79C224009CA4C8 /* CreateBandViewController.swift in Sources */,
 				3B6248DE1DD4F5CB00847676 /* UploadSessionPopup.swift in Sources */,
-				3BDCA9FC1EEB193C006280E8 /* CityData.swift in Sources */,
 				3B19CB491E64B61100390DDA /* InstrumentTableViewCell.swift in Sources */,
 				3BDCA9FA1EE9CE01006280E8 /* ChatContainer.swift in Sources */,
 				3BE29F4A1D9C4559007A326B /* TextFieldsEffects.swift in Sources */,

@@ -63,7 +63,16 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
         
         
     }
-    
+    var senderScreen = String()
+    @IBAction func afBackButton(_ sender: Any) {
+        if self.senderScreen == "band"{
+            performSegue(withIdentifier: "afBackToBand", sender: self)
+        } else if self.senderScreen == "onb"{
+            performSegue(withIdentifier: "afBackToONB", sender: self)
+        } else if self.senderScreen == "pfm" {
+            performSegue(withIdentifier: "afBackToPFM", sender: self)
+        }
+    }
     @IBAction func searchByInstrumentPressed(_ sender: Any) {
         //searchNarrowView.isHidden = true
         
@@ -95,7 +104,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     var buttonSelected = String()
     var cityDict = ["New York":"","Los Angeles":"","Chicago":"","Houston":"","Philadelphia":"","Phoenix, AZ":"","San Antonio":"","San Diego":"","Dallas":"","San Jose":"", "Austin":"","Jacksonville": "","San Francisco":"","Indianapolis":"","Columbus":"", "Fort Worth":"","Charlotte":"","Detroit":"","El Paso":"","Seattle":"","Denver":"","Washington ":"","Memphis":"","Boston":"","Nashville":"","Atlanta":""]
     var distanceMenuText = ["25", "50", "75", "100", "125","150", "175","500", "2000"]
-    var menuText = ["Guitar", "Bass Guitar", "Piano", "Saxophone", "Trumpet", "Stand-up Bass", "violin", "Drums", "Cello", "Trombone", "Vocals", "Mandolin", "Banjo", "Harp"]
+    var menuText = ["All","Guitar", "Bass Guitar", "Piano", "Saxophone", "Trumpet", "Stand-up Bass", "violin", "Drums", "Cello", "Trombone", "Vocals", "Mandolin", "Banjo", "Harp"]
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier! as String) == "ArtistFinderToPFM"{
             
@@ -109,12 +118,22 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                     }
             }
 
-        } else {
-            /*if let vc = segue.destination as? ProfileFindMusiciansViewController{
-                vc.destination = self.destination*/
+        } else if segue.identifier! == "afBackToONB" {
+            if let vc = segue.destination as? OneNightBandViewController{
+                vc.onbID = self.bandID
+                
+                
             }
-
+        } else if segue.identifier! == "afBackToBand" {
+            if let vc = segue.destination as? SessionMakerViewController{
+                vc.sessionID = self.bandID
+            }
+        } else {
             
+        
+        }
+
+        
     }
     
 
@@ -163,10 +182,10 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                 }
                 var tempRef = DatabaseReference()
                 if self.bandType == "band"{
-                    tempRef =  Database.database().reference().child("bands").child(self.thisBandObject.bandID!).child("bandMembers")
+                    tempRef =  Database.database().reference().child("bands").child(self.bandID).child("bandMembers")
                 }
                 else{
-                    tempRef =  Database.database().reference().child("oneNightBands").child(self.thisONBObject.onbID).child("onbArtists")
+                    tempRef =  Database.database().reference().child("oneNightBands").child(self.bandID).child("onbArtists")
                 }
                    tempRef.observeSingleEvent(of: .value, with: { (ssnapshot) in
                     if let ssnapshots = ssnapshot.children.allObjects as? [DataSnapshot]{
@@ -183,9 +202,14 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                                             self.instrumentArray.append(key)
                                         }
                                         print("test: \(self.menuText[self.InstrumentPicker.selectedRow(inComponent: 0)])")
+                                    if self.menuText[self.InstrumentPicker.selectedRow(inComponent: 0)] == "All" {
+                                        
+                                    } else {
+                                        //remove artists from array who dont play instrument pickked
                                     
                                         if(self.instrumentArray.contains(self.menuText[self.InstrumentPicker.selectedRow(inComponent: 0)]) == false){
                                             self.artistArray.remove(at: self.artistArray.index(of: artist)!)
+                                        }
                                     }
                             }
                         }else{
@@ -197,6 +221,10 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                         let userID = Auth.auth().currentUser?.uid
                         self.ref.child("users").child(userID!).child("location").observeSingleEvent(of: .value, with: { (snapshot) in
                             for artist in self.artistArray{
+                                if self.cityNameArray[self.distancePicker.selectedRow(inComponent: 0)] == "All" {
+                                    self.artistAfterDist.append(artist)
+                                }
+                                else {
                                 print("in artitAfterDist filler")
                                 tempLong = artist.location["long"] as? CLLocationDegrees
                                 tempLat = artist.location["lat"] as? CLLocationDegrees
@@ -241,8 +269,15 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                                                 // City
                                                 if let city2 = placeMark.addressDictionary!["City"] as? NSString {
                                                     var tempInt = self.distancePicker.selectedRow(inComponent: 0) as Int
-                                                    if city as String == self.cityNameArray[tempInt] {
-                                                        self.artistAfterDist.append(artist)
+                                                    
+                                                    if self.cityNameArray[self.distancePicker.selectedRow(inComponent: 0)] == "Current" {
+                                                        if city2 == city{
+                                                            self.artistAfterDist.append(artist)
+                                                        }
+                                                    } else{
+                                                        if city2 as String == self.cityNameArray[tempInt] {
+                                                            self.artistAfterDist.append(artist)
+                                                        }
                                                     }
                                                     
                                                 }
@@ -284,6 +319,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                                     }
                                 })
                             }
+                            }
                         })
                     }
                 })
@@ -309,6 +345,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
      let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
     var cityArray = String()
     var cityNameArray = [String]()
+    var cityInfoDict = [String:Any]()
    override func viewDidLoad() {
         super.viewDidLoad()
     if self.PFMChoiceSelected == true{
@@ -316,10 +353,20 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     } else {
         searchNarrowView.isHidden = false
     }
-    //let tempCityData = CityData()
-   // let tempCityDict = tempCityData.cityDict
-   // ref.child("wantedAds").childByAutoId()
-    /*var tempDict = [String:Any]()
+    ref.child("cityData").observeSingleEvent(of: .value, with: { (snapshot) in
+        if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+            self.cityNameArray.append("All")
+            self.cityNameArray.append("Current")
+            for snap in snapshots{
+                self.cityNameArray.append(snap.key)
+            }
+            
+        }
+    })
+    
+    //let tempCityDict = tempCityData.cityDict
+    //ref.child("wantedAds").childByAutoId()
+   /* var tempDict = [String:Any]()
     var tempArray = [[String:Any]]()
     for city in tempCityDict{
         var newCityDict = [String:Any]()
@@ -525,7 +572,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     
     public func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         if pickerView == self.distancePicker{
-            let titleData = cityNameArray[row]
+            let titleData = self.cityNameArray[row]
             
             let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 15.0)!,NSForegroundColorAttributeName:UIColor.black])
             return myTitle

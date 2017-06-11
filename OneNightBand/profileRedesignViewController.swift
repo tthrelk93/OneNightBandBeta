@@ -13,7 +13,11 @@ import FirebaseStorage
 import SwiftOverlays
 
 class profileRedesignViewController: UIViewController, UITabBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource {
+    @IBAction func logoutPressed(_ sender: Any) {
+        handleLogout()
+    }
     
+    @IBOutlet weak var logoutButton: UIButton!
     @IBAction func segmentSwitched(_ sender: Any) {
         if self.bandONBSegment.selectedSegmentIndex == 0 {
             self.onbCollect.isHidden = true

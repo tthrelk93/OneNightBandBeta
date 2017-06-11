@@ -12,13 +12,17 @@ import FirebaseStorage
 import FirebaseAuth
 
 class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UINavigationControllerDelegate {
+    @IBOutlet weak var addMusicians2Label: UILabel!
     
-    @IBOutlet weak var option2Label: UILabel!
-    @IBOutlet weak var option1Label: UILabel!
+    @IBOutlet weak var addMusiciansLabel: UILabel!
+    //@IBOutlet weak var option2Label: UILabel!
+    //@IBOutlet weak var option1Label: UILabel!
    // @IBAction func cancelButtonPressed(_ sender: Any) {
     //}
     @IBOutlet weak var backButton: UIButton!
     @IBAction func backButtonPressed(_ sender: Any) {
+        addMusiciansLabel.isHidden = false
+        addMusicians2Label.isHidden = false
         backButton.isHidden = true
         createNewButton.isHidden = false
         useExistingLabel.isHidden = false
@@ -32,8 +36,8 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
     @IBOutlet weak var createNewButton: UIButton!
     @IBOutlet weak var useExistingBandButton: UIButton!
     @IBAction func cancelButtonPressed(_ sender: Any) {
-        option1Label.isHidden = false
-        option2Label.isHidden = false
+        //option1Label.isHidden = false
+        //option2Label.isHidden = false
         createNewButton.isHidden = false
         useExistingBandButton.isHidden = false
         //orLabel.isHidden = false
@@ -44,8 +48,11 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
 
     @IBOutlet weak var useExistingLabel: UILabel!
     @IBAction func useExistingBandPressed(_ sender: Any) {
-        option1Label.isHidden = true
-        option2Label.isHidden = true
+       // option1Label.isHidden = true
+       // option2Label.isHidden = true
+        addMusiciansLabel.isHidden = true
+        addMusicians2Label.isHidden = true
+        self.topLabel.text = "Add Musicians To One of Your Bands or OneNightBands"
         infoHolder.backgroundColor = UIColor.clear
         backButton.isHidden = false
         createNewButton.isHidden = true
@@ -286,11 +293,15 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
         }*/
         return UIEdgeInsetsMake(0, 0, 0, 0)
     }
+    var bandSelected = Band()
+    var onbSelected = ONB()
     //if destination is af go to af vice versa
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if(collectionView == self.bandsCollect){
             tempIndex = indexPath.row
             self.selectedCell = "band"
+            self.bandSelected = bandArray[indexPath.row]
+            
             self.selectedBandID = bandArray[indexPath.row].bandID!
             if self.destination == "artistFinder"{
                 performSegue(withIdentifier: "PFMToArtistFinder", sender: self)
@@ -331,6 +342,7 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
         } else{
             tempIndex = indexPath.row
             self.selectedCell = "onb"
+            self.onbSelected = self.onbArray[indexPath.row]
             
            
             self.selectedBandID = onbArray[indexPath.row].onbID
@@ -406,7 +418,11 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "PFMToArtistFinder"{
             if let vc = segue.destination as? ArtistFinderViewController{
-                
+                if selectedCell == "band"{
+                    vc.thisBandObject = bandSelected
+                } else {
+                    vc.thisONBObject = onbSelected
+                }
                 vc.bandID = self.selectedBandID
                 vc.bandType = selectedCell
                 vc.PFMChoiceSelected = true
