@@ -198,11 +198,9 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
     var sender = String()
     weak var dismissalDelegate: DismissalDelegate?
     func segueFunc(){
-        if self.sender != "pfm"{
-            performSegue(withIdentifier: "CreateBandToProfile", sender: self)
-        } else {
+        
             performSegue(withIdentifier: "CreateBandToArtistFinder", sender: self)
-        }
+        
 
     }
 

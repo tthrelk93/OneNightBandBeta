@@ -43,7 +43,7 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
                 values["date"] = onbObject.onbDate
                 values["experience"] = expText[self.expPicker.selectedRow(inComponent: 0)]
             
-                values["instrumentNeeded"] = instrumentText[instrumentPicker.selectedRow(inComponent: 1)]
+                values["instrumentNeeded"] = instrumentText[instrumentPicker.selectedRow(inComponent: 0)]
                 values["moreInfo"] = onbObject.onbInfo
                 values["responses"] = [String:Any]()
                 values["senderID"] = self.user
@@ -72,7 +72,7 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
                 }
                 
             })
-            performSegue(withIdentifier: "CreateWantedToPFM", sender: self)
+            performSegue(withIdentifier: "CreateWantedToProfile", sender: self)
 
            
             
@@ -279,7 +279,8 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         //if segue.identifier == "PfmToBandBoard"
         if segue.identifier == "CreateWantedToProfile"{
-            if let vc = segue.destination as? ProfileFindMusiciansViewController{
+            if let vc = segue.destination as? profileRedesignViewController{
+                vc.sender = "wantedAdCreated"
                 //print("heyyyg")
                 //vc.instrumentNeeded = instrumentText[instrumentPicker.selectedRow(inComponent: 0)]
                 //vc.locationText = locationText[cityPicker.selectedRow(inComponent: 0)]

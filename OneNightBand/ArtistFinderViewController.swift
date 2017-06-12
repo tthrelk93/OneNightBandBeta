@@ -12,6 +12,7 @@ import UIKit
 import FirebaseDatabase
 import CoreLocation
 import FirebaseAuth
+import FlexibleSteppedProgressBar
 
 protocol WantedAdDelegate : class
 {
@@ -27,7 +28,9 @@ protocol WantedAdDelegator : class
 
 
 
-class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, SessionIDDest, PerformSegueInArtistFinderController, UIPickerViewDelegate,UIPickerViewDataSource, WantedAdDelegate, UITabBarDelegate{
+class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, SessionIDDest, PerformSegueInArtistFinderController, UIPickerViewDelegate,UIPickerViewDataSource, WantedAdDelegate, UITabBarDelegate, FlexibleSteppedProgressBarDelegate{
+    
+    var progressBar: FlexibleSteppedProgressBar!
  
     @IBOutlet weak var searchByInstrumentButton: UIButton!
     @IBOutlet weak var searchNarrowView: UIView!
@@ -70,9 +73,13 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     }
     var senderScreen = String()
     @IBAction func afBackButton(_ sender: Any) {
+        
         if self.senderScreen == "band"{
             performSegue(withIdentifier: "afBackToBand", sender: self)
-        } else if self.senderScreen == "onb"{
+        } else if self.senderScreen == "artistFinder"{
+            self.progressBar.isHidden = false
+            searchNarrowView.isHidden = false
+        }else if self.senderScreen == "onb"{
             performSegue(withIdentifier: "afBackToONB", sender: self)
         } else if self.senderScreen == "pfm" {
             performSegue(withIdentifier: "afBackToPFM", sender: self)
@@ -80,11 +87,12 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     }
     @IBAction func searchByInstrumentPressed(_ sender: Any) {
         //searchNarrowView.isHidden = true
-        
+        self.senderScreen = "artistFinder"
         self.destination = "artistFinder"
         self.buttonSelected = "artistFinder"
         //performSegue(withIdentifier: "ArtistFinderToPFM", sender: self)
         self.searchNarrowView.isHidden = true
+        progressBar.isHidden = true
     }
     @IBOutlet weak var InstrumentPicker: UIPickerView!
     
@@ -141,6 +149,42 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
 
         
     }
+    
+    
+    
+    
+    func progressBar(_ progressBar: FlexibleSteppedProgressBar,
+                     didSelectItemAtIndex index: Int) {
+        print("Index selected!")
+    }
+    
+    func progressBar(_ progressBar: FlexibleSteppedProgressBar,
+                     willSelectItemAtIndex index: Int) {
+        print("Index selected!")
+    }
+    
+    func progressBar(_ progressBar: FlexibleSteppedProgressBar,
+                     canSelectItemAtIndex index: Int) -> Bool {
+        return true
+    }
+    
+    func progressBar(_ progressBar: FlexibleSteppedProgressBar,
+                     textAtIndex index: Int, position: FlexibleSteppedProgressBarTextLocation) -> String {
+        if position == FlexibleSteppedProgressBarTextLocation.bottom{
+            switch index {
+                
+            case 0: return "Select Band"
+            case 1: return "Create Band/ONB"
+            case 2: return "Search Type"
+                //case 3: return "Fourth"
+            //case 4: return "Fifth"
+            default: return "Date"
+                
+            }
+        }
+        return ""
+    }
+
     
 
 
@@ -350,18 +394,57 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                               
             
             
+    
+    @IBOutlet weak var progressBarFrame: UIProgressView!
             
      let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
     var cityArray = String()
     var cityNameArray = [String]()
     var cityInfoDict = [String:Any]()
+    var progressBounds = CGRect()
    override func viewDidLoad() {
         super.viewDidLoad()
-    if /*self.PFMChoiceSelected == true ||*/ self.senderScreen == "band" || self.senderScreen == "onb"{
+    
+    progressBounds = progressBarFrame.frame
+    
+    progressBar = FlexibleSteppedProgressBar()
+    progressBar.frame = progressBounds
+    progressBar.viewBackgroundColor = UIColor.blue
+    progressBar.backgroundShapeColor = ONBPink
+    progressBar.selectedBackgoundColor = UIColor.blue
+    progressBar.stepTextColor = UIColor.white
+    progressBar.currentSelectedTextColor = ONBPink
+    progressBar.currentSelectedCenterColor = ONBPink
+    progressBar.selectedOuterCircleStrokeColor = ONBPink
+    progressBar.isUserInteractionEnabled = false
+    progressBar.currentIndex = 2
+    
+    progressBar.translatesAutoresizingMaskIntoConstraints = false
+    self.view.addSubview(progressBar)
+    
+    //let horizontalConstraint = progressBar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+    /* let verticalConstraint = progressBar.topAnchor.constraintEqualToAnchor(
+     equalTo: view.topAnchor,
+     constant: 80
+     )
+     let widthConstraint = progressBar.constraint.constraintEqualToAnchor(nil, constant: 500)
+     let heightConstraint = progressBar.constraint.constraintEqualToAnchor(nil, constant: 150)
+     NSLayoutConstraint.activateConstraints([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint])*/
+    
+    // Customise the progress bar here
+    progressBar.numberOfPoints = 3
+    progressBar.lineHeight = 9
+    progressBar.radius = 15
+    progressBar.progressRadius = 25
+    progressBar.progressLineHeight = 3
+    progressBar.delegate = self
+    
+    searchNarrowView.isHidden = false
+    /*if /*self.PFMChoiceSelected == true ||*/ self.senderScreen == "band" || self.senderScreen == "onb"{
         searchNarrowView.isHidden = true
     } else {
         searchNarrowView.isHidden = false
-    }
+    }*/
     ref.child("cityData").observeSingleEvent(of: .value, with: { (snapshot) in
         if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
             self.cityNameArray.append("All")

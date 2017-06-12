@@ -188,11 +188,9 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
                                 return
                             }
                             DispatchQueue.main.async{
-                                if self.sender != "pfm" {
-                                    self.performSegue(withIdentifier: "CreateONBToProfile", sender: self)
-                                } else {
+                                
                                     self.performSegue(withIdentifier: "CreateONBToArtistFinder", sender: self)
-                                }
+                                
 
                             }
                         })

@@ -13,7 +13,7 @@ target 'OneNightBand' do
 
 
   # Pods for OneNightBand
-pod ‘Firebase’
+pod 'Firebase'
 pod 'Firebase/Core'
 pod 'Firebase/Database'
 pod 'Firebase/Storage'
@@ -21,11 +21,11 @@ pod 'Firebase/Auth'
 pod 'IQKeyboardManagerSwift'
 pod 'JSQMessagesViewController'
 pod "Player", "~> 0.2.0"
-pod 'Soundcloud'
 pod 'YouTubePlayer'
-pod ‘DropDown’
+pod 'DropDown'
 pod 'SwiftOverlays', '~> 3.0.0'
 pod 'YNDropDownMenu'
+pod 'FlexibleSteppedProgressBar'
 
 
 
@@ -33,7 +33,7 @@ pod 'YNDropDownMenu'
   target 'OneNightBandTests' do
     inherit! :complete
     # Pods for testing
-pod ‘Firebase’
+pod 'Firebase'
 pod 'Firebase/Core'
 pod 'Firebase/Database'
 pod 'Firebase/Storage'
@@ -41,9 +41,9 @@ pod 'Firebase/Auth'
 pod 'IQKeyboardManagerSwift'
 pod 'JSQMessagesViewController'
 pod "Player", "~> 0.2.0"
-pod 'Soundcloud'
+
 pod 'YouTubePlayer'
-pod ‘DropDown’
+pod 'DropDown'
 pod 'SwiftOverlays', '~> 3.0.0'
 pod 'YNDropDownMenu'
 
@@ -52,7 +52,7 @@ pod 'YNDropDownMenu'
   target 'OneNightBandUITests' do
     inherit! :complete
     # Pods for testing
-pod ‘Firebase’
+pod 'Firebase'
 pod 'Firebase/Core'
 pod 'Firebase/Database'
 pod 'Firebase/Storage'
@@ -60,9 +60,8 @@ pod 'Firebase/Auth'
 pod 'IQKeyboardManagerSwift'
 pod 'JSQMessagesViewController'
 pod "Player", "~> 0.2.0"
-pod 'Soundcloud'
 pod 'YouTubePlayer'
-pod ‘DropDown’
+pod 'DropDown'
 pod 'SwiftOverlays', '~> 3.0.0'
 pod 'YNDropDownMenu'
   end

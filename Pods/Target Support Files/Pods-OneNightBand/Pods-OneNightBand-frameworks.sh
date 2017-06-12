@@ -89,31 +89,27 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "$BUILT_PRODUCTS_DIR/1PasswordExtension/OnePasswordExtension.framework"
   install_framework "$BUILT_PRODUCTS_DIR/DropDown/DropDown.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/FlexibleSteppedProgressBar/FlexibleSteppedProgressBar.framework"
   install_framework "$BUILT_PRODUCTS_DIR/GTMSessionFetcher/GTMSessionFetcher.framework"
   install_framework "$BUILT_PRODUCTS_DIR/GoogleToolboxForMac/GoogleToolboxForMac.framework"
   install_framework "$BUILT_PRODUCTS_DIR/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework"
   install_framework "$BUILT_PRODUCTS_DIR/JSQMessagesViewController/JSQMessagesViewController.framework"
   install_framework "$BUILT_PRODUCTS_DIR/JSQSystemSoundPlayer/JSQSystemSoundPlayer.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/KeychainAccess/KeychainAccess.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Player/Player.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/Soundcloud/Soundcloud.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SwiftOverlays/SwiftOverlays.framework"
   install_framework "$BUILT_PRODUCTS_DIR/YNDropDownMenu/YNDropDownMenu.framework"
   install_framework "$BUILT_PRODUCTS_DIR/YouTubePlayer/YouTubePlayer.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "$BUILT_PRODUCTS_DIR/1PasswordExtension/OnePasswordExtension.framework"
   install_framework "$BUILT_PRODUCTS_DIR/DropDown/DropDown.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/FlexibleSteppedProgressBar/FlexibleSteppedProgressBar.framework"
   install_framework "$BUILT_PRODUCTS_DIR/GTMSessionFetcher/GTMSessionFetcher.framework"
   install_framework "$BUILT_PRODUCTS_DIR/GoogleToolboxForMac/GoogleToolboxForMac.framework"
   install_framework "$BUILT_PRODUCTS_DIR/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework"
   install_framework "$BUILT_PRODUCTS_DIR/JSQMessagesViewController/JSQMessagesViewController.framework"
   install_framework "$BUILT_PRODUCTS_DIR/JSQSystemSoundPlayer/JSQSystemSoundPlayer.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/KeychainAccess/KeychainAccess.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Player/Player.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/Soundcloud/Soundcloud.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SwiftOverlays/SwiftOverlays.framework"
   install_framework "$BUILT_PRODUCTS_DIR/YNDropDownMenu/YNDropDownMenu.framework"
   install_framework "$BUILT_PRODUCTS_DIR/YouTubePlayer/YouTubePlayer.framework"

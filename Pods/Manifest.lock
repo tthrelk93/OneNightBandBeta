@@ -1,5 +1,4 @@
 PODS:
-  - 1PasswordExtension (1.8.4)
   - DropDown (2)
   - Firebase (4.0.2):
     - Firebase/Core (= 4.0.2)
@@ -33,6 +32,7 @@ PODS:
     - FirebaseAnalytics (~> 4.0)
     - FirebaseCore (~> 4.0)
     - GTMSessionFetcher/Core (~> 1.1)
+  - FlexibleSteppedProgressBar (0.4.0)
   - GoogleToolboxForMac/DebugUtils (2.1.1):
     - GoogleToolboxForMac/Defines (= 2.1.1)
   - GoogleToolboxForMac/Defines (2.1.1)
@@ -48,11 +48,7 @@ PODS:
   - JSQMessagesViewController (7.3.4):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
-  - KeychainAccess (3.0.2)
   - Player (0.2.2)
-  - Soundcloud (1.1.0):
-    - 1PasswordExtension (~> 1.8.3)
-    - KeychainAccess (~> 3.0)
   - SwiftOverlays (3.0.0)
   - YNDropDownMenu (2.3.2)
   - YouTubePlayer (0.4.0)
@@ -64,16 +60,15 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Database
   - Firebase/Storage
+  - FlexibleSteppedProgressBar
   - IQKeyboardManagerSwift
   - JSQMessagesViewController
   - Player (~> 0.2.0)
-  - Soundcloud
   - SwiftOverlays (~> 3.0.0)
   - YNDropDownMenu
   - YouTubePlayer
 
 SPEC CHECKSUMS:
-  1PasswordExtension: e775a29310c65851e5a6cec1afc349ab4e334e47
   DropDown: 744784d9c9aa505100e942c16acd05430cbb2f0a
   Firebase: c7ad0731eab26d18a3fc547dd048b0f7cd9c63ae
   FirebaseAnalytics: 4d7040fefc3cd8b291cde35f12cf063d7963f15d
@@ -82,18 +77,17 @@ SPEC CHECKSUMS:
   FirebaseDatabase: d829b3a8c3e2ac7a16773c5df226966b0805dfc2
   FirebaseInstanceID: 9fbf536668f4d3f0880e7438456dabd1376e294b
   FirebaseStorage: 8110a1ed2034c8fbfd83890d2acc9cdbbd99afec
+  FlexibleSteppedProgressBar: 599c2e738903fa9d76e0773044a501e3ee64f6d9
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMSessionFetcher: 30d874b96d0d76028f61fbd122801e3f030d47db
   IQKeyboardManagerSwift: 75ba21a23794a1e6b6fe6d9a267ea17f80e06771
   JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
-  KeychainAccess: a986406022dfc7c634c691ad3bec670cc6a32002
   Player: 5cff076cc9f13b51f56b6fb7bed24431569b8102
-  Soundcloud: 476ba41826b4968a963048e76303056dbe529b64
   SwiftOverlays: 4cdd9e4f5c7817fb6348882059eb697e11685fad
   YNDropDownMenu: 9d9f1ae71a408d0e7c66a55da2a52232545fca5a
   YouTubePlayer: 028451f6772f372d4759866db99824c676ac1473
 
-PODFILE CHECKSUM: 10c94baccc9c7bc2ce9035a9087ac197908b4caa
+PODFILE CHECKSUM: c3585d7dd7b50e7008bb70f0576858d08a84d0ed
 
 COCOAPODS: 1.2.0

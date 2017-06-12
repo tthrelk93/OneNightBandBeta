@@ -10,9 +10,12 @@ import UIKit
 import FirebaseDatabase
 import FirebaseStorage
 import FirebaseAuth
+import FlexibleSteppedProgressBar
 
-class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UINavigationControllerDelegate {
+class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UINavigationControllerDelegate, FlexibleSteppedProgressBarDelegate {
     @IBOutlet weak var addMusicians2Label: UILabel!
+    
+    var progressBar: FlexibleSteppedProgressBar!
     
     @IBOutlet weak var addMusiciansLabel: UILabel!
     //@IBOutlet weak var option2Label: UILabel!
@@ -74,10 +77,86 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
     var bandName = String()
     var onbDate = String()
     
+    @IBOutlet weak var progressBarFrame: UIProgressView!
+    @IBOutlet weak var infoView: UIView!
+    @IBAction func infoButtonPressed(_ sender: Any) {
+        
+        if infoView.isHidden == true{
+            infoView.isHidden = false
+            topLabel.isHidden = true
+            addMusiciansLabel.isHidden = true
+            addMusicians2Label.isHidden = true
+            backButton.isHidden = true
+            createNewButton.isHidden = true
+            useExistingLabel.isHidden = true
+            createNewLabel.isHidden = true
+            useExistingBandButton.isHidden = true
+            //orLabel.isHidden = false
+            collectViewHolder.isHidden = true
+            infoHolder.isHidden = true
+
+        } else {
+            infoView.isHidden = true
+            topLabel.isHidden = false
+            addMusiciansLabel.isHidden = false
+            addMusicians2Label.isHidden = false
+            backButton.isHidden = true
+            createNewButton.isHidden = false
+            useExistingLabel.isHidden = false
+            createNewLabel.isHidden = false
+            useExistingBandButton.isHidden = false
+            //orLabel.isHidden = false
+            collectViewHolder.isHidden = true
+            infoHolder.isHidden = false
+        }
+    }
+    var progressBounds = CGRect()
+    
+    @IBOutlet weak var infoButton: UIButton!
     @IBOutlet weak var topLabel: UILabel!
+    
+     let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        progressBounds = progressBarFrame.frame
+        
+        progressBar = FlexibleSteppedProgressBar()
+        progressBar.frame = progressBounds
+        progressBar.viewBackgroundColor = UIColor.blue
+        progressBar.backgroundShapeColor = ONBPink
+        progressBar.selectedBackgoundColor = UIColor.blue
+        progressBar.stepTextColor = UIColor.white
+        progressBar.currentSelectedTextColor = ONBPink
+        progressBar.currentSelectedCenterColor = ONBPink
+        progressBar.selectedOuterCircleStrokeColor = ONBPink
+        progressBar.isUserInteractionEnabled = false
+        progressBar.currentIndex = 0
+        
+        progressBar.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(progressBar)
+        
+        //let horizontalConstraint = progressBar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+       /* let verticalConstraint = progressBar.topAnchor.constraintEqualToAnchor(
+            equalTo: view.topAnchor,
+            constant: 80
+        )
+        let widthConstraint = progressBar.constraint.constraintEqualToAnchor(nil, constant: 500)
+        let heightConstraint = progressBar.constraint.constraintEqualToAnchor(nil, constant: 150)
+        NSLayoutConstraint.activateConstraints([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint])*/
+        
+        // Customise the progress bar here
+        progressBar.numberOfPoints = 3
+        progressBar.lineHeight = 9
+        progressBar.radius = 15
+        progressBar.progressRadius = 25
+        progressBar.progressLineHeight = 3
+        progressBar.delegate = self
+        //progressBar.didSelect
+        
+       infoButton.backgroundColor = UIColor.clear
+        infoButton.layer.borderColor = ONBPink.cgColor
+        infoButton.layer.borderWidth = 2
+       infoButton.layer.cornerRadius = infoButton.frame.height/2
         self.topLabel.text = "Choose One of the Two Options Below to Continue Searching for Musicians"
        
         loadCollectionViews()
@@ -138,6 +217,41 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
 
         // Do any additional setup after loading the view.
     }
+    
+    func progressBar(_ progressBar: FlexibleSteppedProgressBar,
+                     didSelectItemAtIndex index: Int) {
+        print("Index selected!")
+    }
+    
+    func progressBar(_ progressBar: FlexibleSteppedProgressBar,
+                     willSelectItemAtIndex index: Int) {
+        print("Index selected!")
+    }
+    
+    func progressBar(_ progressBar: FlexibleSteppedProgressBar,
+                     canSelectItemAtIndex index: Int) -> Bool {
+        return true
+    }
+    
+    func progressBar(_ progressBar: FlexibleSteppedProgressBar,
+                     textAtIndex index: Int, position: FlexibleSteppedProgressBarTextLocation) -> String {
+        if position == FlexibleSteppedProgressBarTextLocation.bottom{
+            switch index {
+                
+            case 0: return "Select Band"
+            case 1: return "Search Type"
+            case 2: return "Find Musicians"
+            //case 3: return "Fourth"
+            //case 4: return "Fifth"
+            default: return "Date"
+                
+            }
+        }
+        return ""
+    }
+    
+    
+    
     var wantedAd = WantedAd()
     var picArray = [UIImage]()
     let userID = Auth.auth().currentUser?.uid

@@ -1090,6 +1090,10 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
+                            <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="USz-h1-Vv5">
+                                <rect key="frame" x="54" y="622" width="267" height="2"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                            </progressView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -1100,6 +1104,7 @@
                         <outlet property="createNewBandButton" destination="yip-wI-9Kh" id="tmO-LY-BSL"/>
                         <outlet property="createNewONBButton" destination="Lz3-5B-xue" id="Jwf-ro-Rxm"/>
                         <outlet property="createNewONBH" destination="nxC-XO-tmU" id="kF4-eK-hDQ"/>
+                        <outlet property="progressFrame" destination="USz-h1-Vv5" id="y3f-kM-D2W"/>
                         <segue destination="bGf-Zb-Srh" kind="show" identifier="MyBandsToSessionMaker" id="pdY-oa-6sl"/>
                         <segue destination="rW6-OV-FTj" kind="show" identifier="MyBandsToONB" id="Yis-v2-fvs"/>
                         <segue destination="Tm4-nj-Rsh" kind="showDetail" identifier="CreateNewToJoinBand" id="drn-Rx-ioh"/>
@@ -1107,7 +1112,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="puF-Tb-OvU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4201" y="329"/>
+            <point key="canvasLocation" x="-4225" y="561"/>
         </scene>
         <!--Create One Night Band View Controller-->
         <scene sceneID="6PA-Pb-Yaq">
@@ -1393,7 +1398,19 @@
                                 <state key="normal" title="?">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="infoButtonPressed:" destination="btQ-7S-aEN" eventType="touchUpInside" id="3Mj-kF-mi3"/>
+                                </connections>
                             </button>
+                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wwy-bf-82x">
+                                <rect key="frame" x="16" y="68" width="343" height="546"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="0.64000000000000001" colorSpace="calibratedWhite"/>
+                            </view>
+                            <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="DV5-lg-638">
+                                <rect key="frame" x="54" y="622" width="267" height="2"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                            </progressView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -1405,8 +1422,11 @@
                         <outlet property="collectViewHolder" destination="9yX-OU-hRb" id="EGM-mN-dfl"/>
                         <outlet property="createNewButton" destination="xfb-mK-ZtY" id="9WS-kV-EpJ"/>
                         <outlet property="createNewLabel" destination="cti-rr-Ek9" id="2eC-kt-OBi"/>
+                        <outlet property="infoButton" destination="hGR-Os-VWn" id="3wQ-gb-vqr"/>
                         <outlet property="infoHolder" destination="hBH-rc-vyE" id="VPa-US-BRr"/>
+                        <outlet property="infoView" destination="Wwy-bf-82x" id="5D4-J3-Sl4"/>
                         <outlet property="onbCollect" destination="iPq-hF-x90" id="3Ji-i1-A5q"/>
+                        <outlet property="progressBarFrame" destination="DV5-lg-638" id="E2N-8Y-BCq"/>
                         <outlet property="topLabel" destination="f04-WX-BpK" id="7GB-Tg-l3E"/>
                         <outlet property="useExistingBandButton" destination="d3O-Ii-aF0" id="71J-ZT-K2L"/>
                         <outlet property="useExistingLabel" destination="7cR-Eu-0fW" id="WhG-qF-cas"/>
@@ -1414,6 +1434,7 @@
                         <segue destination="bGf-Zb-Srh" kind="show" identifier="PFMToBand" id="YWx-Ru-T6L"/>
                         <segue destination="Li7-sB-SQp" kind="showDetail" identifier="PFMToProfile" id="sYR-Fw-kEO"/>
                         <segue destination="8AT-X1-jeR" kind="showDetail" identifier="PFMToArtistFinder" id="OVS-ah-A2h"/>
+                        <segue destination="8AT-X1-jeR" kind="showDetail" identifier="PFMToArtistFinder" id="Rbe-lL-zBA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dej-XF-IOD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2889,16 +2910,6 @@
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="19"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qjf-BL-h79">
-                                <rect key="frame" x="7" y="14" width="52" height="28"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Back">
-                                    <color key="titleColor" red="0.78823529410000004" green="0.14901960780000001" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="afBackButton:" destination="8AT-X1-jeR" eventType="touchUpInside" id="40Y-Yc-wqn"/>
-                                </connections>
-                            </button>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5xV-Mb-9Od">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="664"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -2984,9 +2995,23 @@
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
+                                    <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Agr-SI-RJ0">
+                                        <rect key="frame" x="54" y="585" width="267" height="2"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                    </progressView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.87054256134969321" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qjf-BL-h79">
+                                <rect key="frame" x="7" y="14" width="52" height="28"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Back">
+                                    <color key="titleColor" red="0.78823529410000004" green="0.14901960780000001" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="afBackButton:" destination="8AT-X1-jeR" eventType="touchUpInside" id="40Y-Yc-wqn"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.6845079787234043" colorSpace="calibratedWhite"/>
                     </view>
@@ -2996,6 +3021,7 @@
                         <outlet property="distancePicker" destination="cAd-Oe-eh5" id="imi-zv-0aD"/>
                         <outlet property="noArtistsFoundLabel" destination="PrT-xv-SkD" id="OBN-Q0-6KL"/>
                         <outlet property="postToBoardButton" destination="qOK-AU-JYE" id="1UK-Ng-v7m"/>
+                        <outlet property="progressBarFrame" destination="Agr-SI-RJ0" id="QiZ-G8-Bo9"/>
                         <outlet property="searchButton" destination="5qS-it-0sx" id="G5T-Ew-Blp"/>
                         <outlet property="searchByInstrumentButton" destination="wBj-9p-srU" id="4UO-7d-bc1"/>
                         <outlet property="searchNarrowView" destination="5xV-Mb-9Od" id="ygc-lT-CKF"/>
@@ -3128,13 +3154,12 @@
                         <outlet property="expPicker" destination="CyX-2d-3Pv" id="tyt-Ga-VGR"/>
                         <outlet property="instrumentPicker" destination="qCr-0T-FwZ" id="RbM-fM-fN6"/>
                         <outlet property="moreInfoTextView" destination="C1s-Ds-1Cx" id="jEO-2f-9Sn"/>
-                        <segue destination="EI4-f6-CzA" kind="showDetail" identifier="CreateWantedToBandBoard" action="showViewController:sender:" id="nu1-ng-cA1"/>
-                        <segue destination="btQ-7S-aEN" kind="showDetail" identifier="CreateWantedToPFM" id="n8q-Bm-bJa"/>
+                        <segue destination="Li7-sB-SQp" kind="showDetail" identifier="CreateWantedToProfile" id="b17-e8-ha4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wlC-5C-Pv8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3676" y="2555.1724137931037"/>
+            <point key="canvasLocation" x="-3986" y="3645"/>
         </scene>
         <!--Profile Redesign View Controller-->
         <scene sceneID="8tG-dr-OUU">
@@ -4305,19 +4330,19 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="w4T-bo-8Y1"/>
-        <segue reference="YWx-Ru-T6L"/>
-        <segue reference="Rss-z3-2XX"/>
-        <segue reference="XzD-rl-MSp"/>
-        <segue reference="u3n-sT-PPU"/>
-        <segue reference="aDa-Hr-4MX"/>
-        <segue reference="OVS-ah-A2h"/>
+        <segue reference="h1s-W6-NlZ"/>
+        <segue reference="Rbe-lL-zBA"/>
+        <segue reference="sYV-FO-m64"/>
         <segue reference="1p0-wG-pkf"/>
-        <segue reference="zhk-cq-M3o"/>
+        <segue reference="kHE-LE-wwu"/>
         <segue reference="BfE-VC-iYV"/>
         <segue reference="0IB-Ck-bUj"/>
         <segue reference="3Xi-GS-BzJ"/>
         <segue reference="R2q-wy-wZD"/>
         <segue reference="Drd-XR-2Bn"/>
         <segue reference="oxs-N4-4FF"/>
+        <segue reference="b17-e8-ha4"/>
+        <segue reference="u3n-sT-PPU"/>
+        <segue reference="aDa-Hr-4MX"/>
     </inferredMetricsTieBreakers>
 </document>

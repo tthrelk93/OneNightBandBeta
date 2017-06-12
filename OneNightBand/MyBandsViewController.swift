@@ -11,9 +11,13 @@ import DropDown
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
+import FlexibleSteppedProgressBar
 
-class MyBandsViewController: UIViewController, DismissalDelegate, UINavigationControllerDelegate {
+class MyBandsViewController: UIViewController, DismissalDelegate, FlexibleSteppedProgressBarDelegate, UINavigationControllerDelegate {
     var sender = String()
+    var progressBar = FlexibleSteppedProgressBar()
+    //let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
+    
     @IBOutlet weak var bandTypeView: UIView!
    
     @IBAction func cancelPressed(_ sender: Any) {
@@ -57,14 +61,53 @@ class MyBandsViewController: UIViewController, DismissalDelegate, UINavigationCo
         
 
     }
+    
+    
    // @IBOutlet weak var noCurrentONBLabel: UILabel!
    // @IBOutlet weak var noCurrentBandsLabel: UILabel!
+    var progressBounds = CGRect()
     let ref = Database.database().reference()
    
     
        override func viewDidLoad() {
         super.viewDidLoad()
        
+        let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
+        progressBounds = progressFrame.frame
+        
+        progressBar = FlexibleSteppedProgressBar()
+        progressBar.frame = progressBounds
+        progressBar.viewBackgroundColor = UIColor.blue
+        progressBar.backgroundShapeColor = ONBPink
+        progressBar.selectedBackgoundColor = UIColor.blue
+        progressBar.stepTextColor = UIColor.white
+        progressBar.currentSelectedTextColor = ONBPink
+        progressBar.currentSelectedCenterColor = ONBPink
+        progressBar.selectedOuterCircleStrokeColor = ONBPink
+        progressBar.isUserInteractionEnabled = false
+        progressBar.currentIndex = 1
+        
+        progressBar.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(progressBar)
+        
+        //let horizontalConstraint = progressBar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+        /* let verticalConstraint = progressBar.topAnchor.constraintEqualToAnchor(
+         equalTo: view.topAnchor,
+         constant: 80
+         )
+         let widthConstraint = progressBar.constraint.constraintEqualToAnchor(nil, constant: 500)
+         let heightConstraint = progressBar.constraint.constraintEqualToAnchor(nil, constant: 150)
+         NSLayoutConstraint.activateConstraints([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint])*/
+        
+        // Customise the progress bar here
+        progressBar.numberOfPoints = 3
+        progressBar.lineHeight = 9
+        progressBar.radius = 15
+        progressBar.progressRadius = 25
+        progressBar.progressLineHeight = 3
+        progressBar.delegate = self
+        
+        
         //navigationController.is
         navigationItem.hidesBackButton = false
         navigationController?.isNavigationBarHidden = false
@@ -83,7 +126,7 @@ class MyBandsViewController: UIViewController, DismissalDelegate, UINavigationCo
        
         
         //dropDownMenu Stuff
-       let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
+       //let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
       
         
         
@@ -98,6 +141,7 @@ class MyBandsViewController: UIViewController, DismissalDelegate, UINavigationCo
             }*/
        
         
+    @IBOutlet weak var progressFrame: UIProgressView!
         
         
 
@@ -120,6 +164,40 @@ class MyBandsViewController: UIViewController, DismissalDelegate, UINavigationCo
         // Dispose of any resources that can be recreated.
     }
     
+    
+    func progressBar(_ progressBar: FlexibleSteppedProgressBar,
+                     didSelectItemAtIndex index: Int) {
+        print("Index selected!")
+    }
+    
+    func progressBar(_ progressBar: FlexibleSteppedProgressBar,
+                     willSelectItemAtIndex index: Int) {
+        print("Index selected!")
+    }
+    
+    func progressBar(_ progressBar: FlexibleSteppedProgressBar,
+                     canSelectItemAtIndex index: Int) -> Bool {
+        return true
+    }
+    
+    func progressBar(_ progressBar: FlexibleSteppedProgressBar,
+                     textAtIndex index: Int, position: FlexibleSteppedProgressBarTextLocation) -> String {
+        if position == FlexibleSteppedProgressBarTextLocation.bottom{
+            switch index {
+                
+            case 0: return "Select Band"
+            case 1: return "Create Band"
+            case 2: return "Search Type"
+            //case 3: return "Find Musicians"
+                //case 3: return "Fourth"
+            //case 4: return "Fifth"
+            default: return "Date"
+                
+            }
+        }
+        return ""
+    }
+    
 
     
     // MARK: - Navigation
@@ -131,13 +209,13 @@ class MyBandsViewController: UIViewController, DismissalDelegate, UINavigationCo
         if segue.identifier == "MyBandsToSessionMaker" {
             if let viewController = segue.destination as? CreateBandViewController {
                 //viewController.sessionID = self.bandIDArray[tempIndex]
-                viewController.sender = "pfm"
+                viewController.sender = "myBands"
                // viewController.destination = self.destination1
 
             }
         } else {
             if let viewController = segue.destination as? CreateOneNightBandViewController {
-                viewController.sender = "pfm"
+                viewController.sender = "myBands"
             }
         }
 
