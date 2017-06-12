@@ -424,7 +424,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
             else{
                 
                 print("Successful Login")
-                SwiftOverlays.showBlockingTextOverlay("Loading Profile...")
+                SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile...")
                 self.performSegue(withIdentifier: "LoginSegue", sender: self)
             }
 

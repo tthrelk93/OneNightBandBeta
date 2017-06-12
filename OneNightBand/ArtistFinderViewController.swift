@@ -53,6 +53,11 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
         } else {
             popOverVC.bandID = self.bandID
             popOverVC.bandType = self.bandType
+            if self.bandType == "band"{
+            popOverVC.bandObject = self.thisBandObject
+            } else {
+                popOverVC.onbObject = self.thisONBObject
+            }
         }
         popOverVC.wantedAdDelegate = self
         
@@ -78,7 +83,8 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
         
         self.destination = "artistFinder"
         self.buttonSelected = "artistFinder"
-        performSegue(withIdentifier: "ArtistFinderToPFM", sender: self)
+        //performSegue(withIdentifier: "ArtistFinderToPFM", sender: self)
+        self.searchNarrowView.isHidden = true
     }
     @IBOutlet weak var InstrumentPicker: UIPickerView!
     
@@ -221,11 +227,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                         let userID = Auth.auth().currentUser?.uid
                         self.ref.child("users").child(userID!).child("location").observeSingleEvent(of: .value, with: { (snapshot) in
                             for artist in self.artistArray{
-                                if self.cityNameArray[self.distancePicker.selectedRow(inComponent: 0)] == "All" {
-                                    self.artistAfterDist.append(artist)
-                                }
-                                else {
-                                print("in artitAfterDist filler")
+                                                               print("in artitAfterDist filler")
                                 tempLong = artist.location["long"] as? CLLocationDegrees
                                 tempLat = artist.location["lat"] as? CLLocationDegrees
                                 
@@ -274,7 +276,9 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                                                         if city2 == city{
                                                             self.artistAfterDist.append(artist)
                                                         }
-                                                    } else{
+                                                    } else if self.cityNameArray[self.distancePicker.selectedRow(inComponent: 0)] == "All"{
+                                                        self.artistAfterDist.append(artist)
+                                                    } else {
                                                         if city2 as String == self.cityNameArray[tempInt] {
                                                             self.artistAfterDist.append(artist)
                                                         }
@@ -294,7 +298,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                             if self.artistAfterDist.isEmpty{
                                 self.noArtistsFoundLabel.isHidden = false
                                 self.artistCollectionView.isHidden = true
-                                return
+                                
                             }else{
                                 self.noArtistsFoundLabel.isHidden = true
                                 self.artistCollectionView.isHidden = false
@@ -309,28 +313,33 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                                     self.sizingCell = (cellNib.instantiate(withOwner: nil, options: nil) as NSArray).firstObject as! ArtistCardCell?
                                     self.artistCollectionView.dataSource = self
                                     self.artistCollectionView.delegate = self
+                                    
                                     self.artistCollectionView.reloadData()
                                     self.artistCollectionView.gestureRecognizers?.first?.cancelsTouchesInView = false
                                     self.artistCollectionView.gestureRecognizers?.first?.delaysTouchesBegan = false
                                 }
+                                
+                                
                                                 }
                                             })
                                         }
                                     }
                                 })
                             }
-                            }
                         })
                     }
                 })
             }
+            
+            
+            
         })
     }
 
 
-        
     
-                
+    
+    
             
         
         
@@ -348,7 +357,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     var cityInfoDict = [String:Any]()
    override func viewDidLoad() {
         super.viewDidLoad()
-    if self.PFMChoiceSelected == true{
+    if /*self.PFMChoiceSelected == true ||*/ self.senderScreen == "band" || self.senderScreen == "onb"{
         searchNarrowView.isHidden = true
     } else {
         searchNarrowView.isHidden = false

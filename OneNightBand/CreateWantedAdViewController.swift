@@ -30,8 +30,50 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
     @IBAction func postAdPressed(_ sender: Any) {
         if(moreInfoTextView.text != "tap to add info about the type of musician you are looking for. This may include playing style, musical influences, etc... "){
             SwiftOverlays.showBlockingWaitOverlayWithText("Loading Your Bands")
-            performSegue(withIdentifier: "CreateWantedToPFM", sender: self)
             
+            let ref = Database.database().reference()
+            let wantedReference = ref.child("wantedAds").childByAutoId()
+            let wantedReferenceAnyObject = wantedReference.key
+            var values = [String:Any]()
+            values["bandType"] = self.bandType
+            values["bandID"] = self.bandID
+            if self.bandType == "onb"{
+                values["bandName"] = onbObject.onbName
+                values["city"] = locationText[self.cityPicker.selectedRow(inComponent: 0)]
+                values["date"] = onbObject.onbDate
+                values["experience"] = expText[self.expPicker.selectedRow(inComponent: 0)]
+            
+                values["instrumentNeeded"] = instrumentText[instrumentPicker.selectedRow(inComponent: 1)]
+                values["moreInfo"] = onbObject.onbInfo
+                values["responses"] = [String:Any]()
+                values["senderID"] = self.user
+                values["wantedImage"] = onbObject.onbPictureURL.first
+            
+                values["wantedID"] = wantedReferenceAnyObject
+            } else {
+                values["bandName"] = bandObject.bandName
+                values["city"] = locationText[self.cityPicker.selectedRow(inComponent: 0)]
+                values["date"] = ""
+                values["experience"] = expText[self.expPicker.selectedRow(inComponent: 0)]
+                
+                values["instrumentNeeded"] = instrumentText[instrumentPicker.selectedRow(inComponent: 1)]
+                values["moreInfo"] = bandObject.bandBio
+                values["responses"] = [String:Any]()
+                values["senderID"] = self.user
+                values["wantedImage"] = bandObject.bandPictureURL.first
+                
+                values["wantedID"] = wantedReferenceAnyObject
+            }
+            
+            wantedReference.updateChildValues(values, withCompletionBlock: {(err, ref) in
+                if err != nil {
+                    print(err as Any)
+                    return
+                }
+                
+            })
+            performSegue(withIdentifier: "CreateWantedToPFM", sender: self)
+
            
             
         }
@@ -63,7 +105,9 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
         
         moreInfoTextView.text = "tap to add info about the type of musician you are looking for. This may include playing style, musical influences, etc... "
         if self.bandType == "band"{
-            ref.child("bands").child(bandID).observeSingleEvent(of: .value, with: { (snapshot) in
+            self.imageString = bandObject.bandPictureURL.first!
+            self.bandName = bandObject.bandName!
+            /*ref.child("bands").child(bandID).observeSingleEvent(of: .value, with: { (snapshot) in
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                     for snap in snapshots{
                         if snap.key == "bandPictureURL"{
@@ -77,9 +121,12 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
                     
                     }
                 }
-            })
+            })*/
         } else if self.bandType == "onb" {
-            ref.child("oneNightBands").child(bandID).observeSingleEvent(of: .value, with: { (snapshot) in
+            self.imageString = onbObject.onbPictureURL.first!
+            self.bandName = onbObject.onbName
+            self.onbDate = onbObject.onbDate
+            /*ref.child("oneNightBands").child(bandID).observeSingleEvent(of: .value, with: { (snapshot) in
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                     for snap in snapshots{
                         if snap.key == "onbPictureURL"{
@@ -96,7 +143,7 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
                         
                     }
                 }
-            })
+            })*/
 
             
         }
@@ -226,17 +273,20 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
     
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    var bandObject = Band()
+    var onbObject = ONB()
+    var wantedAd = WantedAd()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         //if segue.identifier == "PfmToBandBoard"
-        if segue.identifier == "CreateWantedToPFM"{
+        if segue.identifier == "CreateWantedToProfile"{
             if let vc = segue.destination as? ProfileFindMusiciansViewController{
-                print("heyyyg")
-                vc.instrumentNeeded = instrumentText[instrumentPicker.selectedRow(inComponent: 0)]
-                vc.locationText = locationText[cityPicker.selectedRow(inComponent: 0)]
-                vc.expText = expText[expPicker.selectedRow(inComponent: 0)]
-                vc.moreInfoText = moreInfoTextView.text
-                vc.destination = "bb"
-                SwiftOverlays.removeAllBlockingOverlays()
+                //print("heyyyg")
+                //vc.instrumentNeeded = instrumentText[instrumentPicker.selectedRow(inComponent: 0)]
+                //vc.locationText = locationText[cityPicker.selectedRow(inComponent: 0)]
+                //vc.expText = expText[expPicker.selectedRow(inComponent: 0)]
+                //vc.moreInfoText = moreInfoTextView.text
+                //vc.destination = "bb"
+                //SwiftOverlays.removeAllBlockingOverlays()
             }
         } /*else{
         if let vc = segue.destination as? BandBoardViewController{

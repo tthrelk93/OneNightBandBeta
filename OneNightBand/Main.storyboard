@@ -990,23 +990,23 @@
                         <viewControllerLayoutGuide type="bottom" id="OJC-RP-rm7"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Icg-69-v6a">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Background-Design-Blue-Texture-Triangles-Polygon-1761175 3" translatesAutoresizingMaskIntoConstraints="NO" id="dOG-bU-G3Z">
-                                <rect key="frame" x="-228" y="-174" width="830" height="1013"/>
+                                <rect key="frame" x="-228" y="-192" width="830" height="1120"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OUU-LO-VBh">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IYY-uG-68X">
-                                        <rect key="frame" x="8" y="109" width="359" height="174"/>
+                                        <rect key="frame" x="8" y="121" width="359" height="192"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="egP-fc-4jd">
-                                                <rect key="frame" x="30" y="30" width="299" height="71"/>
+                                                <rect key="frame" x="30" y="33" width="299" height="79"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <string key="text">Select "Create New OneNightBand" if you wish to create a temporary band or find musicians to play with that you may or may not see again.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1014,7 +1014,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lz3-5B-xue">
-                                                <rect key="frame" x="16" y="108" width="328" height="48"/>
+                                                <rect key="frame" x="16" y="119" width="328" height="54"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" red="0.78823529410000004" green="0.14901960780000001" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 <state key="normal" title="Create OneNightBand">
@@ -1025,7 +1025,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Create OneNightBand" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="nxC-XO-tmU">
-                                                <rect key="frame" x="0.0" y="0.0" width="360" height="31"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="360" height="34"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="22"/>
@@ -1036,18 +1036,18 @@
                                         <color key="backgroundColor" white="1" alpha="0.63216346150000002" colorSpace="calibratedWhite"/>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="What Type of Band do you Want to Create?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ueq-Eh-vd4">
-                                        <rect key="frame" x="39" y="34" width="297" height="69"/>
+                                        <rect key="frame" x="39" y="38" width="297" height="76"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="26"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lvz-tz-fJW">
-                                        <rect key="frame" x="8" y="303" width="359" height="173"/>
+                                        <rect key="frame" x="8" y="335" width="359" height="192"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yip-wI-9Kh">
-                                                <rect key="frame" x="15" y="108" width="329" height="49"/>
+                                                <rect key="frame" x="15" y="120" width="329" height="54"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" red="0.78823529410000004" green="0.14901960780000001" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 <state key="normal" title="Create Band">
@@ -1058,7 +1058,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="oxv-zP-Ddu">
-                                                <rect key="frame" x="32" y="20" width="295" height="88"/>
+                                                <rect key="frame" x="32" y="22" width="295" height="97"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <string key="text">Select "Create New Band" if you want to create a page for your pre-existing band, or are trying to create a band that regularly practices or plays gigs.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1066,7 +1066,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Create Band" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="dzv-nH-m83">
-                                                <rect key="frame" x="0.0" y="0.0" width="359" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="359" height="33"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="22"/>
@@ -1077,7 +1077,7 @@
                                         <color key="backgroundColor" white="1" alpha="0.63216346150000002" colorSpace="calibratedWhite"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="khu-Rc-Wch">
-                                        <rect key="frame" x="0.0" y="6" width="70" height="37"/>
+                                        <rect key="frame" x="0.0" y="7" width="70" height="41"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Cancel">
                                             <color key="titleColor" red="0.78823529410000004" green="0.14901960780000001" blue="0.36078431370000003" alpha="0.99603365379999997" colorSpace="calibratedRGB"/>
@@ -1202,7 +1202,7 @@
                         <outlet property="popupView" destination="bZT-hj-x0J" id="ltv-rh-Ypq"/>
                         <segue destination="j0s-Ma-v6v" kind="showDetail" identifier="CreateONBToMyBands" id="7DD-y8-pwi"/>
                         <segue destination="rW6-OV-FTj" kind="showDetail" identifier="CreateONBToONB" id="tkz-DS-wV1"/>
-                        <segue destination="8AT-X1-jeR" kind="showDetail" identifier="&quot;CreateONBToArtistFinder&quot;" id="pQF-I9-VwQ"/>
+                        <segue destination="8AT-X1-jeR" kind="showDetail" identifier="CreateONBToArtistFinder" id="pQF-I9-VwQ"/>
                         <segue destination="Li7-sB-SQp" kind="showDetail" identifier="CreateONBToProfile" id="QW6-rc-DDq"/>
                     </connections>
                 </viewController>
@@ -1236,7 +1236,7 @@
                                 </state>
                                 <connections>
                                     <action selector="cancelButtonPressed:" destination="btQ-7S-aEN" eventType="touchUpInside" id="fNx-IA-ahl"/>
-                                    <segue destination="8AT-X1-jeR" kind="showDetail" id="OiT-mV-fok"/>
+                                    <segue destination="Li7-sB-SQp" kind="showDetail" identifier="PFMToProfile" id="XzD-rl-MSp"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hBH-rc-vyE">
@@ -1369,7 +1369,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="f04-WX-BpK">
                                 <rect key="frame" x="16" y="117" width="343" height="102"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="0.55674278846153846" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.63" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="25"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -1384,6 +1384,15 @@
                                 <connections>
                                     <action selector="backButtonPressed:" destination="btQ-7S-aEN" eventType="touchUpInside" id="7Zo-Iq-Hjx"/>
                                 </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hGR-Os-VWn">
+                                <rect key="frame" x="319" y="20" width="40" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.78823529410000004" green="0.14901960780000001" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <state key="normal" title="?">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1495,7 +1504,7 @@
                         <outlet property="bandBioTextView" destination="FiM-vg-A4x" id="LNp-tu-exu"/>
                         <outlet property="bandNameTextField" destination="SAx-Gv-jnI" id="gCP-pl-mCC"/>
                         <outlet property="popupView" destination="ary-1B-BsA" id="cEM-kO-2m9"/>
-                        <segue destination="8AT-X1-jeR" kind="showDetail" identifier="&quot;CreateBandToArtistFinder&quot;" id="0n9-07-BFZ"/>
+                        <segue destination="8AT-X1-jeR" kind="showDetail" identifier="CreateBandToArtistFinder" id="0n9-07-BFZ"/>
                         <segue destination="Li7-sB-SQp" kind="showDetail" identifier="CreateBandToProfile" id="wTZ-Ol-XWS"/>
                     </connections>
                 </viewController>
@@ -2845,8 +2854,8 @@
                                 </cells>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="5qS-it-0sx">
-                                <rect key="frame" x="195" y="547" width="172" height="111"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
+                                <rect key="frame" x="195" y="544" width="172" height="111"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.78823529410000004" green="0.14901960780000001" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="42"/>
                                 <state key="normal" title="Search">
@@ -3433,17 +3442,18 @@
                                         </cells>
                                     </collectionView>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TkJ-0a-WuP">
-                                        <rect key="frame" x="13" y="17" width="46" height="30"/>
+                                        <rect key="frame" x="8" y="21" width="56" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="Back">
-                                            <color key="titleColor" red="0.83610731360000001" green="0.24380749460000001" blue="0.43589240309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleColor" red="0.78823529410000004" green="0.14901960780000001" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="backButtonPressed:" destination="Li7-sB-SQp" eventType="touchUpInside" id="Lxn-8g-7Rl"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ge2-Tl-xYW">
-                                        <rect key="frame" x="304" y="17" width="63" height="30"/>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ge2-Tl-xYW">
+                                        <rect key="frame" x="15" y="21" width="63" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Logout">
                                             <color key="titleColor" red="0.78823529410000004" green="0.14901960780000001" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -3528,6 +3538,7 @@
                         <segue destination="rW6-OV-FTj" kind="show" identifier="ProfileToONB" id="yTd-zc-Zkl"/>
                         <segue destination="bGf-Zb-Srh" kind="show" identifier="ProfileToSessionMaker" id="WDm-JN-DiU"/>
                         <segue destination="8AT-X1-jeR" kind="showDetail" identifier="ProfileToFindMusicians" id="6nc-97-Gye"/>
+                        <segue destination="btQ-7S-aEN" kind="showDetail" identifier="ProfileToPFM" id="Rss-z3-2XX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IA9-cs-MmD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4293,20 +4304,20 @@
         <image name="tick-blue" width="256" height="256"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="w4T-bo-8Y1"/>
+        <segue reference="YWx-Ru-T6L"/>
+        <segue reference="Rss-z3-2XX"/>
+        <segue reference="XzD-rl-MSp"/>
+        <segue reference="u3n-sT-PPU"/>
+        <segue reference="aDa-Hr-4MX"/>
+        <segue reference="OVS-ah-A2h"/>
+        <segue reference="1p0-wG-pkf"/>
         <segue reference="zhk-cq-M3o"/>
-        <segue reference="sYV-FO-m64"/>
-        <segue reference="OiT-mV-fok"/>
         <segue reference="BfE-VC-iYV"/>
         <segue reference="0IB-Ck-bUj"/>
         <segue reference="3Xi-GS-BzJ"/>
         <segue reference="R2q-wy-wZD"/>
-        <segue reference="YWx-Ru-T6L"/>
-        <segue reference="sYR-Fw-kEO"/>
-        <segue reference="1p0-wG-pkf"/>
         <segue reference="Drd-XR-2Bn"/>
-        <segue reference="w4T-bo-8Y1"/>
         <segue reference="oxs-N4-4FF"/>
-        <segue reference="u3n-sT-PPU"/>
-        <segue reference="aDa-Hr-4MX"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -98,6 +98,7 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
                 vc.bandID = sessionID!
                 vc.thisBandObject = thisBand
                 vc.bandType = "band"
+                vc.senderScreen = "band"
                 
             }
         }

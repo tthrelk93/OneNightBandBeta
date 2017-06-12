@@ -70,6 +70,10 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
                         let bandReference = ref.child("oneNightBands").childByAutoId()
                         let sessReferenceAnyObject = bandReference.key
                         values["onbID"] = sessReferenceAnyObject
+                        self.onbObject.setValuesForKeys(values)
+                    
+                    
+                    
                         self.onbID = sessReferenceAnyObject
                         self.tempArray.append(sessReferenceAnyObject)
                         //print(sessReference.key)
@@ -184,7 +188,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
                                 return
                             }
                             DispatchQueue.main.async{
-                                if self.destination == "bb"{
+                                if self.sender != "pfm" {
                                     self.performSegue(withIdentifier: "CreateONBToProfile", sender: self)
                                 } else {
                                     self.performSegue(withIdentifier: "CreateONBToArtistFinder", sender: self)
@@ -424,10 +428,10 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
 
 
     
-
+    var sender = String()
     
     // MARK: - Navigation
-
+    var onbObject = ONB()
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
@@ -445,6 +449,8 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
             if let vc = segue.destination as? ArtistFinderViewController{
                 vc.bandType = "onb"
                 vc.bandID = self.onbID
+                vc.senderScreen = "onb"
+                vc.thisONBObject = self.onbObject
                 
                 
             }

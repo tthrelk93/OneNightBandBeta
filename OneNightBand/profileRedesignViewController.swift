@@ -221,6 +221,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     var fromTabBar: Bool?
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         //SwiftOverlays.showBlockingTextOverlay("Loading Profile")
         if self.sender == "wantedAdCreated"{
             self.createWantedSuccess.isHidden = false
@@ -472,6 +473,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                                             self.picCollect.isHidden = false
                                             self.artistBio.isHidden = false
                                             self.artistName.isHidden = false
+                                            self.logoutButton.isHidden = false
                                             
                                             SwiftOverlays.removeAllBlockingOverlays()
                                             
@@ -643,7 +645,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     @available(iOS 2.0, *)
     public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){
         if item == tabBar.items?[0]{
-            performSegue(withIdentifier: "ProfileToFindMusicians", sender: self)
+            performSegue(withIdentifier: "ProfileToPFM", sender: self)
         } else if item == tabBar.items?[1]{
             performSegue(withIdentifier: "ProfToJoinBand", sender: self)
             

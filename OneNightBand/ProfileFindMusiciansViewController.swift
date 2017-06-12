@@ -77,12 +77,9 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
     @IBOutlet weak var topLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(self.destination)
-        if self.destination == "artistFinder"{
-            self.topLabel.text = "Choose One of the Two Options Below to Continue Searching for Musicians"
-        } else {
-            self.topLabel.text = "Choose One of the Two Options Below for Creating a Musicians Wanted Ad"
-        }
+       
+        self.topLabel.text = "Choose One of the Two Options Below to Continue Searching for Musicians"
+       
         loadCollectionViews()
         backButton.isHidden = true
         createNewButton.isHidden = false
@@ -303,7 +300,7 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
             self.bandSelected = bandArray[indexPath.row]
             
             self.selectedBandID = bandArray[indexPath.row].bandID!
-            if self.destination == "artistFinder"{
+            /*if self.destination == "artistFinder"{
                 performSegue(withIdentifier: "PFMToArtistFinder", sender: self)
             } else {
             
@@ -333,9 +330,9 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
                     return
                 }
                 
-            })
-            performSegue(withIdentifier: "PFMToProfile", sender: self)
-            }
+            })*/
+            performSegue(withIdentifier: "PFMToArtistFinder", sender: self)
+            //}
 
             
             
@@ -346,7 +343,7 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
             
            
             self.selectedBandID = onbArray[indexPath.row].onbID
-            if self.destination == "artistFinder"{
+            /*if self.destination == "artistFinder"{
                 performSegue(withIdentifier: "PFMToArtistFinder", sender: self)
             } else {
             
@@ -375,9 +372,9 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
                     return
                 }
                
-            })
+            })*/
             performSegue(withIdentifier: "PFMToArtistFinder", sender: self)
-            }
+           // }
 
             
             
@@ -417,12 +414,14 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "PFMToArtistFinder"{
+            
             if let vc = segue.destination as? ArtistFinderViewController{
                 if selectedCell == "band"{
                     vc.thisBandObject = bandSelected
                 } else {
                     vc.thisONBObject = onbSelected
                 }
+                vc.senderScreen = "pfm"
                 vc.bandID = self.selectedBandID
                 vc.bandType = selectedCell
                 vc.PFMChoiceSelected = true

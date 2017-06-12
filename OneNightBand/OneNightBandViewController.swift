@@ -527,6 +527,7 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
                 vc.bandID = self.onbID
                 vc.thisONBObject = thisONB
                 vc.bandType = "onb"
+                vc.senderScreen = "onb"
                 
             }
         }

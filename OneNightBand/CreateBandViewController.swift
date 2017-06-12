@@ -195,9 +195,10 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
             self.present(alert, animated: true, completion: nil)
         }
     }
+    var sender = String()
     weak var dismissalDelegate: DismissalDelegate?
     func segueFunc(){
-        if self.destination == "bb"{
+        if self.sender != "pfm"{
             performSegue(withIdentifier: "CreateBandToProfile", sender: self)
         } else {
             performSegue(withIdentifier: "CreateBandToArtistFinder", sender: self)
@@ -432,6 +433,7 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
             if let vc = segue.destination as? ArtistFinderViewController{
                 vc.bandType = "band"
                 vc.bandID = self.bandID
+                vc.senderScreen = "band"
                 
             }
         }

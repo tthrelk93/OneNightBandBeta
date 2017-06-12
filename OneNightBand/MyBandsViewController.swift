@@ -27,6 +27,7 @@ class MyBandsViewController: UIViewController, DismissalDelegate, UINavigationCo
     
     @IBOutlet weak var createNewONBButton: UIButton!
     @IBAction func createNewONBPressed(_ sender: Any) {
+        
         self.bandTypeView.isHidden = false
         let popOverVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreateOneNightBandViewController") as! CreateOneNightBandViewController
         self.addChildViewController(popOverVC)
@@ -128,16 +129,15 @@ class MyBandsViewController: UIViewController, DismissalDelegate, UINavigationCo
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "MyBandsToSessionMaker" {
-            if let viewController = segue.destination as? SessionMakerViewController {
-                viewController.sessionID = self.bandIDArray[tempIndex]
-                viewController.sender = "myBands"
-                viewController.destination = self.destination1
+            if let viewController = segue.destination as? CreateBandViewController {
+                //viewController.sessionID = self.bandIDArray[tempIndex]
+                viewController.sender = "pfm"
+               // viewController.destination = self.destination1
 
             }
         } else {
-            if let viewController = segue.destination as? OneNightBandViewController {
-                viewController.onbID = self.onbIDArray[tempIndex]
-                viewController.destination = self.destination1
+            if let viewController = segue.destination as? CreateOneNightBandViewController {
+                viewController.sender = "pfm"
             }
         }
 
