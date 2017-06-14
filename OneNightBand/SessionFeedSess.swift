@@ -21,6 +21,7 @@ class SessionFeedSess: NSObject {
     var bandID = String()
     var bandName = String()
     var bandType = String()
+    var button = [String:Any]()
     
 
 }

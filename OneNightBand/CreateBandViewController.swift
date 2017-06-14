@@ -19,11 +19,12 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
     let ref = Database.database().reference()
     var currentUser = Auth.auth().currentUser?.uid
     var wantedIDArray = [String]()
+    var thisBand = Band()
     
     @IBOutlet weak var popupView: UIView!
     @IBAction func createPressed(_ sender: Any) {
             if(sessionImageView.image != nil && bandNameTextField.text != "" && bandBioTextView.text != "tap to add a little info about the type of session you are trying to create."){
-                SwiftOverlays.showBlockingTextOverlay("Creating Musicians Wanted Ad")
+                SwiftOverlays.showBlockingWaitOverlayWithText("Creating...")//showBlockingTextOverlay("Creating Musicians Wanted Ad")
 
             let imageName = NSUUID().uuidString
             let storageRef = Storage.storage().reference().child("session_images").child("\(imageName).jpg")
@@ -52,7 +53,7 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
                         values["fanCount"] = 0
                         //values["messages"] = [String: Any]()
                         
-                        
+                        self.thisBand.setValuesForKeys(values)
                         
                         let bandReference = self.ref.child("bands").childByAutoId()
                         
@@ -62,7 +63,7 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
                         
                         
                         let ref = Database.database().reference()
-                        let wantedReference = ref.child("wantedAds").childByAutoId()
+                        /*let wantedReference = ref.child("wantedAds").childByAutoId()
                         let wantedReferenceAnyObject = wantedReference.key
                         var values2 = [String:Any]()
                         values2["bandType"] = "band"
@@ -84,6 +85,8 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
                         values2["wantedImage"] = [bandImageUrl]
                         
                         values2["wantedID"] = wantedReferenceAnyObject
+                        
+                        
                         
                         wantedReference.updateChildValues(values2, withCompletionBlock: {(err, ref) in
                             if err != nil {
@@ -135,7 +138,7 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
                             
                             //var sessionVals = Dictionary
                             //let userSessRef = ref.child("users").child(user).child("activeSessions")
-                        })
+                        })*/
                         
                         
                         
@@ -165,7 +168,7 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
                                     tempArray.append(snap.value as! String)
                                 }
                             }
-                            //tempArray.append(bandReferenceAnyObject)
+                            tempArray.append(bandReferenceAnyObject)
                             var tempDict = [String : Any]()
                             tempDict["artistsBands"] = tempArray
                             let userRef = self.ref.child("users").child(user!)
@@ -432,6 +435,8 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
                 vc.bandType = "band"
                 vc.bandID = self.bandID
                 vc.senderScreen = "band"
+                vc.sender = "joinBand"
+                vc.thisBandObject = self.thisBand
                 
             }
         }

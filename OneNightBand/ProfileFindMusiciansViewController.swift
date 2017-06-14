@@ -35,12 +35,14 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
         collectViewHolder.isHidden = true
         infoHolder.backgroundColor = UIColor.white.withAlphaComponent(0.63)
     }
+    var cancelPressed = Bool()
     @IBOutlet weak var orLabel: UILabel!
     @IBOutlet weak var createNewButton: UIButton!
     @IBOutlet weak var useExistingBandButton: UIButton!
     @IBAction func cancelButtonPressed(_ sender: Any) {
         //option1Label.isHidden = false
         //option2Label.isHidden = false
+        cancelPressed = true
         createNewButton.isHidden = false
         useExistingBandButton.isHidden = false
         //orLabel.isHidden = false
@@ -123,7 +125,7 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
         progressBar = FlexibleSteppedProgressBar()
         progressBar.frame = progressBounds
         progressBar.viewBackgroundColor = UIColor.blue
-        progressBar.backgroundShapeColor = ONBPink
+        progressBar.backgroundShapeColor = UIColor.white.withAlphaComponent(40)
         progressBar.selectedBackgoundColor = UIColor.blue
         progressBar.stepTextColor = UIColor.white
         progressBar.currentSelectedTextColor = ONBPink
@@ -148,7 +150,7 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
         progressBar.numberOfPoints = 3
         progressBar.lineHeight = 9
         progressBar.radius = 15
-        progressBar.progressRadius = 25
+        progressBar.progressRadius = 50
         progressBar.progressLineHeight = 3
         progressBar.delegate = self
         //progressBar.didSelect
@@ -573,7 +575,9 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
         }
         if segue.identifier == "PFMToProfile"{
             if let vc = segue.destination as? profileRedesignViewController{
-                vc.sender = "wantedAdCreated"
+                if self.cancelPressed != true{
+                    vc.sender = "wantedAdCreated"
+                }
             }
             
         }
@@ -585,7 +589,7 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
                 
                 
                 let ref = Database.database().reference()
-                let wantedReference = ref.child("wantedAds").childByAutoId()
+                /*let wantedReference = ref.child("wantedAds").childByAutoId()
                 let wantedReferenceAnyObject = wantedReference.key
                 var values = [String:Any]()
                 values["bandType"] = self.wantedAd.bandType
@@ -647,7 +651,7 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
                         
                         //var sessionVals = Dictionary
                         //let userSessRef = ref.child("users").child(user).child("activeSessions")
-                    })
+                    })*/
                 
                 
             }

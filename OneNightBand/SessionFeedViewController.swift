@@ -254,6 +254,9 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     var displayLineMidY = CGFloat()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.postToFeedButton.layer.cornerRadius = self.postToFeedButton.frame.width
+        postToFeedButton.layer.borderWidth = 2
+        postToFeedButton.layer.borderColor = ONBPink.cgColor
         self.picCollect.layer.cornerRadius = 10
         self.videoCollect.layer.cornerRadius = 10
         self.postToFeedButton.layer.cornerRadius = 10
@@ -345,13 +348,31 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             self.scrollOffset = 0
             
             self.viewPins = NSMutableArray()
+            
+            for session in self.sessionArray{
+                var tempButton = ONBGuitarButton()
+                tempButton.setValuesForKeys(session.button)
+                self.view.addSubview(tempButton)
+                self.viewPins.add(tempButton)
+                self.buttonArray.append(tempButton)
+                //tempButton.lane = session.button.lane
+                //tempButton._slope = session.button._slope
+               // tempButton._yPosition = session.button._yPosition
+                //tempButotn
+                //let button = sessionArray[i].button as ONBGuitarButton
+            }
+            
+            
+            
             //for i in -27..<7{
-            for i in 0..<self.sessionArray.count{
+            
+            /*for i in 0..<self.sessionArray.count{
                 let button = ONBGuitarButton()
                 button.initWithLane(lane: Int(arc4random_uniform(6)))
                 button.setYPosition(yPosition: (3 - CGFloat(i)) * 2.3)
                 //button.image = UIImage(named:"GuitarPin_Red.png")
                 button.sessionFeedKey = self.sessFeedKeyArray[i]
+                
                 
                 
                 
@@ -365,13 +386,14 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                 button.isUserInteractionEnabled = true
                 button.session = self.sessionArray[i]
                 button.sessionViews = self.viewArray[i]
+                self.buttonArray.append(button)
                     
             
             }
             for button in self.viewPins{
                 print((button as! ONBGuitarButton)._baseX)
                 print((button as! ONBGuitarButton).lane)
-            }
+            }*/
 
         })
         
@@ -385,6 +407,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
 
         // Do any additional setup after loading the view.
     }
+    var buttonArray = [ONBGuitarButton]()
     var soloViewArray = [Int]()
     var soloSessionArray = [SessionFeedSess]()
     var soloSessFeedKeyArray = [String]()
@@ -394,6 +417,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     
     
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
+        
         if segue.identifier == "FeedToUpload"{
             if let vc = segue.destination as? FeedDismissable
             {

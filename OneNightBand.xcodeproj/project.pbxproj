@@ -47,6 +47,7 @@
 		3B72BCD71DF5E25A0084D4B5 /* VideoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B72BCD51DF5E25A0084D4B5 /* VideoCollectionViewCell.xib */; };
 		3B72F5371E8C29E8006013EC /* ONB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B72F5361E8C29E8006013EC /* ONB.swift */; };
 		3B72F5391E8C5C0A006013EC /* FindBandsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B72F5381E8C5C0A006013EC /* FindBandsViewController.swift */; };
+		3B779A8E1EF07F6000525E3E /* CityData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B779A8D1EF07F6000525E3E /* CityData.swift */; };
 		3B81D1EC1ED4F4A900ECC947 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B81D1EB1ED4F4A900ECC947 /* Images.xcassets */; };
 		3B87964D1E786820009CA4C8 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B87964C1E786820009CA4C8 /* UserNotifications.framework */; };
 		3B87964F1E79B510009CA4C8 /* MyBandsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B87964E1E79B510009CA4C8 /* MyBandsViewController.swift */; };
@@ -156,6 +157,7 @@
 		3B72BCD51DF5E25A0084D4B5 /* VideoCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoCollectionViewCell.xib; sourceTree = "<group>"; };
 		3B72F5361E8C29E8006013EC /* ONB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ONB.swift; sourceTree = "<group>"; };
 		3B72F5381E8C5C0A006013EC /* FindBandsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindBandsViewController.swift; sourceTree = "<group>"; };
+		3B779A8D1EF07F6000525E3E /* CityData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityData.swift; sourceTree = "<group>"; };
 		3B81D1EB1ED4F4A900ECC947 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3B87964C1E786820009CA4C8 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		3B87964E1E79B510009CA4C8 /* MyBandsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyBandsViewController.swift; sourceTree = "<group>"; };
@@ -485,6 +487,7 @@
 				3BA97CE01E85B2AF001167FC /* SessionFeedSess.swift */,
 				3B72F5361E8C29E8006013EC /* ONB.swift */,
 				3B0125581E9C051500D07D0C /* WantedAd.swift */,
+				3B779A8D1EF07F6000525E3E /* CityData.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -883,6 +886,7 @@
 				3BE29F141D9B256A007A326B /* AppDelegate.swift in Sources */,
 				3B8796511E79C224009CA4C8 /* CreateBandViewController.swift in Sources */,
 				3B6248DE1DD4F5CB00847676 /* UploadSessionPopup.swift in Sources */,
+				3B779A8E1EF07F6000525E3E /* CityData.swift in Sources */,
 				3B19CB491E64B61100390DDA /* InstrumentTableViewCell.swift in Sources */,
 				3BDCA9FA1EE9CE01006280E8 /* ChatContainer.swift in Sources */,
 				3BE29F4A1D9C4559007A326B /* TextFieldsEffects.swift in Sources */,

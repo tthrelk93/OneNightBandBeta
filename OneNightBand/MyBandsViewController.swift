@@ -209,13 +209,23 @@ class MyBandsViewController: UIViewController, DismissalDelegate, FlexibleSteppe
         if segue.identifier == "MyBandsToSessionMaker" {
             if let viewController = segue.destination as? CreateBandViewController {
                 //viewController.sessionID = self.bandIDArray[tempIndex]
-                viewController.sender = "myBands"
+                if self.sender == "joinBand"{
+                    viewController.sender = "joinBand"
+                } else {
+                    viewController.sender = "myBands"
+                }
                // viewController.destination = self.destination1
 
             }
         } else {
             if let viewController = segue.destination as? CreateOneNightBandViewController {
                 viewController.sender = "myBands"
+                if self.sender == "joinBand"{
+                    viewController.sender = "joinBand"
+                } else {
+                    viewController.sender = "myBands"
+                }
+
             }
         }
 

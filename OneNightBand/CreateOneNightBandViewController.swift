@@ -82,7 +82,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
                         
                         
                         //let ref = Database.database().reference()
-                        let wantedReference = ref.child("wantedAds").childByAutoId()
+                       /* let wantedReference = ref.child("wantedAds").childByAutoId()
                         let wantedReferenceAnyObject = wantedReference.key
                         var values2 = [String:Any]()
                         values2["bandType"] = "onb"
@@ -157,7 +157,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
                             
                             //var sessionVals = Dictionary
                             //let userSessRef = ref.child("users").child(user).child("activeSessions")
-                        })
+                        })*/
 
                         
                         
@@ -177,7 +177,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
                                     self.tempArray.append(snap.value as! String)
                                 }
                             }
-                            //self.tempArray.append(sessReferenceAnyObject)
+                            self.tempArray.append(sessReferenceAnyObject)
 
                         
                         tempDict["artistsONBs"] = self.tempArray
@@ -225,7 +225,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
         tempButton.layer.borderWidth = 2
         tempButton.layer.borderColor = UIColor.lightGray.cgColor
         tempButton.backgroundColor = UIColor.clear
-        tempButton.setTitle("Select\n Session\n Image", for: .normal)
+        tempButton.setTitle("Select\n Band\n Image", for: .normal)
         tempButton.titleLabel?.numberOfLines = 3
         tempButton.titleLabel?.textAlignment = NSTextAlignment.center
         tempButton.titleLabel?.lineBreakMode = .byWordWrapping
@@ -448,6 +448,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
                 vc.bandType = "onb"
                 vc.bandID = self.onbID
                 vc.senderScreen = "onb"
+                vc.sender = "joinBand"
                 vc.thisONBObject = self.onbObject
                 
                 

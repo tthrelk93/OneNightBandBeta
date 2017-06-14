@@ -72,6 +72,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
         
     }
     var senderScreen = String()
+    var sender = String()
     @IBAction func afBackButton(_ sender: Any) {
         
         if self.senderScreen == "band"{
@@ -132,7 +133,21 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                     }
             }
 
-        } else if segue.identifier! == "afBackToONB" {
+        } else if segue.identifier == "ArtistFinderToProfile" {
+            if let vc = segue.destination as? profileRedesignViewController{
+                if self.sender != "joinBand"{
+                vc.sender = "af"
+                vc.artistID = self.profileArtistUID!
+                vc.userID = self.profileArtistUID!
+                vc.afType = self.bandType
+                if self.bandType == "band"{
+                    vc.thisBand = self.thisBandObject
+                } else {
+                    vc.thisONB = self.thisONBObject
+                }
+                }
+            }
+        }else if segue.identifier! == "afBackToONB" {
             if let vc = segue.destination as? OneNightBandViewController{
                 vc.onbID = self.bandID
                 
@@ -191,7 +206,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     @IBOutlet weak var searchButton: UIButton!
     func performSegueToProfile(artistUID: String) {
         self.profileArtistUID = artistUID
-        performSegue(withIdentifier: "FinderToProfile", sender: self)
+        performSegue(withIdentifier: "ArtistFinderToProfile", sender: self)
     }
     @IBOutlet weak var distancePicker: UIPickerView!
     
@@ -391,9 +406,17 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                                         
                                 
                             
+    @IBAction func laterButtonPressed(_ sender: Any) {
+        performSegue(withIdentifier: "ArtistFinderToProfile", sender: self)
+    }
                               
             
+    @IBAction func nowButtonPressed(_ sender: Any) {
+        searchNarrowView.isHidden = false
+        progressBar.isHidden = false
+    }
             
+    @IBOutlet weak var findArtistNowView: UIView!
     
     @IBOutlet weak var progressBarFrame: UIProgressView!
             
@@ -405,6 +428,8 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
    override func viewDidLoad() {
         super.viewDidLoad()
     
+        
+        
     progressBounds = progressBarFrame.frame
     
     progressBar = FlexibleSteppedProgressBar()
@@ -440,11 +465,16 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     progressBar.delegate = self
     
     searchNarrowView.isHidden = false
-    /*if /*self.PFMChoiceSelected == true ||*/ self.senderScreen == "band" || self.senderScreen == "onb"{
+    if /*self.PFMChoiceSelected == true ||*/ self.senderScreen == "band" || self.senderScreen == "onb"{
         searchNarrowView.isHidden = true
+        progressBar.isHidden = true
+        if self.sender == "joinBand"{
+            self.findArtistNowView.isHidden = false
+        }
     } else {
         searchNarrowView.isHidden = false
-    }*/
+        progressBar.isHidden = false
+    }
     ref.child("cityData").observeSingleEvent(of: .value, with: { (snapshot) in
         if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
             self.cityNameArray.append("All")
@@ -455,10 +485,10 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
             
         }
     })
-    
-    //let tempCityDict = tempCityData.cityDict
+    var tempCityData = CityData()
+    let tempCityDict = tempCityData.cityData
     //ref.child("wantedAds").childByAutoId()
-   /* var tempDict = [String:Any]()
+    var tempDict = [String:Any]()
     var tempArray = [[String:Any]]()
     for city in tempCityDict{
         var newCityDict = [String:Any]()
@@ -477,7 +507,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     }
     var uploadData = [String:Any]()
     uploadData["cityData"] = tempDict as [String:Any]
-    self.ref.child("cityData").updateChildValues(tempDict)*/
+    self.ref.child("cityData").updateChildValues(tempDict)
     
    /* for (key, _) in cityDict{
         self.cityArray.append(key )

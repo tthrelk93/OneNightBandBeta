@@ -1032,7 +1032,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
         }
         
     }
-
+    var feedArray = [SessionFeedSess]()
     var bandType = String()
     func uploadMovieToFirebaseStorage(){
         if bandType == "solo"{
@@ -1062,6 +1062,10 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
             
             values["sessionMedia"] = tempVidArray
             values["soloSessBool"] = "true"
+            
+           
+            
+            
             
             
             for url in self.selectedSoloVidArray{
@@ -1094,6 +1098,60 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
             }
             
             let autoId = recipient.childByAutoId()
+            var keyString = autoId.key
+            var sessionFeedSess = SessionFeedSess()
+            
+            self.ref.child("sessionFeed").observeSingleEvent(of: .value, with: { (snapshot) in
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                    for snap in snapshots{
+                        self.feedArray.append(snap.value as! SessionFeedSess)
+                    }
+                }
+                var mult = self.feedArray.count + 1
+                let button = ONBGuitarButton()
+                button.initWithLane(lane: Int(arc4random_uniform(6)))
+                button.setYPosition(yPosition: (3 - CGFloat(mult)) * 2.3)
+                button.sessionFeedKey = keyString
+                button.isDisplayed = Bool()
+                button.sessionName = self.soloSessionNameTextView.text
+                values["button"] = [String:Any]()
+                sessionFeedSess.setValuesForKeys(values)
+                button.session = sessionFeedSess
+                let tap = UITapGestureRecognizer(target: self, action: #selector(SessionFeedViewController.scrollToPin))
+                
+                tap.numberOfTapsRequired = 1
+                button.addGestureRecognizer(tap)
+                button.isUserInteractionEnabled = true
+                
+                button.sessionViews = 0
+
+                
+                
+                
+                values["button"] = button
+                
+                
+                
+                
+                
+                
+                
+                /*var tap: NSObject?
+                
+                var _slope = CGFloat()
+                var _baseX: CGFloat = 0.0
+                
+                var sessionFeedKey: String?
+                
+                */
+               
+
+                
+                
+                
+                
+            
+
             
             values2["soloSessKeysOnFeed"] = [String(describing: autoId)]
             //self.autoIdString = String(describing: autoId)
@@ -1116,6 +1174,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                     self.performSegue(withIdentifier: "CancelPressed", sender: self)
                 }
             })
+                })
         }
         if bandType == "onb"{
     

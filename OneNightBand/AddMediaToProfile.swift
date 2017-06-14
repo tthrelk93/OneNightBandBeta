@@ -187,7 +187,7 @@ class AddMediaToSession: UIViewController, UITextViewDelegate, UINavigationContr
                     var values2 = Dictionary<String, Any>()
                     let recipient = self.ref.child("users").child(userID!)
             
-                        print(youtubeLinkArray)
+                        //print(youtubeLinkArray)
                         for link in youtubeLinkArray{
                             self.allVidURLs.append(String(describing: link))
                         }
@@ -196,7 +196,44 @@ class AddMediaToSession: UIViewController, UITextViewDelegate, UINavigationContr
             
                     if recentlyAddedPhoneVidArray.count != 0{
                         
-                        for nsurl in recentlyAddedPhoneVidArray{
+                        for data in self.addedVidDataArray {
+                            let videoName = NSUUID().uuidString
+                            let storageRef = Storage.storage().reference().child("session_videos").child("\(videoName).mov")
+                            var videoRef = storageRef.fullPath
+                            
+                            //var downloadLink = storageRef.
+                            let uploadMetadata = StorageMetadata()
+                            uploadMetadata.contentType = "video/quicktime"
+                            
+                            _ = storageRef.putData(data, metadata: uploadMetadata){(metadata, error) in
+                                if(error != nil){
+                                    print("got an error: \(error)")
+                                }
+                                print("metaData: \(metadata)")
+                                print("metaDataURL: \((metadata?.downloadURL()?.absoluteString)!)")
+                                self.allVidURLs.append((metadata?.downloadURL()?.absoluteString)!)
+                                print("avs:\(self.allVidURLs)")
+                                if count == self.addedVidDataArray.count{
+                                    //DispatchQueue.main.async{
+                                    values2["sessionMedia"] = self.allVidURLs
+                                    
+                                    print("allVids: \(self.allVidURLs)")
+                                    recipient.updateChildValues(values2, withCompletionBlock: {(err, ref) in
+                                        if err != nil {
+                                            print(err!)
+                                            return
+                                        }
+                                    })
+                                    //}
+                                    
+                                }
+                                count += 1
+                            }
+                        }
+
+
+                        
+                        /*8for nsurl in recentlyAddedPhoneVidArray{
                             let videoName = NSUUID().uuidString
                             let storageRef = Storage.storage().reference(withPath: "artist_videos").child("\(videoName).mov")
                             var videoRef = storageRef.fullPath
@@ -217,11 +254,14 @@ class AddMediaToSession: UIViewController, UITextViewDelegate, UINavigationContr
                         
                     }
                     else{
-                        /*for link in vidFromPhoneArray{
+                        for link in self.recentlyAddedVidArray{
                             self.allVidURLs.append(String(describing: link))
-                        }*/
-                        values2["media"] = self.allVidURLs
+                        }
+                        //self.allVidURLs.append(videoRef)
+                        
                 }
+                
+                values2["media"] = self.allVidURLs
 
         
         
@@ -305,13 +345,15 @@ class AddMediaToSession: UIViewController, UITextViewDelegate, UINavigationContr
                 }
                 //values2["youtube"] = self.youtubeDataArray
                 
-                print(recentlyAddedPhoneVidArray)
+                print("recentlyAddedPhoneVidArray: \(self.recentlyAddedPhoneVidArray)")
                 if recentlyAddedPhoneVidArray.count != 0{
                     var count = 1
                     for link in vidFromPhoneArray{
                         self.allVidURLs.append(String(describing: link))
                     }
-                    for data in self.addedVidDataArray{
+                    print("addedVidDataArray: \(self.addedVidDataArray)")
+                    print("recentlyAddedPhoneVidArray: \(self.recentlyAddedPhoneVidArray)")
+                    for data in self.addedVidDataArray {
                         let videoName = NSUUID().uuidString
                         let storageRef = Storage.storage().reference().child("session_videos").child("\(videoName).mov")
                         var videoRef = storageRef.fullPath
@@ -523,8 +565,8 @@ class AddMediaToSession: UIViewController, UITextViewDelegate, UINavigationContr
         
         self.vidRemovalPressed = false
         if viewDidAppearBool == false{
-            recentlyAddedVidArray.removeAll()
-            youtubeDataArray.removeAll()
+            //recentlyAddedVidArray.removeAll()
+            //youtubeDataArray.removeAll()
             needToRemove = false
             needToRemovePic = false
             imagePicker.delegate = self
@@ -976,6 +1018,12 @@ class AddMediaToSession: UIViewController, UITextViewDelegate, UINavigationContr
         }else{
             if senderView == "main"{
             if let movieURL = info[UIImagePickerControllerMediaURL] as? NSURL{
+                print("MOVURL: \(movieURL)")
+                //print("MOVPath: \(moviePath)")
+                if let data = NSData(contentsOf: movieURL as! URL){
+                    self.addedVidDataArray.append(data as Data)
+                    
+                }
                 movieURLFromPicker = movieURL
                 dismiss(animated: true, completion: nil)
                 //self.recentlyAddedPhoneVid.append(String(describing: movieURL))
@@ -993,9 +1041,13 @@ class AddMediaToSession: UIViewController, UITextViewDelegate, UINavigationContr
                                 let mediaKids = snap.children.allObjects as! [DataSnapshot]
                                 var tempArray = [String]()
                                 for mediaKid in mediaKids{
-                                    tempArray.append(mediaKid.key)
+                                    if (mediaKid.value as! String).contains("you"){
+                                        
+                                    } else {
+                                        tempArray.append(mediaKid.key)
+                                    }
                                 }
-                                if tempArray.contains("vidsFromPhone"){
+                                if tempArray.count == 0{
                                    // self.tempLink = self.currentYoutubeLink
                                     self.currentCollectID = "vidFromPhone"
                                     //self.isYoutubeCell = false
@@ -1024,6 +1076,7 @@ class AddMediaToSession: UIViewController, UITextViewDelegate, UINavigationContr
                         }
                     }//else if it doesnt contain media
                     else{
+                        print("noMedia\(movieURL)")
                         self.currentCollectID = "vidFromPhone"
                         self.vidFromPhoneArray.append(movieURL)
                         self.recentlyAddedPhoneVidArray.append(movieURL)

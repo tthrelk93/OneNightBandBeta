@@ -50,20 +50,66 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
                 values["wantedImage"] = onbObject.onbPictureURL.first
             
                 values["wantedID"] = wantedReferenceAnyObject
+                
+                self.ref.child("oneNightBands").child(onbObject.onbID).child("wantedAds").observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                        for snap in snapshots{
+                            
+                            self.wantedIDArray2.append(snap.value as! String)
+                        }
+                    }
+                    
+                    self.wantedIDArray2.append(wantedReferenceAnyObject)
+                    var tempDict = [String:Any]()
+                    tempDict["wantedAds"] = self.wantedIDArray2
+                    let onbRef = self.ref.child("oneNightBands").child(self.onbObject.onbID)
+                    onbRef.updateChildValues(tempDict, withCompletionBlock: {(err, ref) in
+                        if err != nil {
+                            print(err as Any)
+                            return
+                        }
+                    })
+                })
+
+                
             } else {
                 values["bandName"] = bandObject.bandName
                 values["city"] = locationText[self.cityPicker.selectedRow(inComponent: 0)]
                 values["date"] = ""
                 values["experience"] = expText[self.expPicker.selectedRow(inComponent: 0)]
                 
-                values["instrumentNeeded"] = instrumentText[instrumentPicker.selectedRow(inComponent: 1)]
+                values["instrumentNeeded"] = instrumentText[instrumentPicker.selectedRow(inComponent: 0)]
                 values["moreInfo"] = bandObject.bandBio
                 values["responses"] = [String:Any]()
                 values["senderID"] = self.user
                 values["wantedImage"] = bandObject.bandPictureURL.first
                 
                 values["wantedID"] = wantedReferenceAnyObject
+                    
+                    self.ref.child("bands").child(bandObject.bandID!).child("wantedAds").observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    for snap in snapshots{
+                    
+                    self.wantedIDArray2.append(snap.value as! String)
+                    }
+                    }
+                    
+                    self.wantedIDArray2.append(wantedReferenceAnyObject)
+                    var tempDict = [String:Any]()
+                    tempDict["wantedAds"] = self.wantedIDArray2
+                    let bandRef = self.ref.child("bands").child(self.bandObject.bandID!)
+                    bandRef.updateChildValues(tempDict, withCompletionBlock: {(err, ref) in
+                    if err != nil {
+                    print(err as Any)
+                    return
+                    }
+                    })
+                })
+
             }
+            
+            
+            
             
             wantedReference.updateChildValues(values, withCompletionBlock: {(err, ref) in
                 if err != nil {
@@ -72,13 +118,32 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
                 }
                 
             })
-            performSegue(withIdentifier: "CreateWantedToProfile", sender: self)
+            var userValues = [String:Any]()
+            var userWantedAdArray = [String]()
+            ref.child("users").child(self.user!).child("wantedAds").observeSingleEvent(of: .value, with: {(snapshot) in
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    for snap in snapshots{
+                        if let snapDict = snap.value as? [String:Any] {
+                            let wantedID = snapDict["wantedID"]
+                            userWantedAdArray.append(wantedID as! String)
+                        }
+                    }
+                    userWantedAdArray.append(wantedReferenceAnyObject)
+                }
+                userValues["wantedAds"] = userWantedAdArray
+                ref.child("users").child(self.currentUser!).updateChildValues(userValues)
+                
+            })
+            
+                        performSegue(withIdentifier: "CreateWantedToProfile", sender: self)
 
            
             
         }
                        // let user = Auth.auth().curren
     }
+    var currentUser = Auth.auth().currentUser?.uid
+    var wantedIDArray2 = [String]()
   let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
     
     var coordinateText = [String]()

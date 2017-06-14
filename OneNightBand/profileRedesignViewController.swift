@@ -226,16 +226,18 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         if self.sender == "wantedAdCreated"{
             self.createWantedSuccess.isHidden = false
         }
-        if self.sender == "onb" || self.sender == "band" || self.sender == "feed" || self.sender == "bandBoard" || self.sender == "bandToFeed"{
+        if self.sender == "onb" || self.sender == "band" || self.sender == "feed" || self.sender == "bandBoard" || self.sender == "bandToFeed" || self.sender == "af"{
             self.tabBar.isHidden = true
             self.backButton.isHidden = false
             if self.sender == "feed" && self.fromTabBar == true{
                 self.userID = (Auth.auth().currentUser?.uid)!
                 self.tabBar.isHidden = false
                 self.backButton.isHidden = true
+                self.logoutButton.isHidden = false
             
             } else {
                 self.userID = self.artistID
+                self.logoutButton.isHidden = true
                 
             }
             self.addMedia.isEnabled = false
@@ -245,6 +247,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         } else {
             self.tabBar.isHidden = false
             self.backButton.isHidden = true
+            self.logoutButton.isHidden = false
             self.userID = (Auth.auth().currentUser?.uid)!
         }
         tabBar.tintColor = ONBPink
@@ -419,13 +422,14 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                 for snap in snapshots{
                                     self.bandIDArray.append((snap.value! as! String))
+                                    self.bandONBCount += 1
                                 }
                             }
                             
                             self.ref.child("oneNightBands").observeSingleEvent(of: .value, with: {(snapshot) in
                                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                     for snap in snapshots{
-                                        self.bandONBCount += 1
+                                        //self.bandONBCount += 1
                                         let dictionary = snap.value as? [String: Any]
                                         let tempONB = ONB()
                                         tempONB.setValuesForKeys(dictionary!)
@@ -437,6 +441,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                                     if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                         for snap in snapshots{
                                             self.onbIDArray.append((snap.value! as! String))
+                                            self.bandONBCount += 1
                                         }
                                     }
                                     
@@ -473,7 +478,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                                             self.picCollect.isHidden = false
                                             self.artistBio.isHidden = false
                                             self.artistName.isHidden = false
-                                            self.logoutButton.isHidden = false
+                                            //self.logoutButton.isHidden = false
                                             
                                             SwiftOverlays.removeAllBlockingOverlays()
                                             
@@ -525,6 +530,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
 
     
     // MARK: - Navigation
+    var afType = String()
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     var senderID = String()
@@ -532,6 +538,18 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         if segue.identifier == "ProfToAddMedia"{
             if let vc = segue.destination as? AddMediaToSession {
                 vc.senderView = "main"
+            }
+            
+        }
+        if segue.identifier == "ProfileToFindMusicians"{
+            if let vc = segue.destination as? ArtistFinderViewController{
+                if self.afType == "band"{
+                    vc.thisBandObject = self.thisBand
+                    vc.senderScreen = "band"
+                } else {
+                    vc.thisONBObject = self.thisONB
+                    vc.senderScreen = "onb"
+                }
             }
             
         }
@@ -828,13 +846,16 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         
         return cell
     }
-
+    var thisBand = Band()
+    var thisONB = ONB()
     @IBOutlet weak var backButton: UIButton!
     @IBAction func backButtonPressed(_ sender: Any) {
         if self.sender == "onb"{
             self.performSegue(withIdentifier: "ProfileToONB", sender: self)
         } else if self.sender == "feed"{
             performSegue(withIdentifier: "redesignProfileToFeed", sender: self)
+        } else if self.sender == "af"{
+            performSegue(withIdentifier: "ProfileToFindMusicians", sender: self)
         } else {
             self.performSegue(withIdentifier: "ProfileToSessionMaker", sender: self)
         }
