@@ -81,7 +81,7 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
     }
     @IBOutlet weak var editSessionButton: UIButton!
     var cellTouchedArtistUID = String()
-    var sender = String()
+    var sender = "band"
     var tableViewCellTouched = String()
     @IBOutlet weak var uploadSessionToFeed: UIButton!
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -199,6 +199,11 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
     override func viewDidLoad(){
         
         super.viewDidLoad()
+        
+        
+        
+        
+        
         self.ref.child("users").child(userID!).observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
@@ -215,13 +220,16 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
             
             self.editSessionInfoButton.isHidden = true
             self.backButton.isHidden = false
+            
         }
         else if self.sender == "bandBoard"{
             self.editSessionInfoButton.isHidden = true
             self.backButton.isHidden = false
+            
         } else {
             self.editSessionInfoButton.isHidden = false
             self.backButton.isHidden = false
+            
         }
         self.tabBar.delegate = self
         
@@ -617,9 +625,7 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
         //(tableView.cellForRow(at: indexPath) as ArtistCell).artistUID
-        if self.sender == "feed"{
-                self.sender = "bandToFeed"
-        }
+        
         self.cellTouchedArtistUID = (tableView.cellForRow(at: indexPath) as! ArtistCell).artistUID
         performSegue(withIdentifier: "BandToArtistProfile", sender: self)
     }

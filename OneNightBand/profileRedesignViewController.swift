@@ -27,7 +27,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             self.bandCollect.isHidden = true
         }
     }
-    var sender = String()
+    var sender = "profile"
     var picArray = [UIImage]()
     var userID = String()
     var yearsArray = [String]()
@@ -221,7 +221,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     var fromTabBar: Bool?
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+       
         //SwiftOverlays.showBlockingTextOverlay("Loading Profile")
         if self.sender == "wantedAdCreated"{
             self.createWantedSuccess.isHidden = false
@@ -422,7 +422,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                 for snap in snapshots{
                                     self.bandIDArray.append((snap.value! as! String))
-                                    self.bandONBCount += 1
+                                    //self.bandONBCount += 1
                                 }
                             }
                             
@@ -441,7 +441,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                                     if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                         for snap in snapshots{
                                             self.onbIDArray.append((snap.value! as! String))
-                                            self.bandONBCount += 1
+                                            //self.bandONBCount += 1
                                         }
                                     }
                                     
@@ -471,7 +471,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                                             }
                                             self.mediaLabelCount.text = String(describing: self.videoCount)
                                             self.instrumentLabel.text = String(describing: self.instrumentCount)
-                                            self.bandsCountLabel.text = String(describing: self.bandONBCount)
+                                            self.bandsCountLabel.text = String(describing: self.bandIDArray.count)
                                             
                                             self.menuView.isHidden = false
                                             self.artistInfoView.isHidden = false
@@ -546,19 +546,17 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                 if self.afType == "band"{
                     vc.thisBandObject = self.thisBand
                     vc.senderScreen = "band"
+                    vc.sender = self.sender
                 } else {
                     vc.thisONBObject = self.thisONB
                     vc.senderScreen = "onb"
+                    vc.sender = self.sender
                 }
             }
             
         }
         if segue.identifier == "ProfileToSessionMaker" {
             if let viewController = segue.destination as? SessionMakerViewController {
-                if self.sender == "bandToFeed"{
-                    self.sender = "feed"
-                    
-                }
                 if self.sender == "band" || self.sender == "bandBoard"{
                     viewController.sessionID = self.senderID
                 } /*else if self.sender == "feed"{
@@ -579,6 +577,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                 } else {
                     viewController.onbID = self.onbIDArray[tempIndex]
                 }
+                 viewController.sender = self.sender
             }
         }
 

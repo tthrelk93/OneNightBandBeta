@@ -1113,12 +1113,12 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                 button.setYPosition(yPosition: (3 - CGFloat(mult)) * 2.3)
                 button.sessionFeedKey = keyString
                 button.isDisplayed = Bool()
-                button.sessionName = self.soloSessionNameTextView.text
+                button.sessionName = self.selectedSession.sessionName//self.soloSessionNameTextView.text
                 values["button"] = [String:Any]()
                 sessionFeedSess.setValuesForKeys(values)
-                button.session = sessionFeedSess
+                //button.session = values
                 let tap = UITapGestureRecognizer(target: self, action: #selector(SessionFeedViewController.scrollToPin))
-                
+                button.tap = tap
                 tap.numberOfTapsRequired = 1
                 button.addGestureRecognizer(tap)
                 button.isUserInteractionEnabled = true
@@ -1131,28 +1131,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                 values["button"] = button
                 
                 
-                
-                
-                
-                
-                
-                /*var tap: NSObject?
-                
-                var _slope = CGFloat()
-                var _baseX: CGFloat = 0.0
-                
-                var sessionFeedKey: String?
-                
-                */
                
-
-                
-                
-                
-                
-            
-
-            
             values2["soloSessKeysOnFeed"] = [String(describing: autoId)]
             //self.autoIdString = String(describing: autoId)
             print("valuesB4Upload: \(values)")
@@ -1244,6 +1223,55 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                         values3["sessFeedMedia"] = tempURLArray
                         
                         let autoId = recipient.childByAutoId()
+           
+            var keyString = autoId.key
+            var sessionFeedSess = SessionFeedSess()
+            
+            self.ref.child("sessionFeed").observeSingleEvent(of: .value, with: { (snapshot) in
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                    for snap in snapshots{
+                        self.feedArray.append(snap.value as! SessionFeedSess)
+                    }
+                }
+                var mult = self.feedArray.count + 1
+                let button = ONBGuitarButton()
+                button.initWithLane(lane: Int(arc4random_uniform(6)))
+                button.setYPosition(yPosition: (3 - CGFloat(mult)) * 2.3)
+                button.sessionFeedKey = keyString
+                button.isDisplayed = false
+                button.sessionName = self.soloSessionNameTextView.text
+                values["button"] = [String:Any]()
+                sessionFeedSess.setValuesForKeys(values)
+               // button.session = values
+                let tap = UITapGestureRecognizer(target: self, action: #selector(SessionFeedViewController.scrollToPin))
+                
+                tap.numberOfTapsRequired = 1
+                //button.tap = tap
+                button.addGestureRecognizer(tap)
+                button.isUserInteractionEnabled = true
+                
+                button.sessionViews = 0
+                //sessionFeedSess.button = button.dictionaryWithValues(forKeys: <#T##[String]#>)
+                
+                
+                var buttonDict = [String: Any]()
+                buttonDict["lane"] = button.lane
+                 buttonDict["sessionName"] = button.sessionName
+                //buttonDict["session"] = values
+                 buttonDict["sessionViews"] = button.lane
+                 buttonDict["isDisplayed"] = button.isDisplayed
+                 //buttonDict["tap"] = NSObject()
+                 buttonDict["_yPosition"] = button._yPosition
+                 buttonDict["_slope"] = button._slope
+                 buttonDict["_baseX"] = button._baseX
+                 buttonDict["sessionFeedKey"] = button.sessionFeedKey
+                 buttonDict["kStartY"] = button.kStartY
+                 buttonDict["kMaxY"] = button.kMaxY
+                //buttonDict["isUserInteractionEnabled"] = button.isUserInteractionEnabled
+                
+                values["button"] = buttonDict
+                
+
                         //self.autoIdString = String(describing: autoId)
                         autoId.updateChildValues(values, withCompletionBlock: {(err, ref) in
                             if err != nil {
@@ -1269,11 +1297,16 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
             guard let progress = snapshot.progress else {return}
             strongSelf.progressView.progress = Float(progress.fractionCompleted)
             print("Uploaded \(progress.completedUnitCount) so far")
+                 
         }*/
+        
+            })
         }
+        
        
             
     }
+    
     var movieURLFromPicker: NSURL?
 
 

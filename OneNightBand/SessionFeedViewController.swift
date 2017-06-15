@@ -72,7 +72,16 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     let kFretY = 383
     
     @IBAction func visitBandPageTouched(_ sender: Any) {
-        if currentButtonFunc().session?.bandType == "onb"{
+        var tempSess = SessionFeedSess()
+        for sess in sessionArray{
+            if sess.sessionID == currentButtonFunc().sessionFeedKey{
+                
+                tempSess = sess
+                break
+            }
+        }
+
+        if tempSess.bandType == "onb"{
             performSegue(withIdentifier: "feedToONB", sender: self)
         } else{
             performSegue(withIdentifier: "SessionFeedToBandPage", sender: self)
@@ -83,7 +92,16 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     @IBOutlet weak var bandImageView: UIImageView!
     @IBOutlet weak var sessionArtistsLabel: UILabel!
     @IBAction func bandNameButtonPressed(_ sender: Any) {
-        ref.child("bands").child((self.currentButtonFunc().session?.bandID)!).observeSingleEvent(of: .value, with: {(snapshot) in
+        var tempSess = SessionFeedSess()
+        for sess in sessionArray{
+            if sess.sessionID == currentButtonFunc().sessionFeedKey{
+                
+                tempSess = sess
+                break
+            }
+        }
+
+        ref.child("bands").child(tempSess.bandID).observeSingleEvent(of: .value, with: {(snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
                     if snap.key == "bandName"{
@@ -175,8 +193,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     @IBOutlet weak var picCollect: UICollectionView!
     @IBOutlet weak var videoCollect: UICollectionView!
     override func viewDidAppear(_ animated: Bool) {
-        
-        //self.player = storyboard.view
+              //self.player = storyboard.view
        //888888 self.player = Player()
         //var currentItem = player?.playerItem
         //print(currentItem)
@@ -254,6 +271,8 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     var displayLineMidY = CGFloat()
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         self.postToFeedButton.layer.cornerRadius = self.postToFeedButton.frame.width
         postToFeedButton.layer.borderWidth = 2
         postToFeedButton.layer.borderColor = ONBPink.cgColor
@@ -351,7 +370,30 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             
             for session in self.sessionArray{
                 var tempButton = ONBGuitarButton()
-                tempButton.setValuesForKeys(session.button)
+                
+                print("sessButt: \(session.button)")
+                
+                
+                
+                
+                tempButton._baseX = session.button["_baseX"] as! CGFloat
+                tempButton.kMaxY = session.button["kMaxY"] as! Double
+                tempButton.lane = session.button["lane"] as! Int
+                tempButton.sessionName = session.button["sessionName"] as! String?
+                tempButton.isDisplayed = session.button["isDisplayed"] as! Bool?
+                tempButton._yPosition = session.button["_yPosition"] as! CGFloat
+                tempButton._slope = session.button["_slope"] as! CGFloat
+                tempButton.sessionFeedKey = session.button["sessionFeedKey"] as! String?
+                tempButton.kStartY = session.button["kStartY"] as! Int
+                tempButton.sessionViews = session.button["sessionViews"] as! Int?
+                let tap = UITapGestureRecognizer(target: self, action: #selector(SessionFeedViewController.scrollToPin))
+                
+                tap.numberOfTapsRequired = 1
+                //button.tap = tap
+                tempButton.addGestureRecognizer(tap)
+                tempButton.isUserInteractionEnabled = true
+
+                //tempButton.setValuesForKeys(session.button)
                 self.view.addSubview(tempButton)
                 self.viewPins.add(tempButton)
                 self.buttonArray.append(tempButton)
@@ -414,7 +456,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     
     var viewArray = [Int]()
     
-    
+    var sender = "feed"
     
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         
@@ -432,22 +474,40 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                 } else {
                     vc.fromTabBar = false
                 }
-                vc.sender = "feed"
+                vc.sender = self.sender
                 vc.artistID = cellTouchedArtistUID
                 vc.userID = cellTouchedArtistUID
             }
         }
         if segue.identifier == "SessionFeedToBandPage"{
+            var tempSess = SessionFeedSess()
+            for sess in sessionArray{
+                if sess.sessionID == currentButtonFunc().sessionFeedKey{
+                    
+                    tempSess = sess
+                    break
+                }
+            }
+
             if let vc = segue.destination as? SessionMakerViewController{
-                vc.sender = "feed"
-                vc.sessionID = currentButton?.session?.bandID
+                vc.sender = self.sender
+                vc.sessionID = tempSess.bandID
             }
             
         }
         if segue.identifier == "feedToONB"{
+            var tempSess = SessionFeedSess()
+            for sess in sessionArray{
+                if sess.sessionID == currentButtonFunc().sessionFeedKey{
+                    
+                    tempSess = sess
+                    break
+                }
+            }
+
             if let vc = segue.destination as? OneNightBandViewController{
-                vc.sender = "feed"
-                vc.onbID = (currentButton?.session?.bandID)!
+                vc.sender = self.sender
+                vc.onbID = tempSess.bandID
                 
             }
         }
@@ -541,6 +601,8 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     
     
     func displaySessionInfo(){
+        
+        print("jpppppp")
         picVidSegment.selectedSegmentIndex = 0
         self.sessionNameLabel.isHidden = true
        // self.sessionLabel.isHidden = true
@@ -562,6 +624,15 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         dropMenu?.setLabelColorWhen(normal: UIColor.orange, selected: UIColor.orange.withAlphaComponent(0.6), disabled: UIColor.gray)
         artistDict.removeAll()
         let cButton = currentButtonFunc()
+        var tempSess = SessionFeedSess()
+        for sess in sessionArray{
+            if (sess.button["sessionFeedKey"] as! String) == currentButtonFunc().sessionFeedKey {
+                
+                tempSess = sess
+                break
+            }
+        }
+
         //if cButton.isDisplayed == true{
             //8888self.player?.playerView.isHidden = false
             //sessInfoView.isHidden = false
@@ -572,10 +643,10 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             //dropMenu?.dropDownViewTitles.append(cButton.sessionName)
             //changeMenu(title: cButton.sessionName, at: 0)
             
-            let tempLabel = (cButton.session?.sessionName)!
+            let tempLabel = tempSess.sessionName
             sessionNameLabel.text = tempLabel
-        bandNameButton.setTitle(cButton.session?.bandName, for: .normal)
-        sessionBioTextView.text = cButton.session?.sessionBio
+        bandNameButton.setTitle(tempSess.bandName, for: .normal)
+        sessionBioTextView.text = tempSess.sessionBio
         sessionBioTextView.isEditable = false
         
         
@@ -583,7 +654,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             //sessionViewCountLabel.text = "Views: \(String(describing: cButton.sessionViews!))"
                 sessionNameLabel2.text = tempLabel
                 sessionViewsLabel2.text = "Views: \(String(describing: cButton.sessionViews!))"
-                for (key, value) in (cButton.session?.sessionArtists)!{
+                for (key, value) in (tempSess.sessionArtists){
                     self.artistDict[key] = value as? String
                 }
             
@@ -595,14 +666,14 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                 }
             //need to fix this to play proper video
         for sess in self.sessionArray{
-            if sess.sessionID == (cButton.session?.sessionID)! {
+            if sess.sessionID == (tempSess.sessionID) {
                 if sess.sessionMedia.count != 0{
                     for vid in sess.sessionMedia{
                         bandMedia.append(NSURL(string: vid)!)
                     }
                 
-                var tempPicArray = cButton.session?.sessionPictureURL
-                for pic in tempPicArray!{
+                var tempPicArray = tempSess.sessionPictureURL
+                for pic in tempPicArray{
                     if let url = NSURL(string: pic){
                         if let data = NSData(contentsOf: url as URL){
                             self.picArray.append(UIImage(data: data as Data)!)
@@ -627,6 +698,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                 
             }
             for _ in self.picArray{
+                print("picArray")
                 let cellNib = UINib(nibName: "PictureCollectionViewCell", bundle: nil)
                 self.picCollect.register(cellNib, forCellWithReuseIdentifier: "PictureCollectionViewCell")
                 
@@ -677,16 +749,35 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     var swiftTimer = Timer()
     //problem is caused by current button moving before update count occurs
     func playerDidFinishPlaying(note: NSNotification){
+        var tempSess = SessionFeedSess()
+        for sess in sessionArray{
+            if sess.sessionID == currentButtonFunc().sessionFeedKey{
+                
+                tempSess = sess
+                break
+            }
+        }
+        //tempSess.setValuesForKeys(self.sessionArray. index(of: <#T##SessionFeedSess#>) [currentButtonFunc().sessionFeedKey])
         print("pf")
         currentButtonFunc().sessionViews! += 1
-        viewArray[sessionArray.index(of: currentButtonFunc().session!)!] += 1
+        viewArray[sessionArray.index(of: tempSess)!] += 1
     }
     
     var count = Int()
     func updateCounter() {
+        
+        var tempSess = SessionFeedSess()
+        for sess in sessionArray{
+            if sess.sessionID == currentButtonFunc().sessionFeedKey{
+                
+                tempSess = sess
+                break
+            }
+        }
+
         if count == 30{
             currentButtonFunc().sessionViews! += 1
-            viewArray[sessionArray.index(of: currentButtonFunc().session!)!] += 1
+            //viewArray[sessionArray.index(of: tempSess)!] += 1
             swiftTimer.invalidate()
             count = 0
         }
@@ -834,6 +925,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         }*/
 
         if currentButtonFunc().isDisplayed == true{
+            print("j")
             displaySessionInfo()
         }else{
             hideSessionInfo()

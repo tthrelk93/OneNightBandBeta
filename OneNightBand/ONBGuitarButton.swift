@@ -12,18 +12,18 @@ import UIKit
 class ONBGuitarButton: UIImageView, UIGestureRecognizerDelegate {
     var lane = 0
     var sessionName: String?
-    var session: SessionFeedSess?
+    //var session: [String:Any]?
     var sessionViews: Int?
     var isDisplayed: Bool?
-    var tap: NSObject?
+    var tap = NSObject()
     var _yPosition: CGFloat = 0.0
     var _slope = CGFloat()
     var _baseX: CGFloat = 0.0
     
     var sessionFeedKey: String?
     
-    let kStartY = 200
-    let kMaxY = 12.5
+    var kStartY = 200
+    var kMaxY = 12.5
     
     func initWithLane(lane: Int){
         self.lane = lane
