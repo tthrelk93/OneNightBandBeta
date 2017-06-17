@@ -12,7 +12,7 @@ class WantedAd: NSObject {
     var bandType = String()
     var bandName = String()
     var bandID = String()
-    var instrumentNeeded = [String]()
+    var instrumentNeeded = String()
     var moreInfo = String()
     var city = String()
     var date = String()

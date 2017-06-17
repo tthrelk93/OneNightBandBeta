@@ -55,7 +55,7 @@ class FindBandsViewController: UIViewController, UITabBarDelegate {
     @available(iOS 2.0, *)
     public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){
         if item == tabBar.items?[0]{
-            performSegue(withIdentifier: "FindBandToFindMusicians", sender: self)
+            performSegue(withIdentifier: "JoinBandToPFM", sender: self)
         } else if item == tabBar.items?[1]{
             
             
@@ -73,10 +73,14 @@ class FindBandsViewController: UIViewController, UITabBarDelegate {
         
         
     }
+    let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
+
     @IBOutlet weak var bandTypePicker: UIPickerView!
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBar.delegate = self
+        tabBar.tintColor = ONBPink
+        tabBar.selectedItem = tabBar.items?[1]
        // bandTypePicker.delegate = self
         //bandTypePicker.dataSource = self
 

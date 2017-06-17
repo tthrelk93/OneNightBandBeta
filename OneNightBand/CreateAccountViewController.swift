@@ -163,7 +163,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
     }()
     func setupProfileImageViewButton(){
         profileImageViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        profileImageViewButton.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -80).isActive = true
+        profileImageViewButton.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -50).isActive = true
         profileImageViewButton.widthAnchor.constraint(equalToConstant: 130).isActive = true
         profileImageViewButton.heightAnchor.constraint(equalToConstant: 130).isActive = true
     }

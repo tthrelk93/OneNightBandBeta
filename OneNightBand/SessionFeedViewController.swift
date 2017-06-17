@@ -94,13 +94,12 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     @IBAction func bandNameButtonPressed(_ sender: Any) {
         var tempSess = SessionFeedSess()
         for sess in sessionArray{
-            if sess.sessionID == currentButtonFunc().sessionFeedKey{
+            if (sess.button["sessionFeedKey"] as! String) == currentButtonFunc().sessionFeedKey {
                 
                 tempSess = sess
                 break
             }
         }
-
         ref.child("bands").child(tempSess.bandID).observeSingleEvent(of: .value, with: {(snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
@@ -143,11 +142,11 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             self.sessionNameLabel.isHidden = true
             //self.sessionLabel.isHidden = true
             //self.bandLabel.isHidden = true
-            self.bandNameButton.isHidden = true
+            self.bandNameButton.isHidden = false
             self.sessionBioTextView.isHidden = true
             self.artistTableView.isHidden = true
-            self.sessionArtistsLabel.isHidden = true
-            self.bioLabel.isHidden = true
+           // self.sessionArtistsLabel.isHidden = true
+           // self.bioLabel.isHidden = true
             //self.sessionPicksLabel.isHidden = true
 
 
@@ -160,11 +159,11 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             self.sessionNameLabel.isHidden = true
             //self.sessionLabel.isHidden = true
             //self.bandLabel.isHidden = true
-            self.bandNameButton.isHidden = true
+            self.bandNameButton.isHidden = false
             self.sessionBioTextView.isHidden = true
             self.artistTableView.isHidden = true
-            self.sessionArtistsLabel.isHidden = true
-            self.bioLabel.isHidden = true
+           // self.sessionArtistsLabel.isHidden = true
+            //self.bioLabel.isHidden = true
             //self.sessionPicksLabel.isHidden = true
 
         }else{
@@ -181,8 +180,8 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             self.bandNameButton.isHidden = false
             self.sessionBioTextView.isHidden = false
             self.artistTableView.isHidden = false
-            self.sessionArtistsLabel.isHidden = false
-            self.bioLabel.isHidden = false
+            //self.sessionArtistsLabel.isHidden = false
+           // self.bioLabel.isHidden = false
            // self.sessionPicksLabel.isHidden = false
             
         }
@@ -272,6 +271,8 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.bandNameButton.isHidden = true
+        
         
         self.postToFeedButton.layer.cornerRadius = self.postToFeedButton.frame.width
         postToFeedButton.layer.borderWidth = 2
@@ -287,11 +288,11 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         self.sessionNameLabel.isHidden = true
         //self.sessionLabel.isHidden = true
         //self.bandLabel.isHidden = true
-        self.bandNameButton.isHidden = true
+        //self.bandNameButton.isHidden = false
         self.sessionBioTextView.isHidden = true
         self.artistTableView.isHidden = true
-        self.sessionArtistsLabel.isHidden = true
-        self.bioLabel.isHidden = true
+        //self.sessionArtistsLabel.isHidden = true
+        //self.bioLabel.isHidden = true
         //self.sessionPicksLabel.isHidden = true
 
         
@@ -482,7 +483,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         if segue.identifier == "SessionFeedToBandPage"{
             var tempSess = SessionFeedSess()
             for sess in sessionArray{
-                if sess.sessionID == currentButtonFunc().sessionFeedKey{
+                if (sess.button["sessionFeedKey"] as! String) == currentButtonFunc().sessionFeedKey {
                     
                     tempSess = sess
                     break
@@ -498,7 +499,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         if segue.identifier == "feedToONB"{
             var tempSess = SessionFeedSess()
             for sess in sessionArray{
-                if sess.sessionID == currentButtonFunc().sessionFeedKey{
+                if (sess.button["sessionFeedKey"] as! String) == currentButtonFunc().sessionFeedKey {
                     
                     tempSess = sess
                     break
@@ -601,18 +602,19 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     
     
     func displaySessionInfo(){
-        
+        //picArray.removeAll()
+        //bandMedia.removeAll()
         print("jpppppp")
         picVidSegment.selectedSegmentIndex = 0
         self.sessionNameLabel.isHidden = true
        // self.sessionLabel.isHidden = true
         //self.bandLabel.isHidden = true
-        self.bandNameButton.isHidden = true
+        self.bandNameButton.isHidden = false
         self.bandNameButton.layer.cornerRadius = 10
         self.sessionBioTextView.isHidden = true
         self.artistTableView.isHidden = true
-        self.sessionArtistsLabel.isHidden = true
-        self.bioLabel.isHidden = true
+        //self.sessionArtistsLabel.isHidden = true
+       // self.bioLabel.isHidden = true
        // self.sessionPicksLabel.isHidden = true
 
         picVidSegment.isHidden = false
@@ -626,7 +628,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         let cButton = currentButtonFunc()
         var tempSess = SessionFeedSess()
         for sess in sessionArray{
-            if (sess.button["sessionFeedKey"] as! String) == currentButtonFunc().sessionFeedKey {
+            if (sess.button["sessionFeedKey"] as! String) == cButton.sessionFeedKey {
                 
                 tempSess = sess
                 break
@@ -665,6 +667,8 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                     self.artistTableView.dataSource = self
                 }
             //need to fix this to play proper video
+        bandMedia.removeAll()
+        picArray.removeAll()
         for sess in self.sessionArray{
             if sess.sessionID == (tempSess.sessionID) {
                 if sess.sessionMedia.count != 0{
@@ -682,7 +686,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                 }
                 }
 
-                
+             break
             }
         }
         DispatchQueue.main.async{
@@ -790,13 +794,14 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         tableViewBackView.isHidden = true
         bioBackView.isHidden = true
         self.sessionNameLabel.isHidden = true
+        self.bandNameButton.isHidden = true
         //self.sessionLabel.isHidden = true
         //self.bandLabel.isHidden = true
-        self.bandNameButton.isHidden = true
+        //self.bandNameButton.isHidden = false
         self.sessionBioTextView.isHidden = true
         self.artistTableView.isHidden = true
-        self.sessionArtistsLabel.isHidden = true
-        self.bioLabel.isHidden = true
+        //self.sessionArtistsLabel.isHidden = true
+        //self.bioLabel.isHidden = true
         //self.sessionPicksLabel.isHidden = true
         
         picVidSegment.isHidden = true
@@ -826,6 +831,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
 
     
     var tabBarPressed = Bool()
+    //var curButton = ONBGuitarButton()
     @IBOutlet weak var displayLine: UIView!
     
     func currentButtonFunc()->ONBGuitarButton{
@@ -843,10 +849,11 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                 currentButton?.setIsDiplayedButton(isDisplayedButton: false)
                 self.player?.stop()
             }*/
-            print((closest as! ONBGuitarButton).center.y)
-            print(self.displayLine.bounds.maxY)
+           // print((closest as! ONBGuitarButton).center.y)
+           // print(self.displayLine.bounds.maxY)
             if(closest as! ONBGuitarButton).center.y >= self.displayLine.center.y {
                 (closest as! ONBGuitarButton).setIsDiplayedButton(isDisplayedButton: true)
+                
             }else{
                 (closest as! ONBGuitarButton).setIsDiplayedButton(isDisplayedButton: false)
                 

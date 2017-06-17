@@ -477,12 +477,13 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     }
     ref.child("cityData").observeSingleEvent(of: .value, with: { (snapshot) in
         if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-            self.cityNameArray.append("All")
-            self.cityNameArray.append("Current")
+           // self.cityNameArray.append("All")
+          //  self.cityNameArray.append("Current")
             for snap in snapshots{
                 self.cityNameArray.append(snap.key)
             }
-            
+            self.cityNameArray.insert("Current", at: 0)
+            self.cityNameArray.insert("All", at: 0)
         }
     })
     var tempCityData = CityData()
@@ -553,7 +554,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                 self.InstrumentPicker.dataSource = self
                 self.distancePicker.delegate = self
                 self.distancePicker.dataSource = self
-                self.InstrumentPicker.selectRow(self.menuText.count/2, inComponent: 0, animated: false)
+               // self.InstrumentPicker.selectRow(self.menuText.count/2, inComponent: 0, animated: false)
                 
             }, withCancel: nil)
         }

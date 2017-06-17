@@ -24,6 +24,7 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
     //}
     @IBOutlet weak var backButton: UIButton!
     @IBAction func backButtonPressed(_ sender: Any) {
+        inUseExisting = false
         addMusiciansLabel.isHidden = false
         addMusicians2Label.isHidden = false
         backButton.isHidden = true
@@ -53,6 +54,7 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
 
     @IBOutlet weak var useExistingLabel: UILabel!
     @IBAction func useExistingBandPressed(_ sender: Any) {
+        self.inUseExisting = true
        // option1Label.isHidden = true
        // option2Label.isHidden = true
         addMusiciansLabel.isHidden = true
@@ -81,6 +83,7 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
     
     @IBOutlet weak var progressBarFrame: UIProgressView!
     @IBOutlet weak var infoView: UIView!
+    var inUseExisting = false
     @IBAction func infoButtonPressed(_ sender: Any) {
         
         if infoView.isHidden == true{
@@ -100,15 +103,29 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
         } else {
             infoView.isHidden = true
             topLabel.isHidden = false
-            addMusiciansLabel.isHidden = false
-            addMusicians2Label.isHidden = false
-            backButton.isHidden = true
-            createNewButton.isHidden = false
-            useExistingLabel.isHidden = false
-            createNewLabel.isHidden = false
-            useExistingBandButton.isHidden = false
+            
             //orLabel.isHidden = false
-            collectViewHolder.isHidden = true
+            if inUseExisting == true{
+                collectViewHolder.isHidden = false
+                self.topLabel.text = "Add Musicians To One of Your Bands or OneNightBands"
+                addMusiciansLabel.isHidden = true
+                addMusicians2Label.isHidden = true
+                backButton.isHidden = false
+                createNewButton.isHidden = true
+                useExistingLabel.isHidden = true
+                createNewLabel.isHidden = true
+                useExistingBandButton.isHidden = true
+            } else {
+                collectViewHolder.isHidden = true
+                self.topLabel.text = "Choose One of the Two Options Below to Continue Searching for Musicians"
+                addMusiciansLabel.isHidden = false
+                addMusicians2Label.isHidden = false
+                backButton.isHidden = true
+                createNewButton.isHidden = false
+                useExistingLabel.isHidden = false
+                createNewLabel.isHidden = false
+                useExistingBandButton.isHidden = false
+            }
             infoHolder.isHidden = false
         }
     }
@@ -559,7 +576,7 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
                 self.wantedAd.city = self.locationText
                 self.wantedAd.date = self.date
                 self.wantedAd.experience = self.expText
-                self.wantedAd.instrumentNeeded = [self.instrumentNeeded]
+                self.wantedAd.instrumentNeeded = self.instrumentNeeded
                 self.wantedAd.moreInfo = self.moreInfoText
                 self.wantedAd.responses = [String:Any]()
                 self.wantedAd.senderID = self.currentUser!

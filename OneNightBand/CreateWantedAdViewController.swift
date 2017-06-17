@@ -51,6 +51,10 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
             
                 values["wantedID"] = wantedReferenceAnyObject
                 
+                
+                
+                wantedReference.updateChildValues(values)
+                
                 self.ref.child("oneNightBands").child(onbObject.onbID).child("wantedAds").observeSingleEvent(of: .value, with: { (snapshot) in
                     if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                         for snap in snapshots{
@@ -85,7 +89,9 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
                 values["wantedImage"] = bandObject.bandPictureURL.first
                 
                 values["wantedID"] = wantedReferenceAnyObject
-                    
+                
+                wantedReference.updateChildValues(values)
+                
                     self.ref.child("bands").child(bandObject.bandID!).child("wantedAds").observeSingleEvent(of: .value, with: { (snapshot) in
                     if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                     for snap in snapshots{
@@ -109,24 +115,22 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
             }
             
             
-            
-            
-            wantedReference.updateChildValues(values, withCompletionBlock: {(err, ref) in
+           /* ref.updateChildValues(values, withCompletionBlock: {(err, ref) in
                 if err != nil {
                     print(err as Any)
                     return
                 }
                 
-            })
+            })*/
             var userValues = [String:Any]()
             var userWantedAdArray = [String]()
             ref.child("users").child(self.user!).child("wantedAds").observeSingleEvent(of: .value, with: {(snapshot) in
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                     for snap in snapshots{
-                        if let snapDict = snap.value as? [String:Any] {
-                            let wantedID = snapDict["wantedID"]
-                            userWantedAdArray.append(wantedID as! String)
-                        }
+                       
+                        let wantedID = snap.value as! String
+                        userWantedAdArray.append(wantedID )
+                        
                     }
                     userWantedAdArray.append(wantedReferenceAnyObject)
                 }
