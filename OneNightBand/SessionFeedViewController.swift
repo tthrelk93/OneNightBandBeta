@@ -457,7 +457,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     
     var viewArray = [Int]()
     
-    var sender = "feed"
+    var sender = String()
     
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         
@@ -813,17 +813,21 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
 
     }
     
-    
+    var fromTabBar = Bool()
     @available(iOS 2.0, *)
     public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){
         self.tabBarPressed = true
+        
         if item == tabBar.items?[0]{
             performSegue(withIdentifier: "FeedToFindMusicians", sender: self)
+            
+            
         } else if item == tabBar.items?[1]{
             performSegue(withIdentifier: "FeedToJoinBand", sender: self)
             
         } else if item == tabBar.items?[2]{
             performSegue(withIdentifier: "FeedToProfile", sender: self)
+            
         } else {
             
         }

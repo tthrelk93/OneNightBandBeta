@@ -27,7 +27,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             self.bandCollect.isHidden = true
         }
     }
-    var sender = "profile"
+    var sender = String()
     var picArray = [UIImage]()
     var userID = String()
     var yearsArray = [String]()
@@ -221,7 +221,9 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     var fromTabBar: Bool?
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        if fromTabBar == true {
+            self.sender = "profile"
+        }
         //SwiftOverlays.showBlockingTextOverlay("Loading Profile")
         if self.sender == "wantedAdCreated"{
             self.createWantedSuccess.isHidden = false
@@ -531,7 +533,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     
     // MARK: - Navigation
     var afType = String()
-
+    var tabBarPressed = Bool()
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     var senderID = String()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -571,13 +573,18 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         }
         if segue.identifier == "ProfileToONB"{
             if let viewController = segue.destination as? OneNightBandViewController {
-                viewController.sender = "profile"
+                //viewController.sender = "profile"
                 if self.sender == "onb"{
                     viewController.onbID = self.senderID
                 } else {
                     viewController.onbID = self.onbIDArray[tempIndex]
                 }
                  viewController.sender = self.sender
+            }
+        }
+        if segue.identifier == "ProfileToPFM" {
+            if let vc = segue.destination as? ProfileFindMusiciansViewController{
+               // vc.sender = self.sender
             }
         }
 
@@ -661,6 +668,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     
     @available(iOS 2.0, *)
     public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){
+        self.sender = "profile"
         if item == tabBar.items?[0]{
             performSegue(withIdentifier: "ProfileToPFM", sender: self)
         } else if item == tabBar.items?[1]{
