@@ -1230,7 +1230,11 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
             self.ref.child("sessionFeed").observeSingleEvent(of: .value, with: { (snapshot) in
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
                     for snap in snapshots{
-                        self.feedArray.append(snap.value as! SessionFeedSess)
+                        var tempDict = (snap.value as! [String:Any])
+                        var tempSess = sessionFeedSess
+                        tempSess.setValuesForKeys(tempDict)
+                        
+                        self.feedArray.append(tempSess)
                     }
                 }
                 var mult = self.feedArray.count + 1

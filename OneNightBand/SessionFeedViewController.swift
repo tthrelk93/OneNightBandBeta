@@ -350,6 +350,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                         self.viewArray.append(tempSess.views)
                         self.sessionArray.append(tempSess)
                         self.sessFeedKeyArray.append(snap.key as String)
+                        print(snap.key as String)
                         }
                     else{
                         tempSess.setValuesForKeys(dictionary!)
@@ -644,7 +645,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             //dropMenu.view
             //dropMenu?.dropDownViewTitles.append(cButton.sessionName)
             //changeMenu(title: cButton.sessionName, at: 0)
-            
+            f
             let tempLabel = tempSess.sessionName
             sessionNameLabel.text = tempLabel
         bandNameButton.setTitle(tempSess.bandName, for: .normal)

@@ -16,15 +16,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OneNightBand/SessionFeedViewController.swift"
-            timestampString = "519334277.928218"
+            timestampString = "519592722.299334"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "673"
-            endingLineNumber = "673"
+            startingLineNumber = "749"
+            endingLineNumber = "749"
             landmarkName = "displaySessionInfo()"
             landmarkType = "7">
          </BreakpointContent>

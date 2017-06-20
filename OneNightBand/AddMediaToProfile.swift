@@ -17,7 +17,6 @@ import SwiftOverlays
 protocol RemoveVideoDelegate : class
 {
     func removeVideo(removalVid: NSURL, isYoutube: Bool)
-    
 }
 protocol RemoveVideoData : class
 {
@@ -26,7 +25,6 @@ protocol RemoveVideoData : class
 protocol RemovePicDelegate : class
 {
     func removePic(removalPic: UIImage)
-    
 }
 protocol RemovePicData : class
 {
@@ -267,44 +265,6 @@ class AddMediaToSession: UIViewController, UITextViewDelegate, UINavigationContr
 
 
                         
-                        /*for nsurl in recentlyAddedPhoneVidArray{
-                            let videoName = NSUUID().uuidString
-                            let storageRef = Storage.storage().reference(withPath: "artist_videos").child("\(videoName).mov")
-                            var videoRef = storageRef.fullPath
-                            let uploadMetadata = StorageMetadata()
-                           // uploadMetadata.contentType
-                            uploadMetadata.contentType = "video/quicktime"
-                            _ = storageRef.putFile(from: nsurl as URL, metadata: uploadMetadata){(metadata, error) in
-                                if(error != nil){
-                                    print("got an error: \(error)")
-                                }
-                                self.allVidURLs.append(videoRef)
-                            }
-                        }
-                        /*for link in vidFromPhoneArray{
-                            self.recentlyAddedVidArray.append(String(describing: link))
-                        }*/
-
-                        
-                    }
-                    else{
-                        for link in self.recentlyAddedVidArray{
-                            self.allVidURLs.append(String(describing: link))
-                        }
-                        //self.allVidURLs.append(videoRef)
-                        
-                }
-                
-                values2["media"] = self.allVidURLs
-
-        
-        
-                recipient.updateChildValues(values2, withCompletionBlock: {(err, ref) in
-                    if err != nil {
-                        print(err!)
-                        return
-                    }
-                })*/
                 }
             }
     
@@ -475,10 +435,7 @@ class AddMediaToSession: UIViewController, UITextViewDelegate, UINavigationContr
                 }
                 
             }
-            DispatchQueue.main.async{
-                 self.handleCancel()
-            }
- 
+            performSegue(withIdentifier: "SaveMediaToSession", sender: self)
         }
 
         
@@ -1081,7 +1038,7 @@ class AddMediaToSession: UIViewController, UITextViewDelegate, UINavigationContr
     
     func configureCell(_ cell: VideoCollectionViewCell, forIndexPath indexPath: NSIndexPath) {
         print("configVid")
-        if(String(describing: cell.videoURL).contains("you") || String(describing: cell.videoURL).contains("You")){
+        if(self.currentCollectID == "youtube"/*String(describing: cell.videoURL).contains("you") || String(describing: cell.videoURL).contains("You")*/){
             if self.youtubeLinkArray.count == 0{
                 cell.layer.borderColor = UIColor.white.cgColor
                 cell.layer.borderWidth = 2
@@ -1292,13 +1249,14 @@ class AddMediaToSession: UIViewController, UITextViewDelegate, UINavigationContr
                                             tempArray.append(mediaKid.value as! String)
                                         }
                                     }
-                                    tempArray.append(String(describing: movieURL))
+                                    //tempArray.append(String(describing: movieURL))
                                     if tempArray.count != 0{
                                        
                                         self.currentCollectID = "vidFromPhone"
                                        
                                         self.recentlyAddedPhoneVidArray.append(movieURL)
                                         self.vidFromPhoneArray.append(movieURL)
+                                        self.vidFromPhoneCollectionView.reloadData()
                                         
                                         let insertionIndexPath = IndexPath(row: self.vidFromPhoneArray.count - 1, section: 0)
                                         self.vidFromPhoneCollectionView.insertItems(at: [insertionIndexPath])
@@ -1306,7 +1264,7 @@ class AddMediaToSession: UIViewController, UITextViewDelegate, UINavigationContr
                                     }else{
                                         self.currentCollectID = "vidFromPhone"
                                       
-                                        self.vidFromPhoneArray.append(movieURL)
+                                       // self.vidFromPhoneArray.append(movieURL)
                                         self.recentlyAddedPhoneVidArray.append(movieURL)
                                         let cellNib = UINib(nibName: "VideoCollectionViewCell", bundle: nil)
                                         self.vidFromPhoneCollectionView.register(cellNib, forCellWithReuseIdentifier: "VideoCollectionViewCell")
