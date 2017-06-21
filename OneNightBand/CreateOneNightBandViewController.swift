@@ -75,7 +75,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
                     
                     
                         self.onbID = sessReferenceAnyObject
-                        self.tempArray.append(sessReferenceAnyObject)
+                        //self.tempArray.append(sessReferenceAnyObject)
                         //print(sessReference.key)
                         //sessReference.childByAutoId()
                         

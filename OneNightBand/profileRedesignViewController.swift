@@ -473,7 +473,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                                             }
                                             self.mediaLabelCount.text = String(describing: self.videoCount)
                                             self.instrumentLabel.text = String(describing: self.instrumentCount)
-                                            self.bandsCountLabel.text = String(describing: self.bandIDArray.count)
+                                            self.bandsCountLabel.text = String(describing: self.bandIDArray.count + self.onbIDArray.count)
                                             
                                             self.menuView.isHidden = false
                                             self.artistInfoView.isHidden = false
@@ -724,18 +724,35 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         } else if collectionView == onbCollect || collectionView == bandCollect {
             var tempCell = collectionView.dequeueReusableCell(withReuseIdentifier: "SessionCell", for: indexPath) as! SessionCell
             if collectionView == bandCollect{
+                if bandIDArray.count == 0
+                {
+                    tempCell.layer.borderColor = UIColor.darkGray.cgColor
+                    tempCell.layer.borderWidth = 2
+                    tempCell.sessionCellLabel.text = "No Bands"
+                    tempCell.isUserInteractionEnabled = false
+                } else {
                 tempCell.sessionCellImageView.loadImageUsingCacheWithUrlString((bandsDict[bandIDArray[indexPath.row]] as! Band).bandPictureURL[0])
                 //print(self.upcomingSessionArray[indexPath.row].sessionUID as Any)
                 tempCell.sessionCellLabel.text = (bandsDict[bandIDArray[indexPath.row]] as! Band).bandName
                 tempCell.sessionCellLabel.textColor = UIColor.white
                 tempCell.sessionId = (bandsDict[bandIDArray[indexPath.row]] as! Band).bandID
+                }
             }
             else {
-                tempCell.sessionCellImageView.loadImageUsingCacheWithUrlString((onbDict[onbIDArray[indexPath.row]] as! ONB).onbPictureURL[0])
-                //print(self.upcomingSessionArray[indexPath.row].sessionUID as Any)
-                tempCell.sessionCellLabel.text = (onbDict[onbIDArray[indexPath.row]] as! ONB).onbName
-                tempCell.sessionCellLabel.textColor = UIColor.white
-                tempCell.sessionId = (onbDict[onbIDArray[indexPath.row]] as! ONB).onbID
+                if onbIDArray.count == 0
+                {
+                    tempCell.layer.borderColor = UIColor.darkGray.cgColor
+                    tempCell.layer.borderWidth = 2
+                    tempCell.sessionCellLabel.text = "No OneNightBands"
+                    tempCell.isUserInteractionEnabled = false
+                } else {
+
+                    tempCell.sessionCellImageView.loadImageUsingCacheWithUrlString((onbDict[onbIDArray[indexPath.row]] as! ONB).onbPictureURL[0])
+                    //print(self.upcomingSessionArray[indexPath.row].sessionUID as Any)
+                    tempCell.sessionCellLabel.text = (onbDict[onbIDArray[indexPath.row]] as! ONB).onbName
+                    tempCell.sessionCellLabel.textColor = UIColor.white
+                    tempCell.sessionId = (onbDict[onbIDArray[indexPath.row]] as! ONB).onbID
+                }
             }
             
             return tempCell
@@ -764,12 +781,14 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         } else if(collectionView == bandCollect){
             self.tempIndex = indexPath.row
             if self.sender != "onb" && self.sender != "band"{
+                self.sender = "profile"
                 performSegue(withIdentifier: "ProfileToSessionMaker", sender: self)
             } else {
                 //present bandviewer***************
             }
         } else if collectionView == onbCollect{
             self.tempIndex = indexPath.row
+            self.sender = "profile"
             performSegue(withIdentifier: "ProfileToONB", sender: self)
         }
 

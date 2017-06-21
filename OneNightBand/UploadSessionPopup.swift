@@ -1107,7 +1107,12 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                         self.feedArray.append(snap.value as! SessionFeedSess)
                     }
                 }
-                var mult = self.feedArray.count + 1
+                var mult = Int()
+                if self.feedArray.count == 0 {
+                    mult = 0
+                } else {
+                    mult = self.feedArray.count - 1
+                }
                 let button = ONBGuitarButton()
                 button.initWithLane(lane: Int(arc4random_uniform(6)))
                 button.setYPosition(yPosition: (3 - CGFloat(mult)) * 2.3)

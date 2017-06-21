@@ -20,7 +20,9 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
     @IBOutlet weak var becomeFanButton: UIButton!
     @IBOutlet weak var fanCount: UILabel!
     
-    
+    var sizingCell2 = VideoCollectionViewCell()
+    var videoCount = 0
+    var tempLink: NSURL?
     
     @IBAction func becomeFanPressed(_ sender: Any) {
     }
@@ -30,6 +32,10 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
     }
     var sender = String()
     
+    var nsurlArray = [NSURL]()
+    var nsurlDict = [NSURL: String]()
+    var currentCollect = String()
+    var youtubeArray = [NSURL]()
     @IBOutlet weak var videoCollectionView: UICollectionView!
     @IBOutlet weak var artistTableView: UITableView!
     @IBOutlet weak var onbInfoTextView: UITextView!
@@ -117,6 +123,21 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
                             }
                         }
                     }
+                    if snap.key == "onbMedia"{
+                        let mediaSnaps = snap.value as! [String]
+                        for m_snap in mediaSnaps{
+                            //fill youtubeArray
+                            self.videoCount += 1
+                            self.youtubeArray.append(NSURL(string: m_snap)!)
+                            self.nsurlArray.append(NSURL(string: m_snap)!)
+                            if m_snap.contains("yout"){
+                                self.nsurlDict[NSURL(string: m_snap)!] = "y"
+                            } else {
+                                self.nsurlDict[NSURL(string: m_snap)!] = "v"
+                            }
+                        }
+
+                    }
                     if snap.key == "onbName"{
                         self.onbNameLabel.text = snap.value as! String
                     }
@@ -143,6 +164,36 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
                     self.pictureCollectionView.dataSource = self
                     self.pictureCollectionView.delegate = self
             }
+                
+                if self.nsurlArray.count == 0{
+                    self.currentCollect = "youtube"
+                    
+                    self.tempLink = nil
+                    
+                    let cellNib = UINib(nibName: "VideoCollectionViewCell", bundle: nil)
+                    self.videoCollectionView.register(cellNib, forCellWithReuseIdentifier: "VideoCollectionViewCell")
+                    self.sizingCell2 = ((cellNib.instantiate(withOwner: nil, options: nil) as NSArray).firstObject as! VideoCollectionViewCell?)!
+                    //self.youtubeCollectionView.backgroundColor = UIColor.clear
+                    self.videoCollectionView.dataSource = self
+                    self.videoCollectionView.delegate = self
+                    
+                }
+                for vid in self.nsurlArray{
+                    
+                    // Put your code which should be executed with a delay here
+                    self.currentCollect = "youtube"
+                    
+                    self.tempLink = vid
+                    
+                    let cellNib = UINib(nibName: "VideoCollectionViewCell", bundle: nil)
+                    self.videoCollectionView.register(cellNib, forCellWithReuseIdentifier: "VideoCollectionViewCell")
+                    self.sizingCell2 = ((cellNib.instantiate(withOwner: nil, options: nil) as NSArray).firstObject as! VideoCollectionViewCell?)!
+                    //self.youtubeCollectionView.backgroundColor = UIColor.clear
+                    self.videoCollectionView.dataSource = self
+                    self.videoCollectionView.delegate = self
+                }
+
+                
             let cellNib = UINib(nibName: "ArtistCell", bundle: nil)
             self.artistTableView.register(cellNib, forCellReuseIdentifier: "ArtistCell")
             self.artistTableView.delegate = self
@@ -299,7 +350,14 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
         //print(currentButton as Any)
         if collectionView == pictureCollectionView{
             return picArray.count
+        } else if collectionView == videoCollectionView{
+            if self.nsurlArray.count == 0{
+                return 1
+            }else{
+                return self.nsurlArray.count
+            }
         }
+
         else { return 0 }
        
         
@@ -308,206 +366,99 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
     var tempIndex: Int?
     var pressedButton: String?
     
+    
+    //cellSelected
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if collectionView == pictureCollectionView {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PictureCollectionViewCell", for: indexPath as IndexPath) as! PictureCollectionViewCell
         
         tempIndex = indexPath.row
         self.configureCell(cell, forIndexPath: indexPath as NSIndexPath)
         
         return cell
+        } else if collectionView == videoCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "VideoCollectionViewCell", for: indexPath as IndexPath) as! VideoCollectionViewCell
+            self.configureVidCell(cell, forIndexPath: indexPath as NSIndexPath)
+            cell.indexPath = indexPath
+            
+            //self.curIndexPath.append(indexPath)
+            
+            return cell
+            
+        } else {
+            var cell = VideoCollectionViewCell()
+            return cell
+        }
     }
     
     
     var selectedCell: SessionCell?
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-                
-    }
-    var cellArray = [SessionCell]()
-    func configureCell(_ cell: PictureCollectionViewCell, forIndexPath indexPath: NSIndexPath) {
-        cell.picImageView.image = self.picArray[indexPath.row]
-        cell.deleteButton.isHidden = true
-       /* if(self.currentButton == "upcoming"){
-            print("Whyyyyy")
-            if upcomingSessionArray.count == 0{
-                cell.emptyLabel.isHidden = false
-                cell.emptyLabel.text = "No Upcoming Sessions"
-                cell.layer.borderColor = UIColor.white.cgColor
-                cell.layer.borderWidth = 2
-                cell.emptyLabel.textColor = UIColor.white
-                cell.sessionCellImageView.isHidden = true
-                cell.sessionCellLabel.isHidden = true
-            }
-            
-            if(indexPath.row < upcomingSessionArray.count){
-                cell.emptyLabel.isHidden = true
-                cell.layer.borderColor = UIColor.clear.cgColor
-                cell.sessionCellImageView.loadImageUsingCacheWithUrlString((upcomingSessionArray[indexPath.row] as Session).sessionPictureURL[0])
-                //print(self.upcomingSessionArray[indexPath.row].sessionUID as Any)
-                cell.sessionCellLabel.text = upcomingSessionArray[indexPath.row].sessionName
-                cell.sessionCellLabel.textColor = UIColor.white
-                cell.sessionId = bandSessions[indexPath.row]
-            }
-            cellArray.append(cell)
-            
-        }
-        if(self.currentButton == "past"){
-            if pastSessionArray.count == 0{
-                cell.isHidden = false
-                cell.emptyLabel.isHidden = false
-                cell.emptyLabel.text = "No Past Sessions"
-                cell.layer.borderColor = UIColor.white.cgColor
-                cell.layer.borderWidth = 2
-                cell.emptyLabel.textColor = UIColor.white
-                cell.sessionCellImageView.isHidden = true
-                cell.sessionCellLabel.isHidden = true
-            }else{
-                cell.emptyLabel.isHidden = true
-                cell.layer.borderColor = UIColor.clear.cgColor
-                cell.sessionCellImageView.isHidden = false
-                cell.sessionCellLabel.isHidden = false
-                if(indexPath.row < pastSessionArray.count){
+        if collectionView == self.videoCollectionView{
+            if (self.videoCollectionView.cellForItem(at: indexPath) as! VideoCollectionViewCell).videoURL?.absoluteString?.contains("youtube") == false && (self.videoCollectionView.cellForItem(at: indexPath) as! VideoCollectionViewCell).videoURL?.absoluteString?.contains("youtu.be") == false {
+                if (self.videoCollectionView.cellForItem(at: indexPath) as! VideoCollectionViewCell).player?.playbackState == .playing {
+                    (self.videoCollectionView.cellForItem(at: indexPath) as! VideoCollectionViewCell).player?.stop()
                     
-                    cell.sessionCellImageView.loadImageUsingCacheWithUrlString((pastSessionArray[indexPath.row] as Session).sessionPictureURL[0])
-                    cell.sessionCellLabel.text = pastSessionArray[indexPath.row].sessionName
-                    cell.sessionCellLabel.textColor = UIColor.white
-                    cell.sessionId = bandSessions[indexPath.row]
+                }else{
+                    (self.videoCollectionView.cellForItem(at: indexPath) as! VideoCollectionViewCell).player?.playFromBeginning()
                 }
                 
             }
-            cellArray.append(cell)
         }
-        if(self.currentButton == "feed"){
-            if sessionFeedArray.count == 0{
-                cell.emptyLabel.isHidden = false
-                cell.emptyLabel.text = "No Sessions On Feed"
-                cell.layer.borderColor = UIColor.white.cgColor
-                cell.layer.borderWidth = 2
-                cell.emptyLabel.textColor = UIColor.white
-                cell.sessionCellImageView.isHidden = true
-                cell.sessionCellLabel.isHidden = true
-            }else{
-                cell.emptyLabel.isHidden = true
-                cell.layer.borderColor = UIColor.clear.cgColor
-                cell.sessionCellImageView.isHidden = false
-                cell.sessionCellLabel.isHidden = false
-                
-            }
+    }
+    var cellArray = [SessionCell]()
+    func configureVidCell(_ cell: VideoCollectionViewCell, forIndexPath indexPath: NSIndexPath){
+        
+        if self.nsurlArray.count == 0{
+            cell.layer.borderColor = UIColor.darkGray.cgColor
+            cell.layer.borderWidth = 1
+            cell.removeVideoButton.isHidden = true
+            cell.videoURL = nil
+            cell.player?.view.isHidden = true
+            cell.youtubePlayerView.isHidden = true
+            //cell.youtubePlayerView.loadVideoURL(videoURL: self.youtubeArray[indexPath.row])
+            cell.removeVideoButton.isHidden = true
+            cell.noVideosLabel.isHidden = false
+        }else {
             
-            if(indexPath.row < sessionFeedArray.count){
-                print(indexPath.row)
-                cell.sessionCellImageView.loadImageUsingCacheWithUrlString((sessionFeedArray[indexPath.row] as Session).sessionPictureURL[0])
-                cell.sessionCellLabel.text = sessionFeedArray[indexPath.row].sessionName
-                cell.sessionCellLabel.textColor = UIColor.white
-                cell.sessionId = bandSessions[indexPath.row]
-            }
-            cellArray.append(cell)
-        }
-        if(self.currentButton == "active"){
-            if activeSessionsArray.count == 0{
-                cell.emptyLabel.isHidden = false
-                cell.emptyLabel.text = "No Active Sessions"
-                cell.layer.borderColor = UIColor.white.cgColor
-                cell.layer.borderWidth = 2
-                cell.emptyLabel.textColor = UIColor.white
-                cell.sessionCellImageView.isHidden = true
-                cell.sessionCellImageView.isHidden = true
-                cell.sessionCellLabel.isHidden = true
-                
+            cell.layer.borderColor = UIColor.clear.cgColor
+            cell.layer.borderWidth = 0
+            
+            //cell.youtubePlayerView.isHidden = true
+            cell.removeVideoButton.isHidden = true
+            cell.noVideosLabel.isHidden = true
+            
+            
+            
+            cell.videoURL =  self.nsurlArray[indexPath.row] as NSURL?
+            if(String(describing: cell.videoURL).contains("youtube") || String(describing: cell.videoURL).contains("youtu.be")){
+                cell.youtubePlayerView.loadVideoURL(cell.videoURL as! URL)
+                cell.youtubePlayerView.isHidden = false
+                cell.player?.view.isHidden = true
+                cell.isYoutube = true
             }else{
-                cell.emptyLabel.isHidden = true
-                cell.layer.borderColor = UIColor.clear.cgColor
-                cell.sessionCellImageView.isHidden = false
-                cell.sessionCellLabel.isHidden = false
+                cell.player?.setUrl(cell.videoURL as! URL)
+                cell.player?.view.isHidden = false
+                cell.youtubePlayerView.isHidden = true
+                cell.isYoutube = false
             }
-            if(indexPath.row < activeSessionsArray.count){
-                
-                cell.sessionCellImageView.loadImageUsingCacheWithUrlString((activeSessionsArray[indexPath.row] as Session).sessionPictureURL[0])
-                cell.sessionCellLabel.text = activeSessionsArray[indexPath.row].sessionName
-                cell.sessionCellLabel.textColor = UIColor.white
-                cell.sessionId = bandSessions[indexPath.row]
-            }
-            cellArray.append(cell)
+            //print(self.vidArray[indexPath.row])
+            //cell.youtubePlayerView.loadVideoURL(self.vidArray[indexPath.row] as URL)
+            //self.group.leave()
         }
-        if(self.currentButton == "all"){
-            if allSessions.count == 0{
-                cell.sessionCellImageView.isHidden = true
-                cell.sessionCellLabel.isHidden = true
-                cell.emptyLabel.isHidden = false
-                cell.emptyLabel.text = "No Sessions to Show"
-                cell.layer.borderColor = UIColor.white.cgColor
-                cell.layer.borderWidth = 2
-                cell.emptyLabel.textColor = UIColor.white
-            }else{
-                cell.emptyLabel.isHidden = true
-                cell.layer.borderColor = UIColor.clear.cgColor
-                cell.sessionCellImageView.isHidden = false
-                cell.sessionCellLabel.isHidden = false
-            }
-            if(indexPath.row < allSessions.count){
-                cell.sessionCellImageView.loadImageUsingCacheWithUrlString((allSessions[indexPath.row] as Session).sessionPictureURL[0])
-                cell.sessionCellLabel.text = allSessions[indexPath.row].sessionName
-                cell.sessionCellLabel.textColor = UIColor.white
-                cell.sessionId = bandSessions[indexPath.row]
-            }
-            cellArray.append(cell)
-        }
-        */
+        
+
+    }
+    func configureCell(_ cell: PictureCollectionViewCell, forIndexPath indexPath: NSIndexPath) {
+        cell.picImageView.image = self.picArray[indexPath.row]
+        cell.deleteButton.isHidden = true
+       
         
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         
-        /*if(self.currentButton == "active"){
-         
-         let totalCellWidth = (self.sizingCell?.frame.width)! * CGFloat(self.activeSessionsArray.count)
-         let totalSpacingWidth = 10 * (self.activeSessionsArray.count - 1)
-         
-         let leftInset = (collectionView.frame.width - CGFloat(totalCellWidth + CGFloat(totalSpacingWidth))) / 2
-         let rightInset = leftInset
-         return UIEdgeInsetsMake(0, leftInset, 0, rightInset)
-         }
-         
-         else if(self.currentButton == "past"){
-         
-         let totalCellWidth = (self.sizingCell?.frame.width)! * CGFloat(self.pastSessionArray.count)
-         let totalSpacingWidth = 10 * (self.pastSessionArray.count - 1)
-         
-         let leftInset = (collectionView.frame.width - CGFloat(totalCellWidth + CGFloat(totalSpacingWidth))) / 2
-         let rightInset = leftInset
-         return UIEdgeInsetsMake(0, leftInset, 0, rightInset)
-         }
-         
-         else if(self.currentButton == "upcoming"){
-         
-         let totalCellWidth = (self.sizingCell?.frame.width)! * CGFloat(self.upcomingSessionArray.count)
-         let totalSpacingWidth = 10 * (self.upcomingSessionArray.count - 1)
-         
-         let leftInset = (collectionView.frame.width - CGFloat(totalCellWidth + CGFloat(totalSpacingWidth))) / 2
-         let rightInset = leftInset
-         return UIEdgeInsetsMake(0, leftInset, 0, rightInset)
-         }
-         
-         else if(self.currentButton == "all"){
-         
-         let totalCellWidth = (self.sizingCell?.frame.width)! * CGFloat(self.allSessions.count)
-         let totalSpacingWidth = 10 * (self.allSessions.count - 1)
-         
-         let leftInset = (collectionView.frame.width - CGFloat(totalCellWidth + CGFloat(totalSpacingWidth))) / 2
-         let rightInset = leftInset
-         return UIEdgeInsetsMake(0, leftInset, 0, rightInset)
-         }
-         
-         else{
-         
-         
-         let totalCellWidth = (self.sizingCell?.frame.width)! * CGFloat(self.sessionFeedArray.count)
-         let totalSpacingWidth = 10 * (self.sessionFeedArray.count - 1)
-         
-         let leftInset = (collectionView.frame.width - CGFloat(totalCellWidth + CGFloat(totalSpacingWidth))) / 2
-         let rightInset = leftInset
-         return UIEdgeInsetsMake(0, leftInset, 0, rightInset)
-         
-         }*/
         return UIEdgeInsetsMake(0, 0, 0, 0)
         
     }
@@ -516,6 +467,13 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
 
     var thisONB = ONB()
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
+        if (segue.identifier! as String) == "ONBToAddMedia"{
+            if let vc = segue.destination as? AddMediaToSession{
+                vc.onbID = self.onbID
+                vc.senderView = "onb"
+                
+            }
+        }
         if (segue.identifier! as String) == "ONBToBandBoard"{
             if let vc = segue.destination as? BandBoardViewController{
                 vc.searchType = "OneNightBands"
@@ -528,6 +486,7 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
                 vc.thisONBObject = thisONB
                 vc.bandType = "onb"
                 vc.senderScreen = "onb"
+                vc.sender = "onb"
                 
             }
         }

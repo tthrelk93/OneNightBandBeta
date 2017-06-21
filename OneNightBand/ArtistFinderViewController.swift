@@ -408,11 +408,14 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                             
     @IBAction func laterButtonPressed(_ sender: Any) {
         performSegue(withIdentifier: "ArtistFinderToProfile", sender: self)
+        
     }
                               
+    @IBOutlet weak var nowOrLaterBackground: UIImageView!
             
     @IBAction func nowButtonPressed(_ sender: Any) {
         searchNarrowView.isHidden = false
+        self.nowOrLaterBackground.isHidden = true
         progressBar.isHidden = false
     }
             
@@ -470,6 +473,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
         progressBar.isHidden = true
         if self.sender == "joinBand"{
             self.findArtistNowView.isHidden = false
+            self.nowOrLaterBackground.isHidden = false
         }
     } else {
         searchNarrowView.isHidden = false

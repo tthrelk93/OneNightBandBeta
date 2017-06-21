@@ -155,7 +155,7 @@ class CreateSessionPopup: UIViewController, UITextViewDelegate, UINavigationCont
         sessionBioTextView.delegate = self
         self.view.backgroundColor = UIColor.clear
         //self.view.backgroundColor?.withAlphaComponent(0.8)
-        sessionBioTextView.textColor = UIColor.gray
+        sessionBioTextView.textColor = UIColor.white
         sessionBioTextView.text = "tap to add a little info about the session you are creating (Songs played, location, etc...)."
         self.showAnimate()
         picker.delegate = self
@@ -175,17 +175,17 @@ class CreateSessionPopup: UIViewController, UITextViewDelegate, UINavigationCont
     optional public func textViewDidEndEditing(_ textView: UITextView){
         
     }*/
-    
+      let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
     public func textViewDidBeginEditing(_ textView: UITextView) {
-        if sessionBioTextView.textColor == UIColor.gray {
+        if sessionBioTextView.textColor == UIColor.white {
             sessionBioTextView.text = nil
-            sessionBioTextView.textColor = UIColor.orange
+            sessionBioTextView.textColor = ONBPink
         }
     }
     public func textViewDidEndEditing(_ textView: UITextView) {
         if sessionBioTextView.text.isEmpty {
             sessionBioTextView.text = "tap to add a little info about the session you are creating (Songs played, location, etc...)."
-            sessionBioTextView.textColor = UIColor.gray
+            sessionBioTextView.textColor = UIColor.white
         }
     }
     

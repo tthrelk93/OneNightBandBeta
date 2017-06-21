@@ -54,7 +54,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     var sessionArray = [SessionFeedSess]()
     var ref = Database.database().reference()
     var firstTouch = CGPoint()
-    var viewPins: NSMutableArray!
+    var viewPins = NSMutableArray()
     var scrollOffset = CGFloat()
     var currentButton: ONBGuitarButton?
     var player:Player?
@@ -71,6 +71,13 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     var currentVideoURL: URL?
     let kFretY = 383
     
+    @IBAction func pickButtonPressed(_ sender: Any) {
+            }
+    @IBOutlet weak var pickButton: UIButton!
+    @IBOutlet weak var cityNameLabel: UILabel!
+    @IBOutlet weak var cityLabel: UILabel!
+    @IBOutlet weak var sessionLabel: UILabel!
+    @IBOutlet weak var viewsLabel: UILabel!
     @IBAction func visitBandPageTouched(_ sender: Any) {
         var tempSess = SessionFeedSess()
         for sess in sessionArray{
@@ -138,6 +145,12 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             videoCollect.isHidden = true
             self.sessionViewsLabel2.isHidden = true
             self.sessionNameLabel2.isHidden = true
+            pickButton.isHidden = true
+            cityNameLabel.isHidden = true
+            cityLabel.isHidden = true
+            sessionLabel.isHidden = true
+            viewsLabel.isHidden = true
+
             
             self.sessionNameLabel.isHidden = true
             //self.sessionLabel.isHidden = true
@@ -155,6 +168,12 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             videoCollect.isHidden = false
             self.sessionViewsLabel2.isHidden = true
             self.sessionNameLabel2.isHidden = true
+            pickButton.isHidden = true
+            cityNameLabel.isHidden = true
+            cityLabel.isHidden = true
+            sessionLabel.isHidden = true
+            viewsLabel.isHidden = true
+
             
             self.sessionNameLabel.isHidden = true
             //self.sessionLabel.isHidden = true
@@ -172,7 +191,13 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             self.sessionViewsLabel2.isHidden = false
             self.sessionNameLabel2.isHidden = true
             tableViewBackView.isHidden = false
-            bioBackView.isHidden = false
+            //bioBackView.isHidden = false
+            pickButton.isHidden = false
+            cityNameLabel.isHidden = false
+            cityLabel.isHidden = false
+            sessionLabel.isHidden = false
+            viewsLabel.isHidden = false
+
             
             self.sessionNameLabel.isHidden = false
             //self.sessionLabel.isHidden = false
@@ -270,9 +295,10 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     var displayLineMidY = CGFloat()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.pickButton.layer.cornerRadius = 10
         self.bandNameButton.isHidden = true
-        
+        self.sessionBioTextView.layer.borderColor = UIColor.black.cgColor
+        self.sessionBioTextView.layer.borderWidth = 2
         
         self.postToFeedButton.layer.cornerRadius = self.postToFeedButton.frame.width
         postToFeedButton.layer.borderWidth = 2
@@ -285,7 +311,8 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         tabBar.selectedItem = tabBar.items?[3]
         displayLineMidY = displayLine.bounds.midY
         picVidSegment.isHidden = true
-        self.sessionNameLabel.isHidden = true
+        
+       // self.bandLabel.isHidden = true
         //self.sessionLabel.isHidden = true
         //self.bandLabel.isHidden = true
         //self.bandNameButton.isHidden = false
@@ -299,25 +326,33 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
-        layout.itemSize = CGSize(width: picCollect.bounds.width, height: picCollect.bounds.width)
+        layout.itemSize = CGSize(width: videoCollect.bounds.width, height: videoCollect.bounds.width)
         layout.minimumInteritemSpacing = 20
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
-        picCollect.collectionViewLayout = layout
+        
+        let layout2: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout2.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+        layout2.itemSize = CGSize(width: videoCollect.bounds.width, height: videoCollect.bounds.width)
+        layout2.minimumInteritemSpacing = 20
+        layout2.scrollDirection = .horizontal
+        layout2.minimumLineSpacing = 0
+        
+
+        
+        picCollect.collectionViewLayout = layout2
         videoCollect.collectionViewLayout = layout
         
-       // self.sessInfoView.isHidden = true
-       // var tempRect = CGRect(x: self.sessInfoView.bounds.origin.x, y: self.sessInfoView.bounds.origin.y, width: <#T##CGFloat#>, height: <#T##CGFloat#>)
-        dropMenu = YNDropDownMenu(frame:sizeView.frame, dropDownViews: [sessInfoView], dropDownViewTitles: [""])
-        //dropMenu?.labelFontSize = 30.0
+               dropMenu = YNDropDownMenu(frame:sizeView.frame, dropDownViews: [sessInfoView], dropDownViewTitles: [""])
+        
         dropMenu?.setLabelColorWhen(normal: .orange, selected: UIColor.orange.withAlphaComponent(0.5) , disabled: UIColor.gray)
-        //dropMenu?.colo
+        
         dropMenu?.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         
        
         dropMenu?.autoresizesSubviews = true
         dropMenu?.clipsToBounds = true
-       // dropMenu.changeMenuTitleAt(index: 0, title: "hello")
+      
         dropMenu?.setImageWhen(normal: UIImage(named: "dropNoSelect"), selected: UIImage(named: "dropSelect"), disabled: UIImage(named: "dropNoSelect"))
        dropMenu?.backgroundBlurEnabled = false
         dropMenu?.backgroundColor = UIColor.clear
@@ -368,7 +403,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             self.scrollOffset = 0
             
             self.viewPins = NSMutableArray()
-            
+            var i = 0
             for session in self.sessionArray{
                 var tempButton = ONBGuitarButton()
                 
@@ -376,7 +411,8 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                 
                 
                 
-                
+                //tempButton.initWithLane(lane: session.button.lane)
+                //tempButton.setYPosition(yPosition: (3 - CGFloat(i)) * 2.3)
                 tempButton._baseX = session.button["_baseX"] as! CGFloat
                 tempButton.kMaxY = session.button["kMaxY"] as! Double
                 tempButton.lane = session.button["lane"] as! Int
@@ -387,6 +423,9 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                 tempButton.sessionFeedKey = session.button["sessionFeedKey"] as! String?
                 tempButton.kStartY = session.button["kStartY"] as! Int
                 tempButton.sessionViews = session.button["sessionViews"] as! Int?
+                
+                self.view.addSubview(tempButton)
+                self.viewPins.add(tempButton)
                 let tap = UITapGestureRecognizer(target: self, action: #selector(SessionFeedViewController.scrollToPin))
                 
                 tap.numberOfTapsRequired = 1
@@ -395,14 +434,13 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                 tempButton.isUserInteractionEnabled = true
 
                 //tempButton.setValuesForKeys(session.button)
-                self.view.addSubview(tempButton)
-                self.viewPins.add(tempButton)
-                self.buttonArray.append(tempButton)
+                                self.buttonArray.append(tempButton)
                 //tempButton.lane = session.button.lane
                 //tempButton._slope = session.button._slope
                // tempButton._yPosition = session.button._yPosition
                 //tempButotn
                 //let button = sessionArray[i].button as ONBGuitarButton
+                i += 1
             }
             
             
@@ -599,13 +637,19 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
 
     
     var artistDict = [String: String]()
-    
+    var youtubeArray = [NSURL]()
+    var nsurlArray = [NSURL]()
+    var nsurlDict = [NSURL: String]()
+    var videoCount = 0
+
     
     func displaySessionInfo(){
-        //picArray.removeAll()
-        //bandMedia.removeAll()
+        DispatchQueue.main.async{
+        self.nsurlArray.removeAll()
+        self.nsurlDict.removeAll()
+        self.picArray.removeAll()
         print("jpppppp")
-        picVidSegment.selectedSegmentIndex = 0
+        self.picVidSegment.selectedSegmentIndex = 0
         self.sessionNameLabel.isHidden = true
        // self.sessionLabel.isHidden = true
         //self.bandLabel.isHidden = true
@@ -616,66 +660,75 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         //self.sessionArtistsLabel.isHidden = true
        // self.bioLabel.isHidden = true
        // self.sessionPicksLabel.isHidden = true
+            self.pickButton.isHidden = true
+            self.cityNameLabel.isHidden = true
+            self.cityLabel.isHidden = true
+            self.sessionLabel.isHidden = true
+            self.viewsLabel.isHidden = true
 
-        picVidSegment.isHidden = false
-        videoCollect.isHidden = true
-        picCollect.isHidden = false
-        sessionNameLabel2.isHidden = true
-        sessionViewsLabel2.isHidden = true
-        dropMenu?.isHidden = false
-        dropMenu?.setLabelColorWhen(normal: UIColor.orange, selected: UIColor.orange.withAlphaComponent(0.6), disabled: UIColor.gray)
-        artistDict.removeAll()
-        let cButton = currentButtonFunc()
+
+        self.picVidSegment.isHidden = false
+        self.videoCollect.isHidden = true
+        self.picCollect.isHidden = false
+        self.sessionNameLabel2.isHidden = true
+        self.sessionViewsLabel2.isHidden = true
+        self.dropMenu?.isHidden = false
+        self.dropMenu?.setLabelColorWhen(normal: UIColor.orange, selected: UIColor.orange.withAlphaComponent(0.6), disabled: UIColor.gray)
+        self.artistDict.removeAll()
+        let cButton = self.currentButtonFunc()
         var tempSess = SessionFeedSess()
-        for sess in sessionArray{
+        for sess in self.sessionArray{
             if (sess.button["sessionFeedKey"] as! String) == cButton.sessionFeedKey {
-                
+                print("dispay sess: \(sess)")
                 tempSess = sess
                 break
             }
         }
 
-        //if cButton.isDisplayed == true{
-            //8888self.player?.playerView.isHidden = false
-            //sessInfoView.isHidden = false
-            //dropMenu?.dropDownViewTitles = [(cButton.session?.sessionName!)!]
-            dropMenu?.backgroundColor = UIColor.clear
-            //dropMenu?.bringSubview(toFront: sessInfoView)
-            //dropMenu.view
-            //dropMenu?.dropDownViewTitles.append(cButton.sessionName)
-            //changeMenu(title: cButton.sessionName, at: 0)
+            self.dropMenu?.backgroundColor = UIColor.clear
+        
             
             let tempLabel = tempSess.sessionName
-            sessionNameLabel.text = tempLabel
-        bandNameButton.setTitle(tempSess.bandName, for: .normal)
-        sessionBioTextView.text = tempSess.sessionBio
-        sessionBioTextView.isEditable = false
-        
+            self.sessionNameLabel.text = tempLabel
+        self.bandNameButton.setTitle(tempSess.bandName, for: .normal)
+        self.sessionBioTextView.text = tempSess.sessionBio
+        self.sessionBioTextView.isEditable = false
+        self.cityNameLabel.text = "--"
         
         
             //sessionViewCountLabel.text = "Views: \(String(describing: cButton.sessionViews!))"
-                sessionNameLabel2.text = tempLabel
-                sessionViewsLabel2.text = "Views: \(String(describing: cButton.sessionViews!))"
+                self.sessionNameLabel2.text = tempLabel
+                self.sessionViewsLabel2.text = String(describing: cButton.sessionViews!)
                 for (key, value) in (tempSess.sessionArtists){
                     self.artistDict[key] = value as? String
                 }
             
-                for _ in artistDict.keys{
+                for _ in self.artistDict.keys{
                     let cellNib = UINib(nibName: "ArtistCell", bundle: nil)
                     self.artistTableView.register(cellNib, forCellReuseIdentifier: "ArtistCell")
                     self.artistTableView.delegate = self
                     self.artistTableView.dataSource = self
                 }
             //need to fix this to play proper video
-        bandMedia.removeAll()
-        picArray.removeAll()
+       // DispatchQueue.main.async{
         for sess in self.sessionArray{
             if sess.sessionID == (tempSess.sessionID) {
                 if sess.sessionMedia.count != 0{
                     for vid in sess.sessionMedia{
-                        bandMedia.append(NSURL(string: vid)!)
+                        
+                                    self.videoCount += 1
+                                    self.youtubeArray.append(NSURL(string: vid)!)
+                                    self.nsurlArray.append(NSURL(string: vid)!)
+                                    if vid.contains("yout"){
+                                        self.nsurlDict[NSURL(string: vid)!] = "y"
+                                    } else {
+                                    self.nsurlDict[NSURL(string: vid)!] = "v"
+                        }
                     }
-                
+                }
+            
+        
+        
                 var tempPicArray = tempSess.sessionPictureURL
                 for pic in tempPicArray{
                     if let url = NSURL(string: pic){
@@ -684,13 +737,14 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                         }
                     }
                 }
-                }
+            
+        
 
              break
             }
-        }
-        DispatchQueue.main.async{
-            for _ in self.bandMedia{
+            }
+        
+            for _ in self.nsurlArray{
                 
                 let cellNib = UINib(nibName: "VideoCollectionViewCell", bundle: nil)
                 self.videoCollect.register(cellNib, forCellWithReuseIdentifier: "VideoCollectionViewCell")
@@ -701,6 +755,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                 self.videoCollect.delegate = self
                 
             }
+            
             for _ in self.picArray{
                 print("picArray")
                 let cellNib = UINib(nibName: "PictureCollectionViewCell", bundle: nil)
@@ -711,40 +766,24 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                 self.picCollect.dataSource = self
                 self.picCollect.delegate = self
                 
-            }
-            DispatchQueue.main.async{
-                self.picCollect.reloadData()
-            }
-
-        }
+                }
+                
+            
+            
+        
         
         
       
         
         //when Cell begins playing
-                swiftTimer = Timer.scheduledTimer(timeInterval: 1, target:self, selector: #selector(SessionFeedViewController.updateCounter), userInfo: nil, repeats: true)
+                self.swiftTimer = Timer.scheduledTimer(timeInterval: 1, target:self, selector: #selector(SessionFeedViewController.updateCounter), userInfo: nil, repeats: true)
         
-                //print("ct \(player?.currentTime)")
-           
-            //}else{
-                //currentButtonFunc().setIsDiplayedButton(isDisplayedButton: false)
-            
-               // self.player?.stop()
-            //cButton.setIsDiplayedButton(isDisplayedButton: false)
-           // }
-        /*}else{
-            //self.sessInfoView.isHidden = true
-            self.player?.stop()
-            self.player?.playerView.isHidden = true
-            sessionNameLabel.text = " "
-            
-            sessionViewCountLabel.text = " "
-        }*/
+        
         DispatchQueue.main.async{
             self.artistTableView.reloadData()
-            
-            
+           // self.picCollect.reloadData()
         }
+    }
 
     }
     var sizingCell = PictureCollectionViewCell()
@@ -789,10 +828,10 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         //countingLabel.text = String(SwiftCounter++)
     }
     @IBOutlet weak var tableViewBackView: UIView!
-    @IBOutlet weak var bioBackView: UIView!
+    
     func hideSessionInfo(){
         tableViewBackView.isHidden = true
-        bioBackView.isHidden = true
+        //bioBackView.isHidden = true
         self.sessionNameLabel.isHidden = true
         self.bandNameButton.isHidden = true
         //self.sessionLabel.isHidden = true
@@ -898,9 +937,6 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             (i as! ONBGuitarButton).offsetYPosition(offset: (nextTouch?.y)! - firstTouch.y)
             scrollOffset += (nextTouch?.y)! - firstTouch.y
             //(i as! ONBGuitarButton).setIsDiplayedButton(isDisplayedButton: false)
-            
-            
-                
             }
             
             
@@ -953,10 +989,10 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         if collectionView == self.picCollect{
             return self.picArray.count
         }else{
-            if self.bandMedia.count == 0{
+            if self.nsurlArray.count == 0{
                 return 1
             }else{
-                return self.bandMedia.count
+                return self.nsurlArray.count
             }
         }
     }
@@ -993,6 +1029,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                     
                 }else{
                     (self.videoCollect.cellForItem(at: indexPath) as! VideoCollectionViewCell).player?.playerView.playerLayer.frame =  (self.videoCollect.cellForItem(at: indexPath) as! VideoCollectionViewCell).youtubePlayerView.bounds
+                    (self.videoCollect.cellForItem(at: indexPath) as! VideoCollectionViewCell).player?.stop()
                     
                     if (self.videoCollect.cellForItem(at: indexPath) as! VideoCollectionViewCell).player?.playbackState == .playing {
                     (self.videoCollect.cellForItem(at: indexPath) as! VideoCollectionViewCell).player?.avplayer.pause()
@@ -1008,11 +1045,42 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         
     }
     func configureVidCell(_ cell: VideoCollectionViewCell, forIndexPath indexPath: NSIndexPath){
-        
-        
-        if self.bandMedia.count == 0{
+       /* if self.bandMedia.count == 0{
             cell.layer.borderColor = UIColor.white.cgColor
             cell.layer.borderWidth = 2
+            cell.removeVideoButton.isHidden = true
+            cell.videoURL = nil
+            cell.player?.view.isHidden = true
+            cell.youtubePlayerView.isHidden = true
+            cell.removeVideoButton.isHidden = true
+            cell.noVideosLabel.isHidden = false
+        } else {
+            cell.layer.borderColor = UIColor.clear.cgColor
+            cell.layer.borderWidth = 0
+            cell.removeVideoButton.isHidden = true
+            cell.noVideosLabel.isHidden = true
+            cell.videoURL =  self.bandMedia[indexPath.row] as NSURL?
+            if(String(describing: cell.videoURL).contains("youtube") || String(describing: cell.videoURL).contains("youtu.be")){
+                cell.youtubePlayerView.loadVideoURL(cell.videoURL as! URL)
+                cell.youtubePlayerView.isHidden = false
+                cell.player?.view.isHidden = true
+                cell.isYoutube = true
+            }else{
+                cell.player?.setUrl(cell.videoURL as! URL)
+                cell.player?.view.isHidden = false
+                cell.player?.playerView.playerLayer.frame = cell.youtubePlayerView.bounds
+                cell.youtubePlayerView.isHidden = true
+                cell.isYoutube = false
+            }
+        }
+        
+        
+     */
+        print("indexPath: \(indexPath)")
+        print("ipr: \(indexPath.row)")
+        if self.nsurlArray.count == 0{
+            cell.layer.borderColor = UIColor.darkGray.cgColor
+            cell.layer.borderWidth = 1
             cell.removeVideoButton.isHidden = true
             cell.videoURL = nil
             cell.player?.view.isHidden = true
@@ -1031,16 +1099,16 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             
             
             
-            cell.videoURL =  self.bandMedia[indexPath.row] as NSURL?
+            cell.videoURL =  self.nsurlArray[indexPath.row] as NSURL?
             if(String(describing: cell.videoURL).contains("youtube") || String(describing: cell.videoURL).contains("youtu.be")){
                 cell.youtubePlayerView.loadVideoURL(cell.videoURL as! URL)
                 cell.youtubePlayerView.isHidden = false
                 cell.player?.view.isHidden = true
                 cell.isYoutube = true
             }else{
+                cell.player?.playerView.playerLayer.frame =  cell.youtubePlayerView.bounds
                 cell.player?.setUrl(cell.videoURL as! URL)
                 cell.player?.view.isHidden = false
-                cell.player?.playerView.playerLayer.frame = cell.youtubePlayerView.bounds
                 cell.youtubePlayerView.isHidden = true
                 cell.isYoutube = false
             }
@@ -1049,8 +1117,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             //self.group.leave()
         }
         
-        
-        
+
     }
     func configureCell(_ cell: PictureCollectionViewCell, forIndexPath indexPath: NSIndexPath) {
         
@@ -1089,7 +1156,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
              let rightInset = leftInset
              return UIEdgeInsetsMake(0, leftInset, 0, rightInset)
              }*/
-            }
+    }
 
 
     

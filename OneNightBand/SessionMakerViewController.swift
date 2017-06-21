@@ -99,6 +99,7 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
                 vc.thisBandObject = thisBand
                 vc.bandType = "band"
                 vc.senderScreen = "band"
+                vc.sender = "band"
                 
             }
         }
@@ -254,17 +255,17 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
             AddMusiciansButton.titleLabel?.textAlignment = NSTextAlignment.center
             editSessionInfoButton.isHidden = false
         
-            chatButton.setTitle("Band Chat", for: .normal)
+            /*chatButton.setTitle("Band Chat", for: .normal)
             chatButton.titleLabel?.numberOfLines = 2
             chatButton.setTitleColor(UIColor.white, for: .normal)
             chatButton.titleLabel?.font = UIFont.systemFont(ofSize: 20.0, weight: UIFontWeightLight)
-            chatButton.titleLabel?.textAlignment = NSTextAlignment.center
+            chatButton.titleLabel?.textAlignment = NSTextAlignment.center*/
         
-            addNewSession.setTitle("New Session", for: .normal)
+            /*addNewSession.setTitle("New Session", for: .normal)
             addNewSession.titleLabel?.numberOfLines = 2
             addNewSession.setTitleColor(UIColor.white, for: .normal)
             addNewSession.titleLabel?.font = UIFont.systemFont(ofSize: 20.0, weight: UIFontWeightLight)
-            addNewSession.titleLabel?.textAlignment = NSTextAlignment.center
+            addNewSession.titleLabel?.textAlignment = NSTextAlignment.center*/
         } else {
             
             editSessionInfoButton.isHidden = true
