@@ -298,7 +298,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         self.pickButton.layer.cornerRadius = 10
         self.bandNameButton.isHidden = true
         self.sessionBioTextView.layer.borderColor = UIColor.black.cgColor
-        self.sessionBioTextView.layer.borderWidth = 2
+        self.sessionBioTextView.layer.borderWidth = 1
         
         self.postToFeedButton.layer.cornerRadius = self.postToFeedButton.frame.width
         postToFeedButton.layer.borderWidth = 2
