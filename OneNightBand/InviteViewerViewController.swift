@@ -331,7 +331,7 @@ class InviteViewerViewController: UIViewController, UICollectionViewDelegate, UI
                                     self.onbArray.append(snap.value as! String)
                                 }
                                 self.onbArray.append(self.inviteArray[invite].bandID)
-                                tempDict2["artistsbands"] = self.bandArray
+                                tempDict2["artistsBands"] = self.bandArray
                                 Database.database().reference().child("users").child(self.currentUser!).updateChildValues(tempDict2)
                             }
                             Database.database().reference().child("bands").child(curCell.bandID).child("bandMembers").observeSingleEvent(of: .value, with: { (snapshot) in

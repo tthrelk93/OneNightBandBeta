@@ -74,6 +74,7 @@ class AddMediaToSession: UIViewController, UITextViewDelegate, UINavigationContr
     @IBAction func addPicTouched(_ sender: AnyObject) {
         currentPicker = "photo"
         picker.allowsEditing = true
+        picker.mediaTypes = ["kUTTypeImage"]
         
         present(picker, animated: true, completion: nil)
 

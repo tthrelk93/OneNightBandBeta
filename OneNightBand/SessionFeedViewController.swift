@@ -100,39 +100,61 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     @IBOutlet weak var sessionArtistsLabel: UILabel!
     @IBAction func bandNameButtonPressed(_ sender: Any) {
         var tempSess = SessionFeedSess()
-        for sess in sessionArray{
-            if (sess.button["sessionFeedKey"] as! String) == currentButtonFunc().sessionFeedKey {
-                
-                tempSess = sess
-                break
-            }
-        }
-        ref.child("bands").child(tempSess.bandID).observeSingleEvent(of: .value, with: {(snapshot) in
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                for snap in snapshots{
-                    if snap.key == "bandName"{
-                        self.bandInfoViewName.text = snap.value as! String?
-                                            }
-                    else if snap.key == "bandPictureURL"{
-                        self.bandImageView.loadImageUsingCacheWithUrlString((snap.value as! [String]).first!)
-                    }
-                    else if snap.key == "bandBio"{
-                        self.bandBio.text = snap.value as! String
-
-                    }
+        if self.bandButtonExp == false{
+            self.bandNameButton.setTitle(self.currentBandName, for: .normal)
+            UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: self.animationOptions, animations: {
+                self.bandNameButton.bounds = self.bandButtonOigin
+                self.bandNameButton.frame.origin = self.bandButtonCoord
+            })
+            self.bandButtonExp = true
+            for sess in sessionArray{
+                if (sess.button["sessionFeedKey"] as! String) == currentButtonFunc().sessionFeedKey {
+                    
+                    tempSess = sess
+                    break
                 }
             }
-            self.dropMenu?.showAndHideMenuAt(index: 0)
-        })
-        
-        DispatchQueue.main.async {
-            if self.sessInfoView.isHidden == true{
-                self.sessInfoView.isHidden = false
-            } else {
-                self.sessInfoView.isHidden = true
-            }
-        }
+            ref.child("bands").child(tempSess.bandID).observeSingleEvent(of: .value, with: {(snapshot) in
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    for snap in snapshots{
+                        if snap.key == "bandName"{
+                            self.bandInfoViewName.text = snap.value as! String?
+                        }
+                        else if snap.key == "bandPictureURL"{
+                            self.bandImageView.loadImageUsingCacheWithUrlString((snap.value as! [String]).first!)
+                        }
+                        else if snap.key == "bandBio"{
+                            self.bandBio.text = snap.value as! String
+                            
+                        }
+                    }
+                }
+                self.dropMenu?.showAndHideMenuAt(index: 0)
+            })
+            self.sessInfoView.isHidden = false
+            /*DispatchQueue.main.async {
+                if self.sessInfoView.isHidden == true{
+                    self.sessInfoView.isHidden = false
+                } else {
+                    self.sessInfoView.isHidden = true
+                }
+            }*/
+            
 
+ 
+        } else { UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: self.animationOptions, animations: {
+            self.bandNameButton.bounds = self.buttonBounceView.bounds
+            self.bandNameButton.frame.origin = self.buttonBounceView.frame.origin
+            //self.shiftView.frame.origin = self.bandNameButtonOrigin
+            //self.positionView.isHidden = true
+            
+            
+        })
+            self.bandNameButton.setTitle("?", for: .normal)
+            self.dropMenu?.showAndHideMenuAt(index: 0)
+            self.bandButtonExp = false
+            self.sessInfoView.isHidden = true
+        }
         
         
     }
@@ -293,8 +315,13 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     var sessionsInDatabase = [Session]()
     var sessFeedKeyArray = [String]()
     var displayLineMidY = CGFloat()
+    var bandButtonOigin = CGRect()
+    var bandButtonCoord = CGPoint()
+    var bandButtonExp = false
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.bandButtonOigin = self.bandNameButton.bounds
+        self.bandButtonCoord = self.bandNameButton.frame.origin
         self.pickButton.layer.cornerRadius = 10
         self.bandNameButton.isHidden = true
         self.sessionBioTextView.layer.borderColor = UIColor.black.cgColor
@@ -475,12 +502,18 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                 print((button as! ONBGuitarButton)._baseX)
                 print((button as! ONBGuitarButton).lane)
             }*/
+            if self.currentButtonFunc().isDisplayed == true{
+                //print("j")
+                self.displaySessionInfo()
+            }else{
+                self.hideSessionInfo()
+            }
 
         })
         
-                //self.currentButton = self.currentButtonFunc()
+        
 
-            //self.displaySessionInfo()
+
         
         
         
@@ -641,8 +674,10 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     var nsurlArray = [NSURL]()
     var nsurlDict = [NSURL: String]()
     var videoCount = 0
+    var currentBandName = String()
 
-    
+    fileprivate var animationOptions: UIViewAnimationOptions = [.curveEaseInOut, .beginFromCurrentState]
+    @IBOutlet weak var buttonBounceView: UIView!
     func displaySessionInfo(){
         DispatchQueue.main.async{
         self.nsurlArray.removeAll()
@@ -655,6 +690,14 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         //self.bandLabel.isHidden = true
         self.bandNameButton.isHidden = false
         self.bandNameButton.layer.cornerRadius = 10
+            UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: self.animationOptions, animations: {
+                self.bandNameButton.bounds = self.buttonBounceView.bounds
+                self.bandNameButton.frame.origin = self.buttonBounceView.frame.origin
+                //self.shiftView.frame.origin = self.bandNameButtonOrigin
+                //self.positionView.isHidden = true
+                
+            })
+
         self.sessionBioTextView.isHidden = true
         self.artistTableView.isHidden = true
         //self.sessionArtistsLabel.isHidden = true
@@ -690,6 +733,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             
             let tempLabel = tempSess.sessionName
             self.sessionNameLabel.text = tempLabel
+            self.currentBandName = tempSess.bandName
         self.bandNameButton.setTitle(tempSess.bandName, for: .normal)
         self.sessionBioTextView.text = tempSess.sessionBio
         self.sessionBioTextView.isEditable = false
