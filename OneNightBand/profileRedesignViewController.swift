@@ -504,8 +504,10 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                                             self.artistBio.isHidden = false
                                             self.artistName.isHidden = false
                                             //self.logoutButton.isHidden = false
+                                            DispatchQueue.main.async {
+                                                SwiftOverlays.removeAllBlockingOverlays()
+                                            }
                                             
-                                            SwiftOverlays.removeAllBlockingOverlays()
                                             
                                             
                                         }

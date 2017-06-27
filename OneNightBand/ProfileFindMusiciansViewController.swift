@@ -12,8 +12,27 @@ import FirebaseStorage
 import FirebaseAuth
 import FlexibleSteppedProgressBar
 
-class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UINavigationControllerDelegate, FlexibleSteppedProgressBarDelegate {
+class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UINavigationControllerDelegate, FlexibleSteppedProgressBarDelegate, UITabBarDelegate {
     @IBOutlet weak var addMusicians2Label: UILabel!
+    var sender = String()
+    var senderScreen = String()
+    @IBOutlet weak var tabBar: UITabBar!
+    @available(iOS 2.0, *)
+    public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){
+        self.sender = "artistFinder"
+        if item == tabBar.items?[0]{
+            //performSegue(withIdentifier: "ProfileToPFM", sender: self)
+        } else if item == tabBar.items?[1]{
+            performSegue(withIdentifier: "PFMTabBarToJoinBand", sender: self)
+            
+        } else if item == tabBar.items?[2]{
+            performSegue(withIdentifier: "PFMTabBarToProfile", sender: self)
+        } else {
+            performSegue(withIdentifier: "PFMTabBarToFeed", sender: self)
+        }
+    }
+
+    
     
     var progressBar: FlexibleSteppedProgressBar!
     
@@ -137,8 +156,11 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
      let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
     override func viewDidLoad() {
         super.viewDidLoad()
-        progressBounds = progressBarFrame.frame
         
+        progressBounds = progressBarFrame.frame
+        tabBar.delegate = self
+        tabBar.tintColor = ONBPink
+        tabBar.selectedItem = tabBar.items?[0]
         progressBar = FlexibleSteppedProgressBar()
         progressBar.frame = progressBounds
         progressBar.viewBackgroundColor = UIColor.blue

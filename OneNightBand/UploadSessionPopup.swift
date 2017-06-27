@@ -34,7 +34,32 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
     var sessionIDArray = [String]()
     var selectedSession = Session()
     var soloPickerUsed = false
+    
+    
+    @IBOutlet weak var b1Start: UILabel!
+    
+    @IBOutlet weak var b2Start: UILabel!
+    
+    @IBOutlet weak var b3Start: UILabel!
+    
+    @IBOutlet weak var b1P1: UILabel!
+    
+    @IBOutlet weak var b1P2: UILabel!
+    
+    @IBOutlet weak var b2P1: UILabel!
 
+    @IBOutlet weak var b2P2: UILabel!
+    
+    @IBOutlet weak var b2P3: UILabel!
+    
+    @IBOutlet weak var b3P1: UILabel!
+    
+    @IBOutlet weak var b3P2: UILabel!
+    
+    
+    
+    
+    
     @IBOutlet weak var soloSessionNameTextView: UITextField!
     @IBOutlet weak var soloSessTextView: UITextView!
     @IBOutlet weak var soloPicker: UIView!
@@ -99,12 +124,25 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
     var soloPicURLArray = [UIImage]()
     var soloVidURLArray = [NSURL]()
     
+    @IBOutlet weak var soloButton: UIButton!
+    @IBOutlet weak var onbButton: UIButton!
+    @IBOutlet weak var bandButton: UIButton!
     var selectedSoloVidArray = [NSURL]()
     var selectedSoloPicArray = [UIImage]()
     var selectedSoloPicURL = [NSURL]()
     let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
+    
+    fileprivate var animationOptions: UIViewAnimationOptions = [.curveEaseInOut, .beginFromCurrentState]
+   /* UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options:
+    Options, animations: {*/
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        bandButton.bounds = b1Start.bounds
+        onbButton.bounds = b2Start.bounds
+        soloButton.bounds = b3Start.bounds
+    
         self.originalMediaBounds = selectVideoFromSessionCollect.frame
         self.soloSessTextView.delegate = self
         self.soloPicker.isHidden = true
@@ -754,6 +792,23 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
 
     }
     @IBAction func soloSessionPressed(_ sender: Any) {
+        
+        UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options:
+            animationOptions, animations: {
+                self.bandButton.bounds = self.b1P2.bounds
+                 self.onbButton.bounds = self.b2P3.bounds
+                 self.soloButton.bounds = self.b3P1.bounds
+                
+                self.bandButton.frame.origin = self.b1P2.frame.origin
+                self.onbButton.frame.origin = self.b2P3.frame.origin
+                self.soloButton.frame.origin = self.b3P1.frame.origin
+               
+                
+               
+               
+                
+        })
+        
         self.soloPicker.isHidden = false
         self.soloPickerUsed = true
         self.yourBandsCollect.isHidden = true
@@ -769,6 +824,19 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
 
     }
     @IBAction func bandTypePressed(_ sender: Any) {
+        
+        UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options:
+            animationOptions, animations: {
+                self.bandButton.bounds = self.b1P1.bounds
+                self.onbButton.bounds = self.b2P2.bounds
+                self.soloButton.bounds = self.b3P2.bounds
+
+                self.bandButton.frame.origin = self.b1P1.frame.origin
+                self.onbButton.frame.origin = self.b2P2.frame.origin
+                self.soloButton.frame.origin = self.b3P2.frame.origin
+                
+                       })
+        
         self.soloPicker.isHidden = true
         //self.soloPickerUsed = false
         self.onbCollect.isHidden = true
@@ -787,6 +855,19 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
 
     }
     @IBAction func oneNightBandTypePressed(_ sender: Any) {
+        
+        UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options:
+            animationOptions, animations: {
+                self.bandButton.bounds = self.b1P2.bounds
+                self.onbButton.bounds = self.b2P1.bounds
+                self.soloButton.bounds = self.b3P2.bounds
+                self.bandButton.frame.origin = self.b1P2.frame.origin
+                self.onbButton.frame.origin = self.b2P1.frame.origin
+                self.soloButton.frame.origin = self.b3P2.frame.origin
+                
+               
+        })
+        
         self.soloPicker.isHidden = true
         //self.soloPickerUsed = false
         self.onbCollect.isHidden = false
