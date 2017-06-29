@@ -528,7 +528,8 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
             self.performSegue(withIdentifier: "AboutONBSegue", sender: self)
         })
     }
-    
+  
+
      func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         var selectedImageFromPicker: UIImage?
@@ -604,7 +605,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         }
         
         view.addSubview(profileImageViewButton)
-        profileImageViewButton.addSubview(profileImageView)
+        view.addSubview(profileImageView)
         view.addSubview(inputsContainerView)
         view.addSubview(loginRegisterSegmentedControl)
         view.addSubview(loginRegisterButton)

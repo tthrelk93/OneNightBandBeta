@@ -75,89 +75,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
                     
                     
                         self.onbID = sessReferenceAnyObject
-                        //self.tempArray.append(sessReferenceAnyObject)
-                        //print(sessReference.key)
-                        //sessReference.childByAutoId()
-                        
-                        
-                        
-                        //let ref = Database.database().reference()
-                       /* let wantedReference = ref.child("wantedAds").childByAutoId()
-                        let wantedReferenceAnyObject = wantedReference.key
-                        var values2 = [String:Any]()
-                        values2["bandType"] = "onb"
-                        values2["bandID"] = sessReferenceAnyObject
-                        values2["bandName"] = self.bandNameTextField.text
-                        values2["city"] = self.wantedAd.city
-                    if self.wantedAd.date.isEmpty || self.wantedAd.date == ""{
-                        values2["date"] = ""
-                    }
-                    else{
-                        values2["date"] = self.wantedAd.date
-                    }
-                        values2["experience"] = self.wantedAd.experience
-                        values2["instrumentNeeded"] = self.wantedAd.instrumentNeeded
-                        values2["moreInfo"] = self.wantedAd.moreInfo
-                    if self.wantedAd.responses.isEmpty {
-                        values2["responses"] = [""]
-                    } else {
-                        values2["responses"] = self.wantedAd.responses
-                    }
-                        values2["senderID"] = self.wantedAd.senderID
-                        values2["wantedImage"] = self.bandPics
-                        values2["wantedID"] = wantedReferenceAnyObject
-                        
-                        wantedReference.updateChildValues(values2, withCompletionBlock: {(err, ref) in
-                            if err != nil {
-                                print(err as Any)
-                                return
-                            }
-                        })
-                        var userValues = [String:Any]()
-                        var userWantedAdArray = [String]()
-                        ref.child("users").child(self.user!).child("wantedAds").observeSingleEvent(of: .value, with: {(snapshot) in
-                            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                                for snap in snapshots{
-                                    if let snapDict = snap.value as? [String:Any] {
-                                        let wantedID = snapDict["wantedID"]
-                                        userWantedAdArray.append(wantedID as! String)
-                                    }
-                                }
-                                userWantedAdArray.append(wantedReferenceAnyObject)
-                            }
-                            userValues["wantedAds"] = userWantedAdArray
-                            ref.child("users").child(self.user!).updateChildValues(userValues)
-                            
-                        })
-                        
-                        self.ref.child("oneNightBands").child(sessReferenceAnyObject).child("wantedAds").observeSingleEvent(of: .value, with: { (snapshot) in
-                            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                                for snap in snapshots{
-                                    
-                                    self.wantedIDArray.append(snap.value as! String)
-                                }
-                            }
-                            
-                            
-                            var tempDict = [String:Any]()
-                            tempDict["wantedAds"] = self.wantedIDArray
-                            let onbRef = self.ref.child("oneNightBands").child(sessReferenceAnyObject)
-                            onbRef.updateChildValues(tempDict, withCompletionBlock: {(err, ref) in
-                                if err != nil {
-                                    print(err as Any)
-                                    return
-                                }
-                            })
-                            //DispatchQueue.main.async{
-                            //    wantedAdDelegate.wantedAdCreated(self.tempWanted)
-                            //self.performSegue(withIdentifier: "CreateWantedToBandBoard", sender: self)
-                            //  }
-                            //self.dismissalDelegate?.finishedShowing()
-                            //self.removeAnimate()
-                            
-                            //var sessionVals = Dictionary
-                            //let userSessRef = ref.child("users").child(user).child("activeSessions")
-                        })*/
+                    
 
                         
                         
@@ -196,8 +114,7 @@ class CreateOneNightBandViewController: UIViewController, UIImagePickerControlle
                         })
                         
 
-                        //var sessionVals = Dictionary
-                        //let userSessRef = ref.child("users").child(user).child("activeSessions")
+                       
                         })
                     
                 })

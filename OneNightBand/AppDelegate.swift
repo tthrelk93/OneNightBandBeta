@@ -19,7 +19,7 @@ import DropDown
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-    
+    let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
        // UIApplication.shared.setStatusBarStyle(UIStatusBarStyle.lightContent, animated: true)
@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.sharedManager().enable = true
         DropDown.startListeningToKeyboard()
         UIPageControl.appearance().pageIndicatorTintColor = UIColor.darkGray
-        UIPageControl.appearance().currentPageIndicatorTintColor = UIColor.orange
+        UIPageControl.appearance().currentPageIndicatorTintColor = ONBPink
         UIPageControl.appearance().backgroundColor = UIColor.black
         // iOS 10 support
         if #available(iOS 10, *) {

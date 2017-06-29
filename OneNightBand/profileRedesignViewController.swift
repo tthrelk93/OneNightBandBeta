@@ -11,8 +11,8 @@ import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
 import SwiftOverlays
-
-class profileRedesignViewController: UIViewController, UITabBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource {
+import DropDown
+class profileRedesignViewController: UIViewController, UITabBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, UICollectionViewDelegateFlowLayout {
     @IBAction func logoutPressed(_ sender: Any) {
         handleLogout()
     }
@@ -189,33 +189,109 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     @IBOutlet weak var artistAllInfoView: UIView!
     @IBOutlet weak var backgroundImageView: UIImageView!
     
-    
-   /* override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ProfToAddMedia"{
-            if let vc = segue.destination as? AddMediaToSession {
-                vc.senderView = "main"
+    let TAGS = ["Guitar", "Bass Guitar", "Piano", "Saxophone", "Trumpet", "Stand-up Bass", "violin", "Drums", "Cello", "Trombone", "Vocals", "Mandolin", "Banjo", "Harp", "rapper", "DJ"]
+     var mostRecentTagTouched = IndexPath()
+    @IBOutlet weak var dropDownLabel: UILabel!
+    var selectedCount = 0
+    let dropDown = DropDown()
+    let dropDown2 = DropDown()
+    var lvlArray = [Int]()
+    func set_years_playing(){
+        dropDownLabel.text = "Select the number of years have you been playing this instrument"
+        dropDown2.selectionBackgroundColor = self.ONBPink
+        dropDown2.anchorView = self.view//collectionView.cellForItem(at: indexPath)
+        dropDown2.dataSource = ["1","2","3","4","5+","10+"]
+        dropDown2.selectionAction = {[unowned self] (index: Int, item: String) in
+            self.lvlArray.append(index)
+            self.tagsAndSkill[self.TAGS[self.mostRecentTagTouched.row]] = self.lvlArray
+            self.dropDownLabel.isHidden = true
+            self.dropDownLabel.text = "Select Instruments or Bio to Make Changes Before Pressing the Save Button"
+            
+            //self.dropDown2.selectRow(at: index)
+            //self.dropDown.selectRow(at: 2)
+            //self.dropDown.hide()
+        }
+        dropDown2.direction = .top
+        //dropDown2.selectRow(at: 1)
+        dropDown2.backgroundColor = UIColor.black.withAlphaComponent(0.9)
+        dropDown2.textColor = UIColor.white.withAlphaComponent(0.8)
+        dropDown2.show()
+        
+    }
+
+   
+    @IBAction func saveButtonPressed(_ sender: Any) {
+        var tagArray = [String]()
+        for tag in tags{
+            if(tag.selected == true){
+                tagArray.append(tag.name!)
+                selectedCount+=1
             }
             
         }
-        else if segue.identifier == "MyBandsToSessionMaker" {
-            if let viewController = segue.destination as? SessionMakerViewController {
-                viewController.sessionID = self.bandIDArray[tempIndex]
-               print("bandID = \(self.bandIDArray[tempIndex])")
-                print("tempIndex= \(self.tempIndex)")
-                viewController.sender = "myBands"
+            if let user = Auth.auth().currentUser?.uid{
+                let ref = Database.database().reference()
+                let userRef = ref.child("users").child(user)
+                var dict = [String: Any]()
+                dict["instruments"] = tagsAndSkill
+                dict["bio"] = bioTextView.text as Any?
+                userRef.updateChildValues(dict, withCompletionBlock: {(err, ref) in
+                    if err != nil {
+                        print(err as Any)
+                        return
+                    }
+                })
+                DispatchQueue.main.async{
+                    self.skillArray.removeAll()
+                    self.yearsArray.removeAll()
+                    self.instrumentCount = 0
+                    self.ref.child("users").child(self.userID).observeSingleEvent(of: .value, with: { (snapshot) in
+                        let value = snapshot.value as? NSDictionary
+                        
+                        self.artistBio.text = value?["bio"] as! String
+                        self.artistName.text = (value?["name"] as! String)
+                        let instrumentDict = value?["instruments"] as! [String: Any]
+                        self.dictionaryOfInstruments = value?["instruments"] as! [String: Any]
+                        //var instrumentArray = [String]()
+                        for (key, value) in instrumentDict{
+                            self.instrumentCount += 1
+                            self.instrumentArray.append(key)
+                            self.skillArray.append(self.playingLevelArray[(value as! [Int])[0]])
+                            self.yearsArray.append(self.playingYearsArray[(value as! [Int])[1]])
+                            
+                        }
+                        
+                        //print(instrumentArray)
+                        for _ in self.instrumentArray{
+                            let cellNib = UINib(nibName: "InstrumentTableViewCell", bundle: nil)
+                            self.instrumentTableView.register(cellNib, forCellReuseIdentifier: "InstrumentCell")
+                            self.instrumentTableView.delegate = self
+                            self.instrumentTableView.dataSource = self
+                        }
+
+                    })
+                }
                 
-            }
-        } else {
-            if let viewController = segue.destination as? OneNightBandViewController {
-                viewController.onbID = self.onbIDArray[tempIndex]
-            }
+                
+                
+          
         }
-        
-        
+    
+
     }
-    */
+    
+    @IBOutlet weak var flowLayout: FlowLayout!
+       @IBAction func hideButtonPressed(_ sender: Any) {
+        editInfoView.isHidden = true
+    }
+    var tagsAndSkill = [String: [Int]]()
+    @IBOutlet weak var instrumentCollect: UICollectionView!
+    @IBOutlet weak var hideButton: UIButton!
+    @IBOutlet weak var editInfoView: UIView!
+    @IBOutlet weak var noBandsLabel: UILabel!
     let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
     
+    @IBOutlet weak var bioTextView: UITextView!
     @IBOutlet weak var notificationBubble1: UILabel!
     var inviteCount = 0
     @IBOutlet weak var notificationBubble2: UILabel!
@@ -224,8 +300,55 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     var instrumentCount = 0
     var artistID = String()
     var fromTabBar: Bool?
+    var sizingCell6 = TagCell()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.noBandsLabel.layer.borderWidth = 1
+        self.noBandsLabel.layer.borderColor = UIColor.darkGray.cgColor
+        self.hideButton.layer.cornerRadius = hideButton.frame.width/2
+        
+        instrumentCollect.delegate = self
+        instrumentCollect.dataSource = self
+        bioTextView.delegate = self
+        
+        //let dropDown = DropDown()
+        
+        dropDown.selectionBackgroundColor = self.ONBPink
+        dropDown.anchorView = self.view//collectionView.cellForItem(at: indexPath)
+        dropDown.dataSource = ["Beginner","Intermediate","Advanced","Expert","Pro"]
+        dropDown.selectionAction = {[unowned self] (index: Int, item: String) in
+            self.dropDownLabel.isHidden = false
+            
+            self.lvlArray.append(index)
+            self.tagsAndSkill[self.TAGS[self.mostRecentTagTouched.row]] = self.lvlArray
+            //self.dropDown.selectRow(at: index)
+            //self.dropDown.selectRow(at: 2)
+            //self.dropDown.hide()
+            self.set_years_playing()
+        }
+
+
+        dropDown.direction = .top
+        //dropDown.selectRow(at: 1)
+        dropDown.backgroundColor = UIColor.black.withAlphaComponent(0.9)
+        dropDown.textColor = UIColor.white.withAlphaComponent(0.8)
+        
+        
+        
+        //initializing TagCell and creating a cell for each item in array TAGS
+        let cellNib = UINib(nibName: "TagCell", bundle: nil)
+        self.instrumentCollect.register(cellNib, forCellWithReuseIdentifier: "TagCell")
+        self.instrumentCollect.backgroundColor = UIColor.clear
+        self.sizingCell6 = ((cellNib.instantiate(withOwner: nil, options: nil) as NSArray).firstObject as! TagCell?)!
+        self.flowLayout.sectionInset = UIEdgeInsetsMake(8, 8, 8, 8)
+        for name in TAGS {
+            let tag = Tag()
+            tag.name = name
+            self.tags.append(tag)
+        }
+
+        
+        
         updateInfoButton.layer.cornerRadius = 7
         addMedia.layer.cornerRadius = 7
         invitesMessagesButton.layer.cornerRadius = 7
@@ -677,8 +800,15 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         self.performSegue(withIdentifier: "ProfToInvites", sender: self)
     }
     @IBOutlet weak var invitesMessagesButton: UIButton!
-    
+    var editShowing = false
     @IBAction func updateInfoPressed(_ sender: Any) {
+        if editShowing == false {
+            editInfoView.isHidden = false
+            editShowing = true
+        } else {
+            editInfoView.isHidden = true
+            editShowing = false
+        }
     }
     
     @IBOutlet weak var updateInfoButton: UIButton!
@@ -721,7 +851,26 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         }
     }
     
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if bioTextView.textColor == self.ONBPink {
+            //editBioTextView.text = nil
+            bioTextView.textColor = UIColor.white
+        }
+    }
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if bioTextView.text.isEmpty {
+           // bioTextView.text = "Tap here to edit your artist bio!"
+            bioTextView.textColor = self.ONBPink
+        }
+    
+        
+    }
+
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int{
+        if collectionView == instrumentCollect{
+            return TAGS.count
+        }
         if collectionView == picCollect{
             return self.picArray.count
         }else if collectionView == videoCollectionView{
@@ -738,10 +887,22 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             return 0
         }
     }
+    func configureTagCell(_ cell: TagCell, forIndexPath indexPath: IndexPath) {
+        let tag = tags[(indexPath as NSIndexPath).row]
+        cell.tagName.text = tag.name
+        cell.tagName.textColor = tag.selected ? UIColor.white : UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
+        cell.backgroundColor = tag.selected ? self.ONBPink : UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1)
+    }
+
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        
+        if collectionView == instrumentCollect{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TagCell", for: indexPath as IndexPath) as! TagCell
+            self.configureTagCell(cell, forIndexPath: (indexPath as NSIndexPath) as IndexPath)
+            return cell
+
+        }
         if collectionView == picCollect{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PictureCollectionViewCell", for: indexPath as IndexPath) as! PictureCollectionViewCell
             self.configureCell(cell, forIndexPath: indexPath as NSIndexPath)
@@ -805,9 +966,33 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
 
     }
     
+    @IBOutlet weak var notYourProfView: UIView!
     
+    @IBOutlet weak var notYourProfLabel: UILabel!
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == instrumentCollect {
+            lvlArray.removeAll()
+            self.dropDownLabel.text = "Select Playing Level"
+            
+            //let dropDown = Drop
+            self.mostRecentTagTouched = indexPath
+            if(tags[indexPath.row].selected == true){
+                dropDownLabel.isHidden = true
+                selectedCount -= 1
+                tagsAndSkill.removeValue(forKey: TAGS[indexPath.row])
+            }else{
+                dropDownLabel.isHidden = false
+                selectedCount += 1
+                dropDown.show()
+                
+                //self.dropDown.anchorView
+            }
+            
+            collectionView.deselectItem(at: indexPath as IndexPath, animated: false)
+            tags[indexPath.row].selected = !tags[indexPath.row].selected
+            self.instrumentCollect.reloadData()
+        }
         if collectionView == self.videoCollectionView{
             if (self.videoCollectionView.cellForItem(at: indexPath) as! VideoCollectionViewCell).videoURL?.absoluteString?.contains("youtube") == false && (self.videoCollectionView.cellForItem(at: indexPath) as! VideoCollectionViewCell).videoURL?.absoluteString?.contains("youtu.be") == false {
                 if (self.videoCollectionView.cellForItem(at: indexPath) as! VideoCollectionViewCell).player?.playbackState == .playing {

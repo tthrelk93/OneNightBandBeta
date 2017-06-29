@@ -136,13 +136,13 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
         
         dropDown.selectionBackgroundColor = self.ONBPink
         dropDown.anchorView = self.view//collectionView.cellForItem(at: indexPath)
-        dropDown.dataSource = ["beginner","intermediate","advanced","expert"]
+        dropDown.dataSource = ["Beginner","Intermediate","Advanced","Expert","Pro"]
         dropDown.selectionAction = {[unowned self] (index: Int, item: String) in
             self.dropDownLabel.isHidden = false
             
             self.lvlArray.append(index)
             self.tagsAndSkill[self.TAGS[self.mostRecentTagTouched.row]] = self.lvlArray
-            self.dropDown.selectRow(at: index)
+            //self.dropDown.selectRow(at: index)
             //self.dropDown.selectRow(at: 2)
             //self.dropDown.hide()
             self.set_years_playing()
@@ -166,7 +166,7 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
             self.tags.append(tag)
         }
 
-        pageTexts = ["What Instrument(s) are you best with? Only select an instrument if you feel comfortable playing it with other musicians in a jam environment.","Add a little bio about your musical style, influences, and background so that other musicians have a good idea of your playing style."]
+        pageTexts = ["What Instrument(s) do you play? Select an instrument if you feel comfortable playing it with other musicians in a jam environment.","Add a bio about your musical style, influences, and background so that other musicians have an idea of your playing style."]
         
         self.pageViewController = self.storyboard?.instantiateViewController(withIdentifier: "UITutorialPageViewController") as! UIPageViewController
         self.pageViewController.dataSource = self
