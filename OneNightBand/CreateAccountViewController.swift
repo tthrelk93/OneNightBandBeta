@@ -182,16 +182,15 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         //imageView.image = UIImage(named: "icon-profile")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        
-        //imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView)))
         imageView.isUserInteractionEnabled = true
+        imageView.layer.cornerRadius = 10
         
         return imageView
     }()
     func setupProfileImageView() {
         //need x, y, width, height constraints
         profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        profileImageView.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -80).isActive = true
+        profileImageView.bottomAnchor.constraint(equalTo: loginRegisterSegmentedControl.topAnchor, constant: -50).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 130).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 130).isActive = true
     }
@@ -576,7 +575,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         }*/
         ONBLabel.isHidden = false
         DispatchQueue.main.async {
-            sleep(7)
+            sleep(4)
             
             self.triangleBackground.isHidden = false
             self.shadeView.isHidden = false
@@ -604,8 +603,9 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
             locationManager.startUpdatingLocation()
         }
         
-        view.addSubview(profileImageViewButton)
+        
         view.addSubview(profileImageView)
+        view.addSubview(profileImageViewButton)
         view.addSubview(inputsContainerView)
         view.addSubview(loginRegisterSegmentedControl)
         view.addSubview(loginRegisterButton)
@@ -620,6 +620,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         profileImageViewButton.isHidden = true
         
         setupProfileImageViewButton()
+        setupProfileImageView()
         setupCreateAccountLabel()
         setupInputsContainerView()
         setupLoginRegisterSegmentedControl()

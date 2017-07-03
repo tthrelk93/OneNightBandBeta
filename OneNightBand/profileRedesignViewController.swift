@@ -20,9 +20,21 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     @IBOutlet weak var logoutButton: UIButton!
     @IBAction func segmentSwitched(_ sender: Any) {
         if self.bandONBSegment.selectedSegmentIndex == 0 {
+            if self.bandArray.count == 0{
+                self.noBandsLabel.isHidden = false
+            } else {
+                self.noBandsLabel.isHidden = true
+            }
+
             self.onbCollect.isHidden = true
             self.bandCollect.isHidden = false
         } else {
+            if self.onbArray.count == 0{
+                self.noBandsLabel.isHidden = false
+            } else {
+                self.noBandsLabel.isHidden = true
+            }
+
             self.onbCollect.isHidden = false
             self.bandCollect.isHidden = true
         }
@@ -32,7 +44,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     var userID = String()
     var yearsArray = [String]()
     var playingYearsArray = ["1","2","3","4","5+","10+"]
-    var playingLevelArray = ["beginner", "intermediate", "advanced", "expert"]
+    var playingLevelArray = ["Beginner", "Intermediate", "Advanced", "Expert","Pro"]
     var tempLink: NSURL?
     var rotateCount = 0
     var sizingCell: PictureCollectionViewCell?
@@ -74,6 +86,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     @IBOutlet weak var tabBar: UITabBar!
     @IBOutlet weak var infoShiftLocation: UIView!
     @IBAction func bandCountPressed(_ sender: Any) {
+    
         if infoExpanded == true{
             UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
                 
@@ -85,6 +98,11 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             })
             
         } else {
+            if self.bandArray.count == 0{
+                self.noBandsLabel.isHidden = false
+            } else {
+                self.noBandsLabel.isHidden = true
+            }
             UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
                 self.artistInfoView.bounds = self.infoShiftViewBounds
                 self.artistInfoView.frame.origin = self.infoShiftViewOrigin
@@ -261,6 +279,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                             
                         }
                         
+                        
                         //print(instrumentArray)
                         for _ in self.instrumentArray{
                             let cellNib = UINib(nibName: "InstrumentTableViewCell", bundle: nil)
@@ -268,24 +287,33 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                             self.instrumentTableView.delegate = self
                             self.instrumentTableView.dataSource = self
                         }
+                        DispatchQueue.main.async{
+                            self.instrumentTableView.reloadData()
+                        }
 
                     })
+                    
+                        self.editInfoView.isHidden = true
+                        self.editShowing = false
+                    
+                    
+
                 }
                 
                 
                 
           
         }
-    
-
+        
     }
     
     @IBOutlet weak var flowLayout: FlowLayout!
        @IBAction func hideButtonPressed(_ sender: Any) {
         editInfoView.isHidden = true
+        editShowing = false
     }
     var tagsAndSkill = [String: [Int]]()
-    @IBOutlet weak var instrumentCollect: UICollectionView!
+    
     @IBOutlet weak var hideButton: UIButton!
     @IBOutlet weak var editInfoView: UIView!
     @IBOutlet weak var noBandsLabel: UILabel!
@@ -300,15 +328,16 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     var instrumentCount = 0
     var artistID = String()
     var fromTabBar: Bool?
-    var sizingCell6 = TagCell()
+    var sizingCell6:TagCell?
     override func viewDidLoad() {
         super.viewDidLoad()
         self.noBandsLabel.layer.borderWidth = 1
         self.noBandsLabel.layer.borderColor = UIColor.darkGray.cgColor
-        self.hideButton.layer.cornerRadius = hideButton.frame.width/2
+        self.hideButton.layer.cornerRadius = 10
         
-        instrumentCollect.delegate = self
-        instrumentCollect.dataSource = self
+        bioTextView.textColor = UIColor.lightGray
+        bioTextView.layer.borderColor = UIColor.lightGray.cgColor
+        bioTextView.layer.borderWidth = 1
         bioTextView.delegate = self
         
         //let dropDown = DropDown()
@@ -335,20 +364,6 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         
         
         
-        //initializing TagCell and creating a cell for each item in array TAGS
-        let cellNib = UINib(nibName: "TagCell", bundle: nil)
-        self.instrumentCollect.register(cellNib, forCellWithReuseIdentifier: "TagCell")
-        self.instrumentCollect.backgroundColor = UIColor.clear
-        self.sizingCell6 = ((cellNib.instantiate(withOwner: nil, options: nil) as NSArray).firstObject as! TagCell?)!
-        self.flowLayout.sectionInset = UIEdgeInsetsMake(8, 8, 8, 8)
-        for name in TAGS {
-            let tag = Tag()
-            tag.name = name
-            self.tags.append(tag)
-        }
-
-        
-        
         updateInfoButton.layer.cornerRadius = 7
         addMedia.layer.cornerRadius = 7
         invitesMessagesButton.layer.cornerRadius = 7
@@ -358,9 +373,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         bandONBSegment.layer.masksToBounds = true
         bandONBSegment.layer.cornerRadius = 10
         inviteCount = 0
-        if fromTabBar == true {
-            self.sender = "profile"
-        }
+        
         //SwiftOverlays.showBlockingTextOverlay("Loading Profile")
         if self.sender == "wantedAdCreated"{
             self.createWantedSuccess.isHidden = false
@@ -368,15 +381,19 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         if self.sender == "onb" || self.sender == "band" || self.sender == "feed" || self.sender == "bandBoard" || self.sender == "bandToFeed" || self.sender == "af"{
             self.tabBar.isHidden = true
             self.backButton.isHidden = false
-            if self.sender == "feed" && self.fromTabBar == true{
+            if self.sender == "tabBarFeed" {
                 self.userID = (Auth.auth().currentUser?.uid)!
                 self.tabBar.isHidden = false
                 self.backButton.isHidden = true
                 self.logoutButton.isHidden = false
+                self.notYourProfView.isHidden = true
             
             } else {
                 self.userID = self.artistID
                 self.logoutButton.isHidden = true
+                self.backButton.isHidden = false
+                self.tabBar.isHidden = true
+                self.notYourProfView.isHidden = false
                 
             }
             self.addMedia.isEnabled = false
@@ -512,7 +529,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             
             self.ref.child("users").child(self.userID).observeSingleEvent(of: .value, with: { (snapshot) in
                 let value = snapshot.value as? NSDictionary
-                
+                self.bioTextView.text = value?["bio"] as! String
                 self.artistBio.text = value?["bio"] as! String
                 self.artistName.text = (value?["name"] as! String)
                 let instrumentDict = value?["instruments"] as! [String: Any]
@@ -526,6 +543,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                     
                 }
                 
+                
                 //print(instrumentArray)
                 for _ in self.instrumentArray{
                     let cellNib = UINib(nibName: "InstrumentTableViewCell", bundle: nil)
@@ -533,6 +551,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                     self.instrumentTableView.delegate = self
                     self.instrumentTableView.dataSource = self
                 }
+                
                 
                 self.ref.child("users").child(self.userID).child("activeSessions").observeSingleEvent(of: .value, with: {(snapshot) in
                     /*if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
@@ -598,7 +617,9 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                                     
                                     
                                     
+                                        
                                     DispatchQueue.main.async {
+                    
                                         for _ in self.bandIDArray{
                                             
                                             let cellNib = UINib(nibName: "SessionCell", bundle: nil)
@@ -627,12 +648,28 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                                             self.artistBio.isHidden = false
                                             self.artistName.isHidden = false
                                             //self.logoutButton.isHidden = false
+                                            let cellNib = UINib(nibName: "TagCell", bundle: nil)
+                                            self.instrumentCollect.register(cellNib, forCellWithReuseIdentifier: "TagCell")
+                                            self.instrumentCollect.backgroundColor = UIColor.clear
+                                            self.sizingCell6 = (cellNib.instantiate(withOwner: nil, options: nil) as NSArray).firstObject as! TagCell?
+                                           // self.flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
+                                            for name in self.TAGS {
+                                                let tag = Tag()
+                                                tag.name = name
+                                                
+                                                self.tags.append(tag)
+                                                
+                                            }
+                                            //self.instrumentCollect.setCollectionViewLayout(self.flowLayout, animated: true)
+                                            self.instrumentCollect.dataSource = self
+                                            self.instrumentCollect.delegate = self
+                                            
                                             DispatchQueue.main.async {
                                                 SwiftOverlays.removeAllBlockingOverlays()
                                             }
                                             
-                                            
-                                            
+                                        
+                                        
                                         }
                                     }
                                 })
@@ -659,6 +696,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         // Do any additional setup after loading the view.
     }
 
+    @IBOutlet weak var instrumentCollect: UICollectionView!
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -852,15 +890,15 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if bioTextView.textColor == self.ONBPink {
+        if bioTextView.textColor == UIColor.lightGray {
             //editBioTextView.text = nil
-            bioTextView.textColor = UIColor.white
+            bioTextView.textColor = self.ONBPink
         }
     }
     func textViewDidEndEditing(_ textView: UITextView) {
         if bioTextView.text.isEmpty {
            // bioTextView.text = "Tap here to edit your artist bio!"
-            bioTextView.textColor = self.ONBPink
+            bioTextView.textColor = UIColor.lightGray
         }
     
         
@@ -869,7 +907,8 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int{
         if collectionView == instrumentCollect{
-            return TAGS.count
+            print(tags.count)
+            return tags.count
         }
         if collectionView == picCollect{
             return self.picArray.count
@@ -887,23 +926,32 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             return 0
         }
     }
-    func configureTagCell(_ cell: TagCell, forIndexPath indexPath: IndexPath) {
-        let tag = tags[(indexPath as NSIndexPath).row]
+    func configureTagCell(_ cell: TagCell, forIndexPath indexPath: NSIndexPath) {
+        print(tags)
+        let tag = tags[indexPath.row]
+        if self.instrumentArray.contains(tag.name!){
+            instrumentCollect.selectItem(at: indexPath, animated: true, scrollPosition: instrumentCollect.scrollPosition)
+            //cell.isSelected = true
+        } else {
+            cell.isSelected = false
+        }
         cell.tagName.text = tag.name
-        cell.tagName.textColor = tag.selected ? UIColor.white : UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
-        cell.backgroundColor = tag.selected ? self.ONBPink : UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1)
+        cell.tagName.textColor = tag.selected ? UIColor.white : ONBPink
+        cell.backgroundColor = tag.selected ? self.ONBPink : UIColor.white
+        //print(cell.tagName.text)
     }
 
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if collectionView == instrumentCollect{
+            print("inCellForTag")
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TagCell", for: indexPath as IndexPath) as! TagCell
-            self.configureTagCell(cell, forIndexPath: (indexPath as NSIndexPath) as IndexPath)
+            self.configureTagCell(cell, forIndexPath: indexPath as NSIndexPath)
             return cell
 
         }
-        if collectionView == picCollect{
+        else if collectionView == picCollect{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PictureCollectionViewCell", for: indexPath as IndexPath) as! PictureCollectionViewCell
             self.configureCell(cell, forIndexPath: indexPath as NSIndexPath)
             cell.layer.cornerRadius = 10
@@ -960,6 +1008,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
 
 
         } else {
+            print("wut")
             let cell = UICollectionViewCell()
             return cell
         }

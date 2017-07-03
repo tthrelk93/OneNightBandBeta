@@ -14,13 +14,12 @@ import FirebaseDatabase
 import DropDown
 
 
-class TutorialViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextViewDelegate{
+class TutorialViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextViewDelegate{
     let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
     let TAGS = ["Guitar", "Bass Guitar", "Piano", "Saxophone", "Trumpet", "Stand-up Bass", "violin", "Drums", "Cello", "Trombone", "Vocals", "Mandolin", "Banjo", "Harp", "rapper", "DJ"]
     var sizingCell: TagCell?
     var tags = [Tag]()
     var pageTexts = [String]()
-    var pageViewController: UIPageViewController!
     var currentIndex = 0
     var selectedCount = 0
     let dropDown = DropDown()
@@ -30,35 +29,16 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
     @IBOutlet weak var backButton: UIButton!
     
     @IBAction func backButtonTapped(_ sender: AnyObject) {
+        infoTextLabel.text = "What Instrument(s) do you play? Select an instrument if you feel comfortable playing it with other musicians in a jam environment."
         startExploringButton.isHidden = true
-        if(currentIndex == 0){
+       
             self.collectionView.isHidden = false
             self.editBioTextView.isHidden = true
-            currentIndex += 1
+        
             
-        }
-        else{
-            self.collectionView.isHidden = true
-            self.editBioTextView.isHidden = false
-            currentIndex -= 1
-        }
+       
 
         continueButton.isHidden = false
-        let skillsViewController = self.pageTutorialAtIndex(0) as AboutONBViewController
-        var viewControllers = [AboutONBViewController]()
-        
-        
-        
-        viewControllers = [skillsViewController]
-        
-        self.pageViewController.setViewControllers(viewControllers, direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
-        
-        //making pageView only take up top half of screen
-        //self.pageViewController.view.frame.size.height = self.view.frame.size.height/2
-        //adding subview
-        self.addChildViewController(self.pageViewController)
-        self.view.addSubview(self.pageViewController.view)
-        self.pageViewController.didMove(toParentViewController: self)
         
         backButton.isHidden = true
         //currentIndex = 0
@@ -68,24 +48,19 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
     
     @IBOutlet weak var continueButton: UIButton!
     @IBAction func continueSelected(_ sender: AnyObject) {
-        //startExploringButton.isHidden = false
-        if(currentIndex == 0){
-            self.collectionView.isHidden = false
-            self.editBioTextView.isHidden = true
-            currentIndex += 1
-        }
-        else{
+        startExploringButton.isHidden = false
             self.collectionView.isHidden = true
             self.editBioTextView.isHidden = false
-            currentIndex -= 1
-        }
+            self.infoTextLabel.text = "Add a bio about your musical style, influences, and background so that other musicians have an idea of your playing style."
+        
+        
         if(selectedCount != 0 && editBioTextView.text != "Tap here to edit your artist bio!"){
             startExploringButton.isEnabled = true
-            startExploringButton.isHidden = false
+            //startExploringButton.isHidden = false
             startExploringButton.titleLabel?.text = "Start Exploring!"
         }else{
             startExploringButton.isEnabled = false
-            startExploringButton.isHidden = true
+            //startExploringButton.isHidden = true
             startExploringButton.titleLabel?.text = "Fill Out Missing Info to Continue"
         }
         
@@ -95,18 +70,7 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
         
 
         continueButton.isHidden = true
-        let bioViewController = self.pageTutorialAtIndex(1) as AboutONBViewController
-        var viewControllers = [AboutONBViewController]()
-        viewControllers = [bioViewController]
-        
-        self.pageViewController.setViewControllers(viewControllers, direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
-        
-        //making pageView only take up top half of screen
-        //self.pageViewController.view.frame.size.height = self.view.frame.size.height/2
-        //adding subview
-        self.addChildViewController(self.pageViewController)
-        self.view.addSubview(self.pageViewController.view)
-        self.pageViewController.didMove(toParentViewController: self)
+       
         backButton.isHidden = false
         //currentIndex = 1
         
@@ -116,14 +80,16 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var startExploringButton: UIButton!
     
+    @IBOutlet weak var infoTextLabel: UILabel!
     var mostRecentTagTouched = IndexPath()
     override func viewDidLoad(){
         super.viewDidLoad()
-        
+        infoTextLabel.text = "What Instrument(s) do you play? Select an instrument if you feel comfortable playing it with other musicians in a jam environment."
         backButton.isHidden = true
         continueButton.isHidden = false
         startExploringButton.isHidden = true
         startExploringButton.isEnabled = false
+        startExploringButton.titleLabel?.numberOfLines = 2
         
         self.editBioTextView.delegate = self
         self.editBioTextView.isHidden = true
@@ -166,28 +132,14 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
             self.tags.append(tag)
         }
 
-        pageTexts = ["What Instrument(s) do you play? Select an instrument if you feel comfortable playing it with other musicians in a jam environment.","Add a bio about your musical style, influences, and background so that other musicians have an idea of your playing style."]
+        pageTexts = ["What Instrument(s) do you play? Select an instrument if you feel comfortable playing it with other musicians in a jam environment.","Select estimated playing level.","Select The number of years you have been playing this instrument","Add a bio about your musical style, influences, and background so that other musicians have an idea of your playing style."]
         
-        self.pageViewController = self.storyboard?.instantiateViewController(withIdentifier: "UITutorialPageViewController") as! UIPageViewController
-        self.pageViewController.dataSource = self
-        self.pageViewController.delegate = self
+       
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
 
         //initializing first aboutONBViewController
-        let initialContentViewController = self.pageTutorialAtIndex(0) as AboutONBViewController
-        var viewControllers = [AboutONBViewController]()
-        viewControllers = [initialContentViewController]
-        currentIndex += 1
-        self.pageViewController.setViewControllers(viewControllers, direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
        
-        //making pageView only take up top half of screen
-        self.pageViewController.view.frame.size.height = self.view.frame.size.height/2
-        //adding subview
-        self.addChildViewController(self.pageViewController)
-        self.view.addSubview(self.pageViewController.view)
-        self.pageViewController.didMove(toParentViewController: self)
-        pageViewController.view.isUserInteractionEnabled = false
         /*self.collectionView.isHidden = false
         self.editBioTextView.isHidden = true*/
         
@@ -196,7 +148,7 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
     @IBOutlet weak var dropDownLabel: UILabel!
     var lvlArray = [Int]()
     func set_years_playing(){
-        dropDownLabel.text = "Select the number of years have you been playing this instrument"
+        dropDownLabel.text = "Select how long you have been playing this instrument"
         dropDown2.selectionBackgroundColor = self.ONBPink
         dropDown2.anchorView = self.view//collectionView.cellForItem(at: indexPath)
         dropDown2.dataSource = ["1","2","3","4","5+","10+"]
@@ -232,13 +184,13 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
             }
         }*/
         if(selectedCount != 0 && editBioTextView.text != "Tap here to edit your artist bio!"){
-            startExploringButton.isHidden = false
+            //startExploringButton.isHidden = false
             startExploringButton.isEnabled = true
             startExploringButton.titleLabel?.text = "Start Exploring?"
         }else{
-            startExploringButton.isHidden = true
+            //startExploringButton.isHidden = true
             startExploringButton.isEnabled = false
-            startExploringButton.titleLabel?.text = "Fill Out Missing Info to Continue"
+            startExploringButton.titleLabel?.text = "Missing Info"
         }
 
     }
@@ -263,7 +215,9 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         lvlArray.removeAll()
         self.dropDownLabel.text = "Select Playing Level"
-        
+        for val in 0...dropDown.dataSource.count - 1{
+            dropDown.deselectRow(at: val)
+        }
         //let dropDown = Drop
         self.mostRecentTagTouched = indexPath
         if(tags[indexPath.row].selected == true){
@@ -291,72 +245,6 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
     }
     
     
-    //PageController Functions
-    func pageTutorialAtIndex(_ index: Int) ->AboutONBViewController{
-        
-        let pageContentViewController = self.storyboard?.instantiateViewController(withIdentifier: "TutorialContentHolder") as! AboutONBViewController
-        pageContentViewController.tutorialText = pageTexts[index]
-        pageContentViewController.pageIndex = index
-        
-        return pageContentViewController
-    }
-    
-    open func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController?{
-        
-        let viewController = viewController as! AboutONBViewController
-        var index = viewController.pageIndex! as Int
-        
-        if(index == 0 || index == NSNotFound){
-            return nil
-        }
-        
-        index -= 1
-        currentIndex -= 1
-        return self.pageTutorialAtIndex(index)
-    }
-    
-    open func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController?{
-        let viewController = viewController as! AboutONBViewController
-        var index = viewController.pageIndex! as Int
-        if(index == pageTexts.endIndex - 1 || index == NSNotFound){
-            return nil
-        }
-        index += 1
-        currentIndex += 1
-        if(index == pageTexts.count){
-            return nil
-        }
-        return self.pageTutorialAtIndex(index)
-    }
-    
-    open func presentationCount(for pageViewController: UIPageViewController) -> Int{
-        return pageTexts.count
-    }
-    
-    open func presentationIndex(for pageViewController: UIPageViewController) -> Int{
-        if currentIndex == 1{
-            return 0
-        }
-        else{
-            return 1
-        }
-    }
-    
-    
-    // Sent when a gesture-initiated transition ends. The 'finished' parameter indicates whether the animation finished, while the 'completed' parameter indicates whether the transition completed or bailed out (if the user let go early).
-    open func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool){
-        guard completed else { return }
-        if(currentIndex == 0){
-            self.collectionView.isHidden = false
-            self.editBioTextView.isHidden = true
-            currentIndex += 1
-        }
-        else{
-            self.collectionView.isHidden = true
-            self.editBioTextView.isHidden = false
-            currentIndex -= 1
-        }
-    }
     
     @IBAction func startExploringButtonPressed(_ sender: AnyObject) {
         

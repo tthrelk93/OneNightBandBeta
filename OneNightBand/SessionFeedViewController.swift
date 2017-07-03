@@ -10,6 +10,7 @@ import UIKit
 import FirebaseDatabase
 import SwiftOverlays
 import YNDropDownMenu
+import FirebaseAuth
 //import Firebase
 
 
@@ -163,6 +164,9 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     @IBOutlet weak var bandLabel: UILabel!
     @IBAction func picVidSwitched(_ sender: Any) {
         if picVidSegment.selectedSegmentIndex == 0{
+            if bandButtonExp == true {
+                bandNameButtonPressed(self)
+            }
             picCollect.isHidden = false
             videoCollect.isHidden = true
             self.sessionViewsLabel2.isHidden = true
@@ -186,6 +190,9 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
 
 
         } else if picVidSegment.selectedSegmentIndex == 1{
+            if bandButtonExp == true {
+                bandNameButtonPressed(self)
+            }
             picCollect.isHidden = true
             videoCollect.isHidden = false
             self.sessionViewsLabel2.isHidden = true
@@ -203,17 +210,16 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             self.bandNameButton.isHidden = false
             self.sessionBioTextView.isHidden = true
             self.artistTableView.isHidden = true
-           // self.sessionArtistsLabel.isHidden = true
-            //self.bioLabel.isHidden = true
-            //self.sessionPicksLabel.isHidden = true
 
         }else{
+            if bandButtonExp == false {
+                bandNameButtonPressed(self)
+            }
             picCollect.isHidden = true
             videoCollect.isHidden = true
             self.sessionViewsLabel2.isHidden = false
             self.sessionNameLabel2.isHidden = true
             tableViewBackView.isHidden = false
-            //bioBackView.isHidden = false
             pickButton.isHidden = false
             cityNameLabel.isHidden = false
             cityLabel.isHidden = false
@@ -222,69 +228,19 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
 
             
             self.sessionNameLabel.isHidden = false
-            //self.sessionLabel.isHidden = false
-            //self.bandLabel.isHidden = false
             self.bandNameButton.isHidden = false
             self.sessionBioTextView.isHidden = false
             self.artistTableView.isHidden = false
-            //self.sessionArtistsLabel.isHidden = false
-           // self.bioLabel.isHidden = false
-           // self.sessionPicksLabel.isHidden = false
+            
             
         }
     }
-    @IBOutlet weak var bioLabel: UILabel!
-    @IBOutlet weak var sessionPicksLabel: UILabel!
+    
     @IBOutlet weak var picVidSegment: UISegmentedControl!
     @IBOutlet weak var picCollect: UICollectionView!
     @IBOutlet weak var videoCollect: UICollectionView!
     override func viewDidAppear(_ animated: Bool) {
-              //self.player = storyboard.view
-       //888888 self.player = Player()
-        //var currentItem = player?.playerItem
-        //print(currentItem)
-        
-        //self.currentButton = currentButtonFunc()
-        
-        
-        //self.player?.view.frame = self.sessionImageView.frame
-        //self.player?.view.topAnchor.constraint(equalTo: se self.view.topAnchor).isActive = true
-        //self.player?.view.heightAnchor.constraint(equalToConstant: self.view.frame.height/3.14).isActive = true
-        //self.player?.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        //self.playerContainerView.viewController()?.addChildViewController(player!)
-        //self.playerContainerView.viewController().
-        //self.player?.delegate = self
-        
-        /*switch UIScreen.main.bounds.width{
-        case 320:
-            self.player?.view.frame = CGRect(x: 35,y:50,width:250,height:130)
-            
-        case 375:
-            self.player?.view.frame = CGRect(x: 40,y:85,width:300,height:200)
-            
-            
-        case 414:
-            self.player?.view.frame = CGRect(x: 33,y:100,width:350,height:250)
-            
-        default:
-            self.player?.view.frame = CGRect(x: 60,y:140,width:350,height:250)
-            
-            
-            
-        }*/
-        
-        
-        
-        
-
-        
-        
-        self.sessionInfoView.autoresizesSubviews = true
-        
-        /*888self.addChildViewController(self.player!)
-        sessionInfoView.addSubview((self.player?.view)!)
-       
-        NotificationCenter.default.addObserver(self, selector:#selector(self.playerDidFinishPlaying(note:)),name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.playerItem)*/
+            self.sessionInfoView.autoresizesSubviews = true
         
         }
     
@@ -532,9 +488,18 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
     var viewArray = [Int]()
     
     var sender = String()
+    var userID = Auth.auth().currentUser?.uid
     
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
-        
+        if segue.identifier == "TabBarFeedToProfile" {
+            if let vc = segue.destination as? profileRedesignViewController{
+                print("tab")
+                vc.sender = "tabBarFeed"
+                vc.artistID = userID!
+                vc.userID = userID!
+                
+            }
+        }
         if segue.identifier == "FeedToUpload"{
             if let vc = segue.destination as? FeedDismissable
             {
@@ -543,12 +508,8 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         }
         if segue.identifier == "FeedToProfile"{
             if let vc = segue.destination as? profileRedesignViewController{
+                print("notTab")
                 //print(self.cellTouchedArtistUID)
-                if self.tabBarPressed == true{
-                    vc.fromTabBar = true
-                } else {
-                    vc.fromTabBar = false
-                }
                 vc.sender = self.sender
                 vc.artistID = cellTouchedArtistUID
                 vc.userID = cellTouchedArtistUID
@@ -917,7 +878,8 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             performSegue(withIdentifier: "FeedToJoinBand", sender: self)
             
         } else if item == tabBar.items?[2]{
-            performSegue(withIdentifier: "FeedToProfile", sender: self)
+            SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile")
+            performSegue(withIdentifier: "TabBarFeedToProfile", sender: self)
             
         } else {
             
