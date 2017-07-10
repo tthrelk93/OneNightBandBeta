@@ -391,7 +391,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         
 
     }
-    
+    var user = String()
     func handleLoginRegister(){
         if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
             handleLogin()
@@ -402,8 +402,10 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
     }
     
     func handleLogin(){
+        SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile...")
         guard let email = emailTextField.text, let password = passwordTextField.text
             else{
+                SwiftOverlays.removeAllBlockingOverlays()
                 let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
@@ -414,6 +416,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
             (user: User?, error) in
             
             if error != nil{
+                SwiftOverlays.removeAllBlockingOverlays()
                 let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
@@ -421,9 +424,9 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
                 return
             }
             else{
-                
+                self.user = (user?.uid)!
                 print("Successful Login")
-                SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile...")
+                
                 self.performSegue(withIdentifier: "LoginSegue", sender: self)
             }
 
@@ -435,9 +438,23 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
     }
     
     
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("hrllo")
+        if (segue.identifier! as String) == "LoginSegue"{
+            if let vc = segue.destination as? profileRedesignViewController{
+                vc.artistID = self.user
+                vc.userID = self.user
+            }
+        }
+    }
+    
+    
     func handleRegister(){
+        SwiftOverlays.showBlockingWaitOverlayWithText("Creating Account...")
         guard let email = emailTextField.text, let password = passwordTextField.text, let profileImage = profileImageView.image
             else{
+                SwiftOverlays.removeAllBlockingOverlays()
                 /*let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)*/
@@ -449,6 +466,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
         
         Auth.auth().createUser(withEmail: email, password: password, completion: { (user: User?, error) in
             if error != nil {
+                SwiftOverlays.removeAllBlockingOverlays()
                 print(error as Any)
                 let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
@@ -573,6 +591,7 @@ class CreateAccountViewController: UIViewController, UIImagePickerControllerDele
        /* while timer.timeInterval < 10.0{
             print
         }*/
+        
         ONBLabel.isHidden = false
         DispatchQueue.main.async {
             sleep(4)

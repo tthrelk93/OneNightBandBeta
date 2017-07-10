@@ -10,4 +10,5 @@ class Tag {
     
     var name: String?
     var selected = false
+    var changed = false
 }

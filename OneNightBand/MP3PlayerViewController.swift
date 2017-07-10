@@ -97,6 +97,7 @@ class MP3PlayerViewController: UIViewController, UITableViewDelegate, UITableVie
         self.navigationController?.popViewController(animated: true)
     }
     var sender = String()
+    var viewerInBand = Bool()
     @IBOutlet weak var sessionBio: UITextView!
     @IBOutlet weak var sessionVidCollect: UICollectionView!
     @IBOutlet weak var sessionImagesCollect: UICollectionView!
@@ -128,7 +129,7 @@ class MP3PlayerViewController: UIViewController, UITableViewDelegate, UITableVie
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
         sessionImagesCollect.collectionViewLayout = layout
-        if self.sender != "feed" || self.sender == "bandBoard"{
+        if self.viewerInBand == true{
             addMP3.isHidden = false
             addPicAndVid.isHidden = false
             addSessionToFavorites.isHidden = true

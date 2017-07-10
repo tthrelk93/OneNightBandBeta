@@ -92,7 +92,7 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
                 
                 wantedReference.updateChildValues(values)
                 
-                    self.ref.child("bands").child(bandObject.bandID!).child("wantedAds").observeSingleEvent(of: .value, with: { (snapshot) in
+                    self.ref.child("bands").child(self.bandID).child("wantedAds").observeSingleEvent(of: .value, with: { (snapshot) in
                     if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                     for snap in snapshots{
                     
@@ -103,7 +103,7 @@ class CreateWantedAdViewController: UIViewController, UIPickerViewDelegate, UIPi
                     self.wantedIDArray2.append(wantedReferenceAnyObject)
                     var tempDict = [String:Any]()
                     tempDict["wantedAds"] = self.wantedIDArray2
-                    let bandRef = self.ref.child("bands").child(self.bandObject.bandID!)
+                    let bandRef = self.ref.child("bands").child(self.bandID)
                     bandRef.updateChildValues(tempDict, withCompletionBlock: {(err, ref) in
                     if err != nil {
                     print(err as Any)

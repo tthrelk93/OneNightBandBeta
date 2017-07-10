@@ -20,7 +20,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     @IBOutlet weak var logoutButton: UIButton!
     @IBAction func segmentSwitched(_ sender: Any) {
         if self.bandONBSegment.selectedSegmentIndex == 0 {
-            if self.bandArray.count == 0{
+            if self.bandIDArray.count == 0{
                 self.noBandsLabel.isHidden = false
             } else {
                 self.noBandsLabel.isHidden = true
@@ -29,7 +29,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             self.onbCollect.isHidden = true
             self.bandCollect.isHidden = false
         } else {
-            if self.onbArray.count == 0{
+            if self.onbIDArray.count == 0{
                 self.noBandsLabel.isHidden = false
             } else {
                 self.noBandsLabel.isHidden = true
@@ -89,7 +89,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     
         if infoExpanded == true{
             UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
-                
+                self.noBandsLabel.isHidden = true
                 self.artistInfoView.bounds = self.infoViewBounds
                 self.artistInfoView.frame.origin = self.infoViewOrigin
                 
@@ -98,7 +98,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             })
             
         } else {
-            if self.bandArray.count == 0{
+            if self.bandIDArray.count == 0{
                 self.noBandsLabel.isHidden = false
             } else {
                 self.noBandsLabel.isHidden = true
@@ -132,6 +132,8 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
                 self.artistInfoView.bounds = self.infoViewBounds
                 self.artistInfoView.frame.origin = self.infoViewOrigin
+                self.noBandsLabel.isHidden = true
+
                 //self.positionView.isHidden = true
                 
             })
@@ -141,7 +143,8 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                 self.artistInfoView.bounds = self.infoShiftViewBounds
                 self.artistInfoView.frame.origin = self.infoShiftViewOrigin
                 //self.positionView.isHidden = true
-                
+                self.noBandsLabel.isHidden = true
+
                 self.onbCollect.isHidden = true
                 self.bandCollect.isHidden = true
                 self.bandONBSegment.isHidden = true
@@ -166,6 +169,8 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
                 self.artistInfoView.bounds = self.infoViewBounds
                 self.artistInfoView.frame.origin = self.infoViewOrigin
+                self.noBandsLabel.isHidden = true
+
                 //self.positionView.isHidden = true
                 
             })
@@ -175,7 +180,8 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                 self.artistInfoView.bounds = self.infoShiftViewBounds
                 self.artistInfoView.frame.origin = self.infoShiftViewOrigin
                 //self.positionView.isHidden = true
-                
+                self.noBandsLabel.isHidden = true
+
                 self.onbCollect.isHidden = true
                 self.bandCollect.isHidden = true
                 self.bandONBSegment.isHidden = true
@@ -222,8 +228,8 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         dropDown2.selectionAction = {[unowned self] (index: Int, item: String) in
             self.lvlArray.append(index)
             self.tagsAndSkill[self.TAGS[self.mostRecentTagTouched.row]] = self.lvlArray
-            self.dropDownLabel.isHidden = true
-            self.dropDownLabel.text = "Select Instruments or Bio to Make Changes Before Pressing the Save Button"
+            //self.dropDownLabel.isHidden = true
+            self.dropDownLabel.text = "Select/Deselect Instruments on Left or the Bio on right to Edit Before Pressing Save"
             
             //self.dropDown2.selectRow(at: index)
             //self.dropDown.selectRow(at: 2)
@@ -237,7 +243,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         
     }
 
-   
+   //var userIdd = String()
     @IBAction func saveButtonPressed(_ sender: Any) {
         var tagArray = [String]()
         for tag in tags{
@@ -262,6 +268,8 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                 DispatchQueue.main.async{
                     self.skillArray.removeAll()
                     self.yearsArray.removeAll()
+                    
+                    self.instrumentArray.removeAll()
                     self.instrumentCount = 0
                     self.ref.child("users").child(self.userID).observeSingleEvent(of: .value, with: { (snapshot) in
                         let value = snapshot.value as? NSDictionary
@@ -289,6 +297,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                         }
                         DispatchQueue.main.async{
                             self.instrumentTableView.reloadData()
+                            self.instrumentLabel.text = String(describing: self.instrumentArray.count)
                         }
 
                     })
@@ -313,7 +322,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         editShowing = false
     }
     var tagsAndSkill = [String: [Int]]()
-    
+    var notUser = false
     @IBOutlet weak var hideButton: UIButton!
     @IBOutlet weak var editInfoView: UIView!
     @IBOutlet weak var noBandsLabel: UILabel!
@@ -328,6 +337,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     var instrumentCount = 0
     var artistID = String()
     var fromTabBar: Bool?
+    var tempID = String()
     var sizingCell6:TagCell?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -346,7 +356,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         dropDown.anchorView = self.view//collectionView.cellForItem(at: indexPath)
         dropDown.dataSource = ["Beginner","Intermediate","Advanced","Expert","Pro"]
         dropDown.selectionAction = {[unowned self] (index: Int, item: String) in
-            self.dropDownLabel.isHidden = false
+            //self.dropDownLabel.isHidden = false
             
             self.lvlArray.append(index)
             self.tagsAndSkill[self.TAGS[self.mostRecentTagTouched.row]] = self.lvlArray
@@ -378,33 +388,21 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         if self.sender == "wantedAdCreated"{
             self.createWantedSuccess.isHidden = false
         }
-        if self.sender == "onb" || self.sender == "band" || self.sender == "feed" || self.sender == "bandBoard" || self.sender == "bandToFeed" || self.sender == "af"{
-            self.tabBar.isHidden = true
+        if Auth.auth().currentUser?.uid != self.artistID{
+            self.notUser = true
+            //self.tabBar.isHidden = true
             self.backButton.isHidden = false
-            if self.sender == "tabBarFeed" {
-                self.userID = (Auth.auth().currentUser?.uid)!
-                self.tabBar.isHidden = false
-                self.backButton.isHidden = true
-                self.logoutButton.isHidden = false
-                self.notYourProfView.isHidden = true
-            
-            } else {
-                self.userID = self.artistID
                 self.logoutButton.isHidden = true
-                self.backButton.isHidden = false
-                self.tabBar.isHidden = true
                 self.notYourProfView.isHidden = false
-                
-            }
-            self.addMedia.isEnabled = false
-            self.invitesMessagesButton.isEnabled = false
-            self.updateInfoButton.isEnabled = false
             
         } else {
-            self.tabBar.isHidden = false
+            self.notUser = false
+           // self.tabBar.isHidden = false
             self.backButton.isHidden = true
             self.logoutButton.isHidden = false
-            self.userID = (Auth.auth().currentUser?.uid)!
+            
+            self.notYourProfView.isHidden = true
+           
         }
         tabBar.tintColor = ONBPink
         tabBar.selectedItem = tabBar.items?[2]
@@ -432,8 +430,8 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         self.infoViewOrigin = artistInfoView.frame.origin
         
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: picCollect.bounds.width, height: picCollect.bounds.width)
         layout.minimumInteritemSpacing = 20
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
@@ -444,7 +442,13 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         artistInfoView.layer.cornerRadius = 10
         notificationBubble1.layer.cornerRadius = 10
         notificationBubble2.layer.cornerRadius = 10
-        self.ref.child("users").child(self.userID).observeSingleEvent(of: .value, with: { (snapshot) in
+        self.userID = (Auth.auth().currentUser?.uid)!
+        if notUser == false{
+            self.tempID = self.artistID
+        } else {
+            self.tempID = (Auth.auth().currentUser?.uid)!
+        }
+        self.ref.child("users").child(tempID).observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 //fill datasources for collectionViews
                 for snap in snapshots{
@@ -536,6 +540,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                 self.dictionaryOfInstruments = value?["instruments"] as! [String: Any]
                 //var instrumentArray = [String]()
                 for (key, value) in instrumentDict{
+                   // tagsAndSkill[key] = [self.playingLevelArray[(value as! [Int])[0]], self.playingYearsArray[(value as! [Int])[1]]]
                     self.instrumentCount += 1
                     self.instrumentArray.append(key)
                     self.skillArray.append(self.playingLevelArray[(value as! [Int])[0]])
@@ -726,6 +731,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         if segue.identifier == "ProfToAddMedia"{
             if let vc = segue.destination as? AddMediaToSession {
                 vc.senderView = "main"
+               // vc.userID = self.userIdd
             }
             
         }
@@ -926,19 +932,24 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             return 0
         }
     }
+    var touchedTags = [Tag]()
     func configureTagCell(_ cell: TagCell, forIndexPath indexPath: NSIndexPath) {
-        print(tags)
+        
         let tag = tags[indexPath.row]
-        if self.instrumentArray.contains(tag.name!){
-            instrumentCollect.selectItem(at: indexPath, animated: true, scrollPosition: instrumentCollect.scrollPosition)
-            //cell.isSelected = true
-        } else {
-            cell.isSelected = false
+        
+            if instrumentArray.contains(tag.name!) {
+                if tag.changed == false{
+                    tag.selected = true
+                    tagsAndSkill[tag.name!] = (dictionaryOfInstruments[tag.name!] as! [Int])
+                }
+                
+             
         }
+     
         cell.tagName.text = tag.name
         cell.tagName.textColor = tag.selected ? UIColor.white : ONBPink
         cell.backgroundColor = tag.selected ? self.ONBPink : UIColor.white
-        //print(cell.tagName.text)
+        
     }
 
     
@@ -1023,22 +1034,27 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         if collectionView == instrumentCollect {
             lvlArray.removeAll()
             self.dropDownLabel.text = "Select Playing Level"
-            
+            tags[indexPath.row].changed = true
+            //touchedTags.append(tags[indexPath.row])
             //let dropDown = Drop
             self.mostRecentTagTouched = indexPath
             if(tags[indexPath.row].selected == true){
-                dropDownLabel.isHidden = true
+                //dropDownLabel.isHidden = true
                 selectedCount -= 1
                 tagsAndSkill.removeValue(forKey: TAGS[indexPath.row])
+                //(collectionView.cellForItem(at: indexPath) as! TagCell).isSelected = false
             }else{
-                dropDownLabel.isHidden = false
+                //dropDownLabel.isHidden = false
                 selectedCount += 1
                 dropDown.show()
-                
+               // tagsAndSkill[TAGS[indexPath.row]] = skillArray[indexPath.row]
+                //(collectionView.cellForItem(at: indexPath) as! TagCell).isSelected = true
                 //self.dropDown.anchorView
             }
             
             collectionView.deselectItem(at: indexPath as IndexPath, animated: false)
+           // (instrumentCollect.cellForItem(at: indexPath) as! TagCell).tagName.textColor = tags[indexPath.row].selected ? UIColor.white : ONBPink
+            //(instrumentCollect.cellForItem(at: indexPath) as! TagCell).backgroundColor = tags[indexPath.row].selected ? self.ONBPink : UIColor.white
             tags[indexPath.row].selected = !tags[indexPath.row].selected
             self.instrumentCollect.reloadData()
         }

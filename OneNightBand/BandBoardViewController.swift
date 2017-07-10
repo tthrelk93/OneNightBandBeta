@@ -77,7 +77,7 @@ class BandBoardViewController: UIViewController, UIPickerViewDelegate,UIPickerVi
         adsAfterInstrumentFilter.removeAll()
         onbWanted.removeAll()
         bandWanted.removeAll()
-        bandBoardCollect.isHidden = false
+        //bandBoardCollect.isHidden = false
         ref.child("wantedAds").observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
@@ -119,8 +119,12 @@ class BandBoardViewController: UIViewController, UIPickerViewDelegate,UIPickerVi
                     if self.adsAfterLocationFilter.count == 0{
                         self.infoLabel.isHidden = false
                         self.infoLabel.text = "There are no Bands matching that search criteria."
+                        
+                        self.bandBoardCollect.isHidden = true
+                        
                     } else {
                         self.infoLabel.isHidden = true
+                        self.bandBoardCollect.isHidden = false
                         for _ in self.adsAfterLocationFilter{
                             let cellNib = UINib(nibName: "JoinBandCollectionViewCell", bundle: nil)
                             self.bandBoardCollect.register(cellNib, forCellWithReuseIdentifier: "JoinBandCollectionViewCell")

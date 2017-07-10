@@ -136,6 +136,7 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
                 vc.BandID = self.sessionID!
                 print("sesssssss: \(self.sessionID!)")
                 print(self.selectedCell?.sessionId)
+                vc.viewerInBand = self.viewerInBand
                 vc.sessionID = self.selectedCell?.sessionId
                 vc.navigationController?.isNavigationBarHidden = false
                 vc.navigationItem.hidesBackButton = false
@@ -178,6 +179,7 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
     func getSessID()->String{
         return sessionID!
     }
+    var viewerInBand = Bool()
     @IBOutlet weak var backButton: UIButton!
     
     @IBAction func ourSessionsPressed(_ sender: Any) {
@@ -250,37 +252,13 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
             self.allSessionsCollect.isHidden = false
         }
         
-        if self.sender != "feed" && self.sender != "pfm" && self.sender != "bandBoard"{
-            self.becomeFanButton.isHidden = true
-            AddMusiciansButton.titleLabel?.textAlignment = NSTextAlignment.center
-            editSessionInfoButton.isHidden = false
-        
-            /*chatButton.setTitle("Band Chat", for: .normal)
-            chatButton.titleLabel?.numberOfLines = 2
-            chatButton.setTitleColor(UIColor.white, for: .normal)
-            chatButton.titleLabel?.font = UIFont.systemFont(ofSize: 20.0, weight: UIFontWeightLight)
-            chatButton.titleLabel?.textAlignment = NSTextAlignment.center*/
-        
-            /*addNewSession.setTitle("New Session", for: .normal)
-            addNewSession.titleLabel?.numberOfLines = 2
-            addNewSession.setTitleColor(UIColor.white, for: .normal)
-            addNewSession.titleLabel?.font = UIFont.systemFont(ofSize: 20.0, weight: UIFontWeightLight)
-            addNewSession.titleLabel?.textAlignment = NSTextAlignment.center*/
-        } else {
-            
-            editSessionInfoButton.isHidden = true
-            AddMusiciansButton.isHidden = true
-            chatButton.isHidden = true
-            addNewSession.isHidden = true
-            self.becomeFanButton.isHidden = false
-        }
-        ref.child("users").child(userID!).child("artistsBands").observeSingleEvent(of: .value, with: { (snapshot) in
+                ref.child("users").child(userID!).child("artistsBands").observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 for snap in snapshots{
                     self.sessionIDArray.append((snap.value! as! String))
                 }
             }
-        
+        var bandMemberArray = [String]()
         self.ref.child("bands").observeSingleEvent(of: .value, with: {(snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                     for snap in snapshots{
@@ -291,7 +269,9 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
                             let tempBand = Band()
                             tempBand.setValuesForKeys(dictionary!)
                             self.thisBand = tempBand
-                            
+                            for (key, val) in tempBand.bandMembers{
+                                bandMemberArray.append(key)
+                            }
                             for val in tempBand.bandMedia{
                                 //self.mediaKidArray.append(val)
                                 self.vidArray.append(NSURL(string: val)!)
@@ -308,6 +288,22 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
                             break
                         }
                 }
+                
+                if bandMemberArray.contains(self.userID!) == false{
+                    self.viewerInBand = true
+                    self.becomeFanButton.isHidden = true
+                    self.AddMusiciansButton.titleLabel?.textAlignment = NSTextAlignment.center
+                    self.editSessionInfoButton.isHidden = false
+                    
+                } else {
+                    self.viewerInBand = false
+                    self.editSessionInfoButton.isHidden = true
+                    self.AddMusiciansButton.isHidden = true
+                    self.chatButton.isHidden = true
+                    self.addNewSession.isHidden = true
+                    self.becomeFanButton.isHidden = false
+                }
+
                 
 
             }

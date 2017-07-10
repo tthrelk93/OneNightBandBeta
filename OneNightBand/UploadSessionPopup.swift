@@ -420,6 +420,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
     var originalMediaBounds = CGRect()
     var mostRecentONBSelected = ONB()
     var onbMediaArray = [String]()
+    var sizingCell8: VideoCollectionViewCell?
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //collectionView.des
         if collectionView == yourBandsCollect{
@@ -470,16 +471,16 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                         self.onbMediaArray.append(vid)
                     }
                         DispatchQueue.main.async{
-                        for _ in self.onbMediaArray{
+                        //for _ in self.onbMediaArray{
                             self.currentCollect = "media"
                             
                             let cellNib = UINib(nibName: "VideoCollectionViewCell", bundle: nil)
                             self.selectVideoFromSessionCollect.register(cellNib, forCellWithReuseIdentifier: "VideoCollectionViewCell")
-                            self.sizingCell2 = ((cellNib.instantiate(withOwner: nil, options: nil) as NSArray).firstObject as! VideoCollectionViewCell?)!
+                            self.sizingCell8 = ((cellNib.instantiate(withOwner: nil, options: nil) as NSArray).firstObject as! VideoCollectionViewCell?)!
                             self.selectVideoFromSessionCollect.backgroundColor = UIColor.clear
                             self.selectVideoFromSessionCollect.dataSource = self
                             self.selectVideoFromSessionCollect.delegate = self
-                            }
+                            //}
                         collectionView.deselectItem(at: indexPath as IndexPath, animated: false)
                         self.onbCollect.reloadData()
                         self.selectVideoFromSessionCollect.reloadData()
@@ -1110,7 +1111,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
     var mediaArray = [String]()
     var autoIdString = String()
     @IBAction func Upload(_ sender: AnyObject) {
-        if self.selectedSessionMediaArray.count != 0{
+        if (self.bandType == "band" && self.selectedSessionMediaArray.count != 0) || (self.bandType == "onb" && self.onbMediaArray.count != 0){
             
            
                 SwiftOverlays.showBlockingTextOverlay("Uploading Session to Feed")

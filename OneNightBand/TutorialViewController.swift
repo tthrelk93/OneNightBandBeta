@@ -12,7 +12,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import DropDown
-
+import SwiftOverlays
 
 class TutorialViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextViewDelegate{
     let ONBPink = UIColor(colorLiteralRed: 201.0/255.0, green: 38.0/255.0, blue: 92.0/255.0, alpha: 1.0)
@@ -84,6 +84,7 @@ class TutorialViewController: UIViewController, UICollectionViewDataSource, UICo
     var mostRecentTagTouched = IndexPath()
     override func viewDidLoad(){
         super.viewDidLoad()
+        SwiftOverlays.removeAllBlockingOverlays()
         infoTextLabel.text = "What Instrument(s) do you play? Select an instrument if you feel comfortable playing it with other musicians in a jam environment."
         backButton.isHidden = true
         continueButton.isHidden = false

@@ -520,7 +520,6 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             var tempSess = SessionFeedSess()
             for sess in sessionArray{
                 if (sess.button["sessionFeedKey"] as! String) == currentButtonFunc().sessionFeedKey {
-                    
                     tempSess = sess
                     break
                 }

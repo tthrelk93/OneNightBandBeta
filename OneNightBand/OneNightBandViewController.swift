@@ -78,21 +78,6 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
         findArtistsButton.setTitleColor(UIColor.darkGray, for: .normal)
          navigationController?.navigationBar.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         print(sender)
-        if sender == "feed" || sender == "bandBoard"{
-            backButton.isHidden = false
-            addMediaButton.isHidden = true
-            chatButton.isHidden = true
-            becomeFanButton.isHidden = false
-            
-            
-        } else {
-            
-            addMediaButton.isHidden = false
-            chatButton.isHidden = false
-            becomeFanButton.isHidden = true
-            
-
-        }
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
         layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
@@ -154,6 +139,21 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
                 
             }
             }
+            var tempArray = [String]()
+            for (key, val) in self.artistDict{
+                tempArray.append(key)
+            }
+            if tempArray.contains(self.userID!) == false {
+                self.backButton.isHidden = false
+                self.addMediaButton.isHidden = true
+                self.chatButton.isHidden = true
+                self.becomeFanButton.isHidden = false
+            } else {
+                self.addMediaButton.isHidden = false
+                self.chatButton.isHidden = false
+                self.becomeFanButton.isHidden = true
+            }
+
             
                 for _ in self.picArray{
                     let cellNib = UINib(nibName: "PictureCollectionViewCell", bundle: nil)

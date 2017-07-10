@@ -53,7 +53,7 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
                         values["fanCount"] = 0
                         //values["messages"] = [String: Any]()
                         
-                        self.thisBand.setValuesForKeys(values)
+                        
                         
                         let bandReference = self.ref.child("bands").childByAutoId()
                         
@@ -61,7 +61,7 @@ class CreateBandViewController: UIViewController, UITextViewDelegate, UINavigati
                         values["bandID"] = bandReferenceAnyObject
                         self.bandID = bandReferenceAnyObject
                         
-                        
+                        self.thisBand.setValuesForKeys(values)
                         let ref = Database.database().reference()
                        
                         bandReference.updateChildValues(values, withCompletionBlock: {(err, ref) in
