@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseAuth
+
 
 class FindBandsViewController: UIViewController, UITabBarDelegate {
 
@@ -21,6 +23,12 @@ class FindBandsViewController: UIViewController, UITabBarDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "FindBandToProfile"{
+            if let vc = segue.destination as? profileRedesignViewController{
+                vc.artistID = (Auth.auth().currentUser?.uid)!
+                vc.userID = (Auth.auth().currentUser?.uid)!
+            }
+        }
         if segue.identifier == "JoinBandToBandBoard"{
             
             if let vc = segue.destination as? BandBoardViewController{

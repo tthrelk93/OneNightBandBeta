@@ -12,8 +12,9 @@ import UIKit
 class ONBGuitarButton: UIImageView, UIGestureRecognizerDelegate {
     var lane = 0
     var sessionName: String?
+
     //var session: [String:Any]?
-    var sessionViews: Int?
+    var picks: Int?
     var isDisplayed: Bool?
     var tap = NSObject()
     var _yPosition: CGFloat = 0.0

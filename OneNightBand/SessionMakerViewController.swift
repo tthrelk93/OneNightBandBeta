@@ -154,6 +154,10 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
         
     }
     
+    @IBAction func editPressed(_ sender: Any) {
+        self.sessionInfoTextView.select(self)
+    }
+   
     var yearsArray = [String]()
     var playingYearsArray = ["1","2","3","4","5+","10+"]
     var playingLevelArray = ["beginner", "intermediate", "advanced", "expert"]
@@ -181,7 +185,7 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
     }
     var viewerInBand = Bool()
     @IBOutlet weak var backButton: UIButton!
-    
+    var curUser = String()
     @IBAction func ourSessionsPressed(_ sender: Any) {
     }
     @IBOutlet weak var ourSessionsButton: UIButton!
@@ -203,7 +207,7 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
         
         super.viewDidLoad()
         
-        
+        self.curUser = (Auth.auth().currentUser?.uid)!
         
         
         
@@ -219,7 +223,7 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
 
         
         self.sessionImageView.layer.cornerRadius = 10
-        if self.sender == "feed"{
+        /*if self.sender == "feed"{
             
             self.editSessionInfoButton.isHidden = true
             self.backButton.isHidden = false
@@ -233,7 +237,7 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
             self.editSessionInfoButton.isHidden = false
             self.backButton.isHidden = false
             
-        }
+        }*/
         self.tabBar.delegate = self
         
         navigationController?.isNavigationBarHidden = false
@@ -259,6 +263,7 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
                 }
             }
         var bandMemberArray = [String]()
+                
         self.ref.child("bands").observeSingleEvent(of: .value, with: {(snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                     for snap in snapshots{
@@ -289,11 +294,14 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
                         }
                 }
                 
-                if bandMemberArray.contains(self.userID!) == false{
+                if bandMemberArray.contains(self.curUser){
                     self.viewerInBand = true
                     self.becomeFanButton.isHidden = true
                     self.AddMusiciansButton.titleLabel?.textAlignment = NSTextAlignment.center
                     self.editSessionInfoButton.isHidden = false
+                    self.chatButton.isHidden = false
+                    self.addNewSession.isHidden = false
+
                     
                 } else {
                     self.viewerInBand = false

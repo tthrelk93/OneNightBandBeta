@@ -120,7 +120,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
     var userMediaArrayNSURL = [NSURL]()
     var soloPicArray2 = [NSURL]()
     var soloPicArray = [String]()
-    
+    var sizingCell12: VideoCollectionViewCell?
     var soloPicURLArray = [UIImage]()
     var soloVidURLArray = [NSURL]()
     
@@ -135,10 +135,12 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
     fileprivate var animationOptions: UIViewAnimationOptions = [.curveEaseInOut, .beginFromCurrentState]
    /* UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options:
     Options, animations: {*/
-    
+    var sessVidOrigin = CGPoint()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.sessVidOrigin = self.selectVideoFromSessionCollect.frame.origin
+        self.selectSessionLabel.text = "Select Session:"
+            //uploadBandToFeed.isHidden = true
         bandButton.bounds = b1Start.bounds
         onbButton.bounds = b2Start.bounds
         soloButton.bounds = b3Start.bounds
@@ -246,18 +248,18 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                     self.yourBandsCollect.dataSource = self
                     self.yourBandsCollect.delegate = self
                 }
-                for vid in self.soloVidURLArray{
+                //for vid in self.soloVidURLArray{
                     self.currentCollect = "soloVid"
                     
                     //self.curPastArrayIndex = self.pastSessionArray.index(of: session)!
                     
                     let cellNib = UINib(nibName: "VideoCollectionViewCell", bundle: nil)
                     self.soloVidCollect.register(cellNib, forCellWithReuseIdentifier: "VideoCollectionViewCell")
-                    self.sizingCell2 = ((cellNib.instantiate(withOwner: nil, options: nil) as NSArray).firstObject as! VideoCollectionViewCell?)!
+                    self.sizingCell12 = ((cellNib.instantiate(withOwner: nil, options: nil) as NSArray).firstObject as! VideoCollectionViewCell?)!
                     self.soloVidCollect.backgroundColor = UIColor.clear
                     self.soloVidCollect.dataSource = self
                     self.soloVidCollect.delegate = self
-                }
+                //}
                 for picString in self.soloPicArray{
                     if let tempUrl = NSURL(string: picString){
                         self.soloPicArray2.append(tempUrl)
@@ -445,6 +447,20 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
             
             //if band collection view cell is touched
             if collectionView == self.onbCollect{
+                self.selectVideoFromSessionCollect.frame.origin = self.sessionCollectionView.frame.origin
+                self.selectSessionLabel.text = "Select Video:"
+               /* self.selectVideoFromSessionCollect.isHidden = true
+                
+                for cell in self.selectVideoFromSessionCollect.visibleCells{
+                    (cell as! VideoCollectionViewCell).isSelected = false
+                }*/
+                
+                self.sessionCollectionView.isHidden = true
+                for cell in self.sessionCollectionView.visibleCells{
+                    (cell as! SessionCell).isSelected = false
+                    (cell as! SessionCell).cellSelected = false
+                }
+                
                 var bandCell = collectionView.cellForItem(at: indexPath) as! SessionCell
                 self.selectVideoLabel.isHidden = true
                 if bandCell.cellSelected == false{
@@ -470,6 +486,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                     for vid in self.mostRecentONBSelected.onbMedia{
                         self.onbMediaArray.append(vid)
                     }
+                    
                         DispatchQueue.main.async{
                         //for _ in self.onbMediaArray{
                             self.currentCollect = "media"
@@ -506,6 +523,19 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
             }
 
             if collectionView == self.yourBandsCollect{
+                self.selectVideoFromSessionCollect.frame.origin = self.sessVidOrigin
+                self.selectSessionLabel.text = "Select Session:"
+                self.selectVideoFromSessionCollect.isHidden = true
+                
+                for cell in self.selectVideoFromSessionCollect.visibleCells{
+                    (cell as! VideoCollectionViewCell).isSelected = false
+                }
+                
+                /*self.sessionCollectionView.isHidden = true
+                for cell in self.sessionCollectionView{
+                    (cell as! SessionCell).isSelected = false
+                }*/
+
                 self.selectVideoFromSessionCollect.frame = self.originalMediaBounds
                 var bandCell = collectionView.cellForItem(at: indexPath) as! SessionCell
                 self.selectVideoLabel.isHidden = true
@@ -548,7 +578,8 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                             }
                         }
                         DispatchQueue.main.async{
-                            for _ in self.bandSessionObjectArray{
+                            //for _ in self.bandSessionObjectArray{
+                            
                                 self.currentCollect = "session"
                         
                                 //self.curPastArrayIndex = self.pastSessionArray.index(of: session)!
@@ -559,7 +590,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                                 self.sessionCollectionView.backgroundColor = UIColor.clear
                                 self.sessionCollectionView.dataSource = self
                                 self.sessionCollectionView.delegate = self
-                            }
+                            
                             collectionView.deselectItem(at: indexPath as IndexPath, animated: false)
                             self.yourBandsCollect.reloadData()
                             self.sessionCollectionView.reloadData()
@@ -629,7 +660,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                     }
                 }
                 DispatchQueue.main.async{
-                    for _ in self.bandMedia{
+                    
                         self.currentCollect = "media"
                         
                         //self.curPastArrayIndex = self.pastSessionArray.index(of: session)!
@@ -641,7 +672,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                         self.selectVideoFromSessionCollect.dataSource = self
                         self.selectVideoFromSessionCollect.delegate = self
                         
-                    }
+                    
                     collectionView.deselectItem(at: indexPath as IndexPath, animated: false)
                     //collectionView.visibleCells[indexPath.row] as Session = !collectionView.visibleCells[indexPath.row].selected
                     //self.yourBandsCollect.reloadData()
@@ -676,9 +707,9 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                 cell.cellSelected = false
                 cell.layer.borderColor = UIColor.clear.cgColor
                 cell.isSelected = false
-                
+                 cell.playPauseButton.isEnabled = false
                 //could cause problems
-                self.selectedSessionMediaArray.remove(at: indexPath.row)
+                self.selectedSessionMediaArray.remove(at: self.selectedSessionMediaArray.index(of: self.bandMedia[indexPath.row])!)
             }
             print(self.selectedSessionMediaArray)
     
@@ -749,6 +780,13 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     func configureVidCell(_ cell: VideoCollectionViewCell, forIndexPath indexPath: NSIndexPath){
+        //cell.player.isHidden = true
+        //cell.youtubePlayerView.isHidden = true
+        cell.youtubePlayerView.isUserInteractionEnabled = false
+        cell.playPauseButton.isHidden = true
+        cell.touchBlockingView.isHidden = false
+        cell.isSelected = false
+        cell.cellSelected = false
         if bandMedia.count == 0{
             cell.layer.borderColor = UIColor.white.cgColor
             cell.layer.borderWidth = 2
@@ -771,18 +809,21 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
             
             
             
+            
             cell.videoURL =  self.bandMedia[indexPath.row] as NSURL?
             if(String(describing: cell.videoURL).contains("youtube") || String(describing: cell.videoURL).contains("youtu.be")){
                 print("youtubeSelected")
                 cell.youtubePlayerView.loadVideoURL(cell.videoURL as! URL)
-                cell.youtubePlayerView.isHidden = false
+               // cell.youtubePlayerView.isHidden = true
                 cell.player?.view.isHidden = true
+                cell.playPauseButton.isHidden = true
                 cell.isYoutube = true
             }else{
                 print("vidFromPhoneSelected")
                 cell.player?.setUrl(cell.videoURL as! URL)
                 cell.player?.view.isHidden = false
-                cell.youtubePlayerView.isHidden = true
+               // cell.youtubePlayerView.isHidden = true
+                cell.playPauseButton.isHidden = true
                 cell.isYoutube = false
             }
             //print(self.vidArray[indexPath.row])
@@ -793,6 +834,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
 
     }
     @IBAction func soloSessionPressed(_ sender: Any) {
+       // self.selectVideoFromSessionCollect.frame.origin = sessionCollectionView.frame.origin
         
         UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options:
             animationOptions, animations: {
@@ -828,6 +870,8 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
         
         UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options:
             animationOptions, animations: {
+                self.selectVideoFromSessionCollect.frame.origin = self.sessVidOrigin
+                self.selectSessionLabel.text = "Select Session:"
                 self.bandButton.bounds = self.b1P1.bounds
                 self.onbButton.bounds = self.b2P2.bounds
                 self.soloButton.bounds = self.b3P2.bounds
@@ -859,6 +903,8 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
         
         UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options:
             animationOptions, animations: {
+                self.selectVideoFromSessionCollect.frame.origin = self.sessionCollectionView.frame.origin
+                self.selectSessionLabel.text = "Select Video:"
                 self.bandButton.bounds = self.b1P2.bounds
                 self.onbButton.bounds = self.b2P1.bounds
                 self.soloButton.bounds = self.b3P2.bounds
@@ -890,33 +936,61 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
     func configureCell(_ cell: SessionCell,_ collectionView: UICollectionView, forIndexPath indexPath: NSIndexPath) {
         //print(self.currentCollect)
         if collectionView == self.onbCollect{
-            cell.sessionCellImageView.loadImageUsingCacheWithUrlString(onbObjectArray[indexPath.row].onbPictureURL[0])
-            cell.sessionCellLabel.text = onbObjectArray[indexPath.row].onbName
-            cell.sessionCellLabel.textColor = UIColor.white
-            cell.layer.borderWidth = cell.cellSelected ? 2 : 0
-            cell.layer.borderColor = cell.cellSelected ? ONBPink.cgColor : UIColor.clear.cgColor
-            cell.sessionId = onbArray[indexPath.row]
+            if self.onbObjectArray.count == 0{
+                cell.sessionCellImageView.isHidden = true
+                cell.sessionCellLabel.textColor = UIColor.white
+                
+                cell.sessionCellLabel.text = "No ONBs"
+                cell.layer.borderWidth = 2
+                cell.layer.borderColor = UIColor.white.cgColor
+            } else {
+                cell.sessionCellImageView.loadImageUsingCacheWithUrlString(onbObjectArray[indexPath.row].onbPictureURL[0])
+                cell.sessionCellLabel.text = onbObjectArray[indexPath.row].onbName
+                cell.sessionCellLabel.textColor = UIColor.white
+                cell.layer.borderWidth = cell.cellSelected ? 2 : 0
+                cell.layer.borderColor = cell.cellSelected ? ONBPink.cgColor : UIColor.clear.cgColor
+                cell.sessionId = onbArray[indexPath.row]
+            }
         }
         if collectionView == self.yourBandsCollect{
             print(bandObjectArray[indexPath.row].bandPictureURL[0])
             //print(bandObjectArray)
-            cell.sessionCellImageView.loadImageUsingCacheWithUrlString(bandObjectArray[indexPath.row].bandPictureURL[0])
-            cell.sessionCellLabel.text = bandObjectArray[indexPath.row].bandName
-            cell.sessionCellLabel.textColor = UIColor.white
-            cell.layer.borderWidth = cell.cellSelected ? 2 : 0
-            cell.layer.borderColor = cell.cellSelected ? ONBPink.cgColor : UIColor.clear.cgColor
-            
-            cell.sessionId = bandArray[indexPath.row]
+            if self.bandObjectArray.count == 0{
+                cell.sessionCellImageView.isHidden = true
+                cell.sessionCellLabel.textColor = UIColor.white
+
+                cell.sessionCellLabel.text = "No Bands"
+                cell.layer.borderWidth = 2
+                cell.layer.borderColor = UIColor.white.cgColor
+            } else {
+                cell.sessionCellImageView.loadImageUsingCacheWithUrlString(bandObjectArray[indexPath.row].bandPictureURL[0])
+                cell.sessionCellLabel.text = bandObjectArray[indexPath.row].bandName
+                cell.sessionCellLabel.textColor = UIColor.white
+                cell.layer.borderWidth = cell.cellSelected ? 2 : 0
+                cell.layer.borderColor = cell.cellSelected ? ONBPink.cgColor : UIColor.clear.cgColor
+                
+                cell.sessionId = bandArray[indexPath.row]
+            }
 
         }
+        
         if collectionView == self.sessionCollectionView{
-        cell.sessionCellImageView.loadImageUsingCacheWithUrlString(bandSessionObjectArray[indexPath.row].sessionPictureURL[0])
-        cell.sessionCellLabel.text = bandSessionObjectArray[indexPath.row].sessionName
-        cell.sessionCellLabel.textColor = UIColor.white
-        cell.layer.borderWidth = cell.cellSelected ? 2 : 0
-        cell.layer.borderColor = cell.cellSelected ? ONBPink.cgColor : UIColor.clear.cgColor
+            if self.bandSessionObjectArray.count == 0{
+                cell.sessionCellImageView.isHidden = true
+                cell.sessionCellLabel.textColor = UIColor.white
+                
+                cell.sessionCellLabel.text = "No Sessions"
+                cell.layer.borderWidth = 2
+                cell.layer.borderColor = UIColor.white.cgColor
+            } else {
+                cell.sessionCellImageView.loadImageUsingCacheWithUrlString(bandSessionObjectArray[indexPath.row].sessionPictureURL[0])
+                cell.sessionCellLabel.text = bandSessionObjectArray[indexPath.row].sessionName
+                cell.sessionCellLabel.textColor = UIColor.white
+                cell.layer.borderWidth = cell.cellSelected ? 2 : 0
+                cell.layer.borderColor = cell.cellSelected ? ONBPink.cgColor : UIColor.clear.cgColor
 
-        cell.sessionId = bandSessionIDArray[indexPath.row]
+                cell.sessionId = bandSessionIDArray[indexPath.row]
+            }
         }
         if collectionView == self.selectVideoFromSessionCollect{
             cell.sessionCellImageView.loadImageUsingCacheWithUrlString(bandSessionObjectArray[indexPath.row].sessionPictureURL[0])
@@ -1147,7 +1221,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                 tempArray.append(String(describing: pic))
             }
             values["sessionPictureURL"] = tempArray
-            values["views"] = 0
+            values["picks"] = 0
             var tempVidArray = [String]()
             for vid in selectedSoloVidArray{
                 tempVidArray.append(String(describing: vid))
@@ -1221,7 +1295,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                 button.addGestureRecognizer(tap)
                 button.isUserInteractionEnabled = true
                 
-                button.sessionViews = 0
+                button.picks = 0
 
                 
                 
@@ -1276,11 +1350,12 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                         values["sessionBio"] = self.mostRecentSessionSelected.sessionBio
                         values["sessionDate"] = self.mostRecentSessionSelected.sessionDate
                         values["sessionID"] = self.mostRecentSessionSelected.sessionUID
+            values["pickedBool"] = "false"
             values["soloSessBool"] = "false"
             values["bandType"] = self.bandType
         ///
                         values["sessionPictureURL"] = self.mostRecentSessionSelected.sessionPictureURL
-                        values["views"] = 0
+                        values["picks"] = 0
         var tempVidArray = [String]()
         for vid in selectedSessionMediaArray{
             tempVidArray.append(String(describing: vid))
@@ -1351,7 +1426,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                 button.addGestureRecognizer(tap)
                 button.isUserInteractionEnabled = true
                 
-                button.sessionViews = 0
+                button.picks = 0
                 //sessionFeedSess.button = button.dictionaryWithValues(forKeys: <#T##[String]#>)
                 
                 
@@ -1359,7 +1434,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                 buttonDict["lane"] = button.lane
                  buttonDict["sessionName"] = button.sessionName
                 //buttonDict["session"] = values
-                 buttonDict["sessionViews"] = button.lane
+                 buttonDict["picks"] = 0
                  buttonDict["isDisplayed"] = button.isDisplayed
                  //buttonDict["tap"] = NSObject()
                  buttonDict["_yPosition"] = button._yPosition

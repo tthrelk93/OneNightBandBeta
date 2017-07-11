@@ -117,6 +117,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     var wantedAd = WantedAd()
     var destination = String()
     var buttonSelected = String()
+    var fromTabBar = false
     var cityDict = ["New York":"","Los Angeles":"","Chicago":"","Houston":"","Philadelphia":"","Phoenix, AZ":"","San Antonio":"","San Diego":"","Dallas":"","San Jose":"", "Austin":"","Jacksonville": "","San Francisco":"","Indianapolis":"","Columbus":"", "Fort Worth":"","Charlotte":"","Detroit":"","El Paso":"","Seattle":"","Denver":"","Washington ":"","Memphis":"","Boston":"","Nashville":"","Atlanta":""]
     var distanceMenuText = ["25", "50", "75", "100", "125","150", "175","500", "2000"]
     var menuText = ["All","Guitar", "Bass Guitar", "Piano", "Saxophone", "Trumpet", "Stand-up Bass", "violin", "Drums", "Cello", "Trombone", "Vocals", "Mandolin", "Banjo", "Harp"]
@@ -135,11 +136,20 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
 
         } else if segue.identifier == "ArtistFinderToProfile" {
             if let vc = segue.destination as? profileRedesignViewController{
+                if fromTabBar == false && self.sender != "joinBand"{
+                    
+                        vc.artistID = self.profileArtistUID!
+                        vc.userID = self.profileArtistUID!
+                    
+                } else {
+                    vc.artistID = (Auth.auth().currentUser?.uid)!
+                    vc.userID = (Auth.auth().currentUser?.uid)!
+                }
+
                 if self.sender != "joinBand"{
-                vc.sender = "af"
-                vc.artistID = self.profileArtistUID!
-                vc.userID = self.profileArtistUID!
-                vc.afType = self.bandType
+                    vc.sender = "af"
+                    vc.afType = self.bandType
+                    
                 if self.bandType == "band"{
                     vc.thisBand = self.thisBandObject
                 } else {
@@ -666,6 +676,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     
     @available(iOS 2.0, *)
     public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){
+        self.fromTabBar = true
         if item == tabBar.items?[0]{
             
         } else if item == tabBar.items?[1]{

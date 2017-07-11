@@ -261,12 +261,12 @@ class MP3PlayerViewController: UIViewController, UITableViewDelegate, UITableVie
                     self.sessionVidCollect.delegate = self
                     
                 }else{
-                    for vid in self.nsurlArray{
+                    //for vid in self.nsurlArray{
                     
                     // Put your code which should be executed with a delay here
                         self.currentCollect = "youtube"
                     
-                        self.tempLink = vid
+                        //self.tempLink = vid
                     
                         let cellNib = UINib(nibName: "VideoCollectionViewCell", bundle: nil)
                         self.sessionVidCollect.register(cellNib, forCellWithReuseIdentifier: "VideoCollectionViewCell")
@@ -274,7 +274,7 @@ class MP3PlayerViewController: UIViewController, UITableViewDelegate, UITableVie
                         //self.sessionVidCollect.backgroundColor = UIColor.clear
                         self.sessionVidCollect.dataSource = self
                         self.sessionVidCollect.delegate = self
-                    }
+                   // }
                 }
                 
             
@@ -290,7 +290,7 @@ class MP3PlayerViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
                 //self.mp3Player?.urls = self.mp3URLArray
             DispatchQueue.main.async{
-                for _ in self.picArray{
+               // for _ in self.picArray{
                     self.currentCollect = "pic"
                     //self.tempLink = NSURL(string: (snap.value as? String)!)
                     
@@ -304,7 +304,7 @@ class MP3PlayerViewController: UIViewController, UITableViewDelegate, UITableVie
                     self.sessionImagesCollect.dataSource = self
                     self.sessionImagesCollect.delegate = self
                     
-                }
+              //  }
                 
 
             }
@@ -573,7 +573,7 @@ class MP3PlayerViewController: UIViewController, UITableViewDelegate, UITableVie
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int{
-        if self.currentCollect == "pic"{
+        if collectionView == sessionImagesCollect{
             return self.picArray.count
         }else{
             if self.nsurlArray.count == 0{
@@ -586,7 +586,7 @@ class MP3PlayerViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         print("cell4Item: \(self.currentCollect)")
-        if currentCollect != "pic"{
+        if collectionView != sessionImagesCollect{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "VideoCollectionViewCell", for: indexPath as IndexPath) as! VideoCollectionViewCell
             self.configureVidCell(cell, forIndexPath: indexPath as NSIndexPath)
             cell.indexPath = indexPath

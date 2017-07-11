@@ -49,6 +49,7 @@ class SessionInvitesViewController: UIViewController{
         }
         
     }
+    var curUser = String()
     @IBOutlet weak var invitesAlertCount: UILabel!
 
     @IBOutlet weak var auditsReceivedAlertCount: UILabel!

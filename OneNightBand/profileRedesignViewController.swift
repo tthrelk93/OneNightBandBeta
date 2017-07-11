@@ -88,6 +88,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     @IBAction func bandCountPressed(_ sender: Any) {
     
         if infoExpanded == true{
+            artistBio.isHidden = false
             UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
                 self.noBandsLabel.isHidden = true
                 self.artistInfoView.bounds = self.infoViewBounds
@@ -98,6 +99,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             })
             
         } else {
+            artistBio.isHidden = true
             if self.bandIDArray.count == 0{
                 self.noBandsLabel.isHidden = false
             } else {
@@ -129,6 +131,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     }
     @IBAction func mediaButtonPressed(_ sender: Any) {
         if infoExpanded == true{
+            artistBio.isHidden = false
             UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
                 self.artistInfoView.bounds = self.infoViewBounds
                 self.artistInfoView.frame.origin = self.infoViewOrigin
@@ -139,6 +142,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             })
             
         } else {
+            artistBio.isHidden = true
             UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
                 self.artistInfoView.bounds = self.infoShiftViewBounds
                 self.artistInfoView.frame.origin = self.infoShiftViewOrigin
@@ -166,6 +170,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     @IBOutlet weak var createWantedSuccess: UIView!
     @IBAction func instrumentButtonTouched(_ sender: Any) {
         if infoExpanded == true{
+            artistBio.isHidden = false
             UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
                 self.artistInfoView.bounds = self.infoViewBounds
                 self.artistInfoView.frame.origin = self.infoViewOrigin
@@ -176,6 +181,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             })
             
         } else {
+            artistBio.isHidden = true
             UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
                 self.artistInfoView.bounds = self.infoShiftViewBounds
                 self.artistInfoView.frame.origin = self.infoShiftViewOrigin
@@ -755,9 +761,10 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             if let viewController = segue.destination as? SessionMakerViewController {
                 if self.sender == "band" || self.sender == "bandBoard"{
                     viewController.sessionID = self.senderID
-                } /*else if self.sender == "feed"{
-                    viewController.
-                }*/ else {
+                    viewController.curUser = self.userID
+                } else {
+                    
+                    viewController.curUser = self.userID
                     viewController.sessionID = self.bandIDArray[tempIndex]
                 }
                 
@@ -770,8 +777,10 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                 //viewController.sender = "profile"
                 if self.sender == "onb"{
                     viewController.onbID = self.senderID
+                    viewController.curUser = self.userID
                 } else {
                     viewController.onbID = self.onbIDArray[tempIndex]
+                    viewController.curUser = self.userID
                 }
                  viewController.sender = self.sender
             }
@@ -803,6 +812,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     
     @IBAction func menuButtonPressed(_ sender: Any) {
         if menuExpanded == true{
+            artistBio.isHidden = false
             UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
                 self.menuView.bounds = self.menuViewBounds
                 self.menuView.frame.origin = self.menuViewOrigin
@@ -817,6 +827,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             })
 
         } else {
+            artistBio.isHidden = true
             UIView.animate(withDuration: 0.2, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 2.0, options: animationOptions, animations: {
                 self.menuView.bounds = self.shiftViewBounds
                 self.menuView.frame.origin = self.shiftViewOrigin

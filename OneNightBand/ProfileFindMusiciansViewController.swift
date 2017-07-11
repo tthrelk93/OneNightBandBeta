@@ -575,6 +575,12 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "PFMTabBarToProfile"{
+            if let vc = segue.destination as? profileRedesignViewController{
+                vc.userID = (Auth.auth().currentUser?.uid)!
+                vc.artistID = (Auth.auth().currentUser?.uid)!
+            }
+        }
         if segue.identifier == "PFMToArtistFinder"{
             
             if let vc = segue.destination as? ArtistFinderViewController{
@@ -621,6 +627,7 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
         }
         if segue.identifier == "PFMToProfile"{
             if let vc = segue.destination as? profileRedesignViewController{
+                
                 if self.cancelPressed != true{
                     vc.sender = "wantedAdCreated"
                 }
@@ -635,69 +642,7 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
                 
                 
                 let ref = Database.database().reference()
-                /*let wantedReference = ref.child("wantedAds").childByAutoId()
-                let wantedReferenceAnyObject = wantedReference.key
-                var values = [String:Any]()
-                values["bandType"] = self.wantedAd.bandType
-                values["bandID"] = self.wantedAd.bandID
-                values["bandName"] = self.wantedAd.bandName
-                values["city"] = self.wantedAd.city
-                values["date"] = self.wantedAd.date
-                values["experience"] = self.wantedAd.experience
                 
-                values["experience"] = self.wantedAd.instrumentNeeded
-                values["moreInfo"] = self.wantedAd.moreInfo
-                values["responses"] = self.wantedAd.responses
-                values["senderID"] = self.wantedAd.senderID
-                values["wantedImage"] = self.wantedAd.wantedImage
-                
-                values["wantedID"] = self.wantedAd.wantedID
-                
-                wantedReference.updateChildValues(values, withCompletionBlock: {(err, ref) in
-                    if err != nil {
-                        print(err as Any)
-                        return
-                    }
-                })
-                var userValues = [String:Any]()
-                var userWantedAdArray = [String]()
-                ref.child("users").child(currentUser!).child("wantedAds").observeSingleEvent(of: .value, with: {(snapshot) in
-                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                        for snap in snapshots{
-                            if let snapDict = snap.value as? [String:Any] {
-                                let wantedID = snapDict["wantedID"]
-                                userWantedAdArray.append(wantedID as! String)
-                            }
-                        }
-                        userWantedAdArray.append(wantedReferenceAnyObject)
-                    }
-                    userValues["wantedAds"] = userWantedAdArray
-                    ref.child("users").child(self.currentUser!).updateChildValues(userValues)
-                    
-                })
-                
-                self.ref.child("bands").child(selectedBandID).child("wantedAds").observeSingleEvent(of: .value, with: { (snapshot) in
-                        if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                            for snap in snapshots{
-                                self.wantedIDArray.append(snap.value as! String)
-                            }
-                        }
-                        
-                        var tempDict = [String:Any]()
-                        tempDict["wantedAds"] = self.wantedIDArray
-                        let bandRef = self.ref.child("bands").child(self.selectedBandID)
-                        bandRef.updateChildValues(tempDict, withCompletionBlock: {(err, ref) in
-                            if err != nil {
-                                print(err as Any)
-                                return
-                            }
-                        })
-                        //self.dismissalDelegate?.finishedShowing()
-                       // self.removeAnimate()
-                        
-                        //var sessionVals = Dictionary
-                        //let userSessRef = ref.child("users").child(user).child("activeSessions")
-                    })*/
                 
                 
             }

@@ -222,7 +222,7 @@ class CreateSessionPopup: UIViewController, UITextViewDelegate, UINavigationCont
     var tempArray = [String]()
     @IBAction func finalizeTouched(_ sender: AnyObject) {
         if(sessionImageView.image != nil && sessionNameTextField.text != "" && sessionBioTextView.text != "tap to add a little info about the session you are creating (Songs played, location, etc...)."){
-            SwiftOverlays.showBlockingWaitOverlayWithText("Loading Your Sessions")
+            SwiftOverlays.showBlockingWaitOverlayWithText("Session may take minute to appear")
             let imageName = NSUUID().uuidString
             let storageRef = Storage.storage().reference().child("session_images").child("\(imageName).jpg")
             

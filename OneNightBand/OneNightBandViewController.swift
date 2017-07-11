@@ -31,7 +31,7 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
         
     }
     var sender = String()
-    
+    var curUser = String()
     var nsurlArray = [NSURL]()
     var nsurlDict = [NSURL: String]()
     var currentCollect = String()
@@ -139,11 +139,12 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
                 
             }
             }
+            
             var tempArray = [String]()
             for (key, val) in self.artistDict{
                 tempArray.append(key)
             }
-            if tempArray.contains(self.userID!) == false {
+            if tempArray.contains(self.curUser) == false {
                 self.backButton.isHidden = false
                 self.addMediaButton.isHidden = true
                 self.chatButton.isHidden = true

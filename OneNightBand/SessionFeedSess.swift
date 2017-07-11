@@ -16,12 +16,13 @@ class SessionFeedSess: NSObject {
     var sessionName = String()
     var sessionPictureURL = [String]()
     var sessionID = String()
-    var views = Int()
+    var picks = Int()
     var soloSessBool = String()
     var bandID = String()
     var bandName = String()
     var bandType = String()
     var button = [String:Any]()
+    var pickedBool = String()
     
 
 }
