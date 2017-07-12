@@ -328,7 +328,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         editShowing = false
     }
     var tagsAndSkill = [String: [Int]]()
-    var notUser = false
+    var notUser: Bool?
     @IBOutlet weak var hideButton: UIButton!
     @IBOutlet weak var editInfoView: UIView!
     @IBOutlet weak var noBandsLabel: UILabel!
@@ -394,6 +394,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         if self.sender == "wantedAdCreated"{
             self.createWantedSuccess.isHidden = false
         }
+        print("artistID: \(artistID)")
         if Auth.auth().currentUser?.uid != self.artistID{
             self.notUser = true
             //self.tabBar.isHidden = true
@@ -449,11 +450,12 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         notificationBubble1.layer.cornerRadius = 10
         notificationBubble2.layer.cornerRadius = 10
         self.userID = (Auth.auth().currentUser?.uid)!
-        if notUser == false{
+        if notUser == true{
             self.tempID = self.artistID
         } else {
             self.tempID = (Auth.auth().currentUser?.uid)!
         }
+        print("tempID: \(tempID)")
         self.ref.child("users").child(tempID).observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 //fill datasources for collectionViews
@@ -537,7 +539,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             
             self.viewDidAppearBool = true
             
-            self.ref.child("users").child(self.userID).observeSingleEvent(of: .value, with: { (snapshot) in
+            self.ref.child("users").child(self.tempID).observeSingleEvent(of: .value, with: { (snapshot) in
                 let value = snapshot.value as? NSDictionary
                 self.bioTextView.text = value?["bio"] as! String
                 self.artistBio.text = value?["bio"] as! String
@@ -564,7 +566,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                 }
                 
                 
-                self.ref.child("users").child(self.userID).child("activeSessions").observeSingleEvent(of: .value, with: {(snapshot) in
+                self.ref.child("users").child(self.tempID).child("activeSessions").observeSingleEvent(of: .value, with: {(snapshot) in
                     /*if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                      
                      
@@ -596,7 +598,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                             }
                         }
                         
-                        self.ref.child("users").child(self.userID).child("artistsBands").observeSingleEvent(of: .value, with: { (snapshot) in
+                        self.ref.child("users").child(self.tempID).child("artistsBands").observeSingleEvent(of: .value, with: { (snapshot) in
                             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                 for snap in snapshots{
                                     self.bandIDArray.append((snap.value! as! String))
@@ -615,7 +617,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                                         self.onbDict[tempONB.onbID] = tempONB
                                     }
                                 }
-                                self.ref.child("users").child(self.userID).child("artistsONBs").observeSingleEvent(of: .value, with: {(snapshot) in
+                                self.ref.child("users").child(self.tempID).child("artistsONBs").observeSingleEvent(of: .value, with: {(snapshot) in
                                     if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                                         for snap in snapshots{
                                             self.onbIDArray.append((snap.value! as! String))
@@ -1177,13 +1179,14 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     var thisONB = ONB()
     @IBOutlet weak var backButton: UIButton!
     @IBAction func backButtonPressed(_ sender: Any) {
+        print("sender: \(self.sender)")
         if self.sender == "onb"{
             self.performSegue(withIdentifier: "ProfileToONB", sender: self)
-        } else if self.sender == "feed"{
+        } else if self.sender == "feed" || self.sender == "tab"{
             performSegue(withIdentifier: "redesignProfileToFeed", sender: self)
         } else if self.sender == "af"{
             performSegue(withIdentifier: "ProfileToFindMusicians", sender: self)
-        } else {
+        } else if self.sender == "band" {
             self.performSegue(withIdentifier: "ProfileToSessionMaker", sender: self)
         }
     }

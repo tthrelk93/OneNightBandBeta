@@ -291,7 +291,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                             self.artistArray.remove(at: self.artistArray.index(of: artist)! )
                         }
                     }
-                    DispatchQueue.main.async{
+                   // DispatchQueue.main.async{
                         print(self.artistArray)
                         let userID = Auth.auth().currentUser?.uid
                         self.ref.child("users").child(userID!).child("location").observeSingleEvent(of: .value, with: { (snapshot) in
@@ -384,6 +384,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                                     self.artistCollectionView.delegate = self
                                     
                                     self.artistCollectionView.reloadData()
+                                    
                                     self.artistCollectionView.gestureRecognizers?.first?.cancelsTouchesInView = false
                                     self.artistCollectionView.gestureRecognizers?.first?.delaysTouchesBegan = false
                                 }
@@ -396,7 +397,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
                                 })
                             }
                         })
-                    }
+                    
                 })
             }
             
@@ -693,7 +694,7 @@ class ArtistFinderViewController: UIViewController, UICollectionViewDelegate, UI
     var artistCount = Int()
     var yearsArray = [String]()
     var playingYearsArray = ["1","2","3","4","5+","10+"]
-    var playingLevelArray = ["beginner", "intermediate", "advanced", "expert"]
+    var playingLevelArray = ["Beginner", "Intermediate", "Advanced", "Expert","Pro"]
     var PFMChoiceSelected = Bool()
 
     public func numberOfComponents(in pickerView: UIPickerView) -> Int{

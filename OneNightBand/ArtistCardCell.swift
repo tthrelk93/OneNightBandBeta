@@ -86,7 +86,7 @@ class ArtistCardCell: UICollectionViewCell {
             values["inviteKey"] = String(describing: tempID.key)
             values["bandType"] = self.bandType
             values["artistCount"] = self.artistCount
-            values["bandType"] = self.bandType
+            //values["bandType"] = self.bandType
             values["bandName"] = self.bandName
             values["inviteResponse"] = String()
             

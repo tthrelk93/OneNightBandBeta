@@ -76,7 +76,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
 
     }
     @IBOutlet weak var uploadBandToFeed: UIButton!
-    @IBOutlet weak var soloPicCollect: UICollectionView!
+    //@IBOutlet weak var soloPicCollect: UICollectionView!
     @IBOutlet weak var soloVidCollect: UICollectionView!
     var ref = Database.database().reference()
     var sizingCell: SessionCell?
@@ -157,7 +157,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
         
         //self.soloSessTextView
         self.soloSessTextView.text = "Give a little background on the session you are uploading."
-        self.soloSessTextView.textColor = UIColor.gray
+        self.soloSessTextView.textColor = UIColor.black
         
         ref.child("users").child(userID!).observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
@@ -176,6 +176,14 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                         }
                     }
                         //fill prof pic array
+                    if snap.key == "profileImageUrl"{
+                        if let tempUrl = NSURL(string: (snap.value as! [String]).first!){
+                            //self.soloPicArray2.append(tempUrl)
+                            if let data = NSData(contentsOf: tempUrl as URL){
+                                self.selectedSoloPicArray.append(UIImage(data: data as Data)!)
+                            }
+                        }
+                    }
     
                     if snap.key == "artistsBands"{
                         for id in (snap.value as! [String]){
@@ -260,7 +268,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                     self.soloVidCollect.dataSource = self
                     self.soloVidCollect.delegate = self
                 //}
-                for picString in self.soloPicArray{
+                /*for picString in self.soloPicArray{
                     if let tempUrl = NSURL(string: picString){
                         self.soloPicArray2.append(tempUrl)
                         if let data = NSData(contentsOf: tempUrl as URL){
@@ -268,9 +276,9 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                         }
                     }
 
-                }
-                for pic in self.soloPicURLArray{
-                    self.currentCollect = "soloPic"
+                }*/
+                //for pic in self.soloPicURLArray{
+                    /*self.currentCollect = "soloPic"
                     
                     //self.curPastArrayIndex = self.pastSessionArray.index(of: session)!
                     
@@ -279,8 +287,8 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                     self.sizingCell3 = ((cellNib.instantiate(withOwner: nil, options: nil) as NSArray).firstObject as! PictureCollectionViewCell?)!
                     self.soloPicCollect.backgroundColor = UIColor.clear
                     self.soloPicCollect.dataSource = self
-                    self.soloPicCollect.delegate = self
-                }
+                    self.soloPicCollect.delegate = self*/
+               // }
             }
 
         })
@@ -307,67 +315,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
     var currentCollect: String?
     let userID = Auth.auth().currentUser?.uid
     func loadPastAndCurrentSessions(){
-        
-        //if(self.pastSessionsDidLoad == false){
-        /*ref.child("users").child(userID!).child("activeSessions").observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                for snap in snapshots{
-                    self.sessionIDArray.append((snap.value! as! String))
-                }
-                self.sessionCollectionView!.reloadData()
-                
-            }
-            self.sessionCollectionView!.reloadData()
-            self.ref.child("sessions").observeSingleEvent(of: .value, with: {(snapshot) in
-                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                    for id in self.sessionIDArray{
-                    for snap in snapshots{
-                        if snap.key == id{
-                            let dictionary = snap.value as? [String: AnyObject]
-                            
-                            let dateFormatter = DateFormatter()
-                            dateFormatter.timeStyle = DateFormatter.Style.none
-                            dateFormatter.dateStyle = DateFormatter.Style.short
-                            let now = Date()
-                            let order = Calendar.current.compare(now, to: self.dateFormatted(dateString: dictionary?["sessionDate"] as! String), toGranularity: .day)
-                            
-                            switch order {
-                            case .orderedSame:
-                                let tempSess = Session()
-                                tempSess.setValuesForKeys(dictionary!)
-                                self.sessionArray.append(tempSess)
-                                
-                            case .orderedAscending:
-                                print("")
-                                
-                            case .orderedDescending:
-                                let tempSess = Session()
-                                tempSess.setValuesForKeys(dictionary!)
-                                self.sessionArray.append(tempSess)
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                let cellNib = UINib(nibName: "SessionCell", bundle: nil)
-                self.sessionCollectionView.register(cellNib, forCellWithReuseIdentifier: "SessionCell")
-                self.sizingCell = (cellNib.instantiate(withOwner: nil, options: nil) as NSArray).firstObject as! SessionCell?
-                self.sessionCollectionView.backgroundColor = UIColor.clear
-                self.sessionCollectionView.dataSource = self
-                self.sessionCollectionView.delegate = self
-                self.sessionCollectionView!.reloadData()
-
-                
-                
-            })
-            
-
-            
-        })*/
-
-    }
+          }
     
     
     
@@ -400,7 +348,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
         }
         else if collectionView == soloVidCollect || collectionView == selectVideoFromSessionCollect{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "VideoCollectionViewCell", for:  indexPath as IndexPath) as! VideoCollectionViewCell
-            self.configureVidCell(cell, forIndexPath: indexPath as NSIndexPath)
+            self.configureVidCell(cell, collectionView: collectionView, forIndexPath: indexPath as NSIndexPath)
             return cell
             
         }else{
@@ -437,9 +385,9 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
         if collectionView == selectVideoFromSessionCollect{
             self.currentCollect = "media"
         }
-        if collectionView == soloPicCollect{
+        /*if collectionView == soloPicCollect{
             self.currentCollect = "soloPic"
-        }
+        }*/
         if collectionView == soloVidCollect{
             self.currentCollect = "soloVid"
         }
@@ -696,11 +644,16 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
         //if media cell selected
         if collectionView == self.selectVideoFromSessionCollect{
             let cell = collectionView.cellForItem(at: indexPath) as! VideoCollectionViewCell
+            cell.touchBlockingView.isHidden = false
             if cell.cellSelected == false{
                 cell.cellSelected = true
                 cell.layer.borderWidth = 2.0
                 cell.layer.borderColor = self.ONBPink.cgColor
-                self.selectedSessionMediaArray.append(self.bandMedia[indexPath.row])
+                if self.bandType == "band"{
+                    self.selectedSessionMediaArray.append(self.bandMedia[indexPath.row])
+                } else {
+                    self.selectedSessionMediaArray.append(NSURL(string: self.onbMediaArray[indexPath.row])!)
+                }
                 cell.isSelected = true
                 cell.playPauseButton.isEnabled = false
             }else{
@@ -717,7 +670,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
         
             }
         })
-        if collectionView == soloPicCollect{
+        /*if collectionView == soloPicCollect{
             let cell = collectionView.cellForItem(at: indexPath) as! PictureCollectionViewCell
             if cell.cellSelected == false{
                 cell.cellSelected = true
@@ -736,7 +689,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
             }
 
             
-        }
+        }*/
         if collectionView == soloVidCollect{
             let cell = collectionView.cellForItem(at: indexPath) as! VideoCollectionViewCell
             if cell.cellSelected == false{
@@ -779,7 +732,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
 
-    func configureVidCell(_ cell: VideoCollectionViewCell, forIndexPath indexPath: NSIndexPath){
+    func configureVidCell(_ cell: VideoCollectionViewCell, collectionView: UICollectionView, forIndexPath indexPath: NSIndexPath){
         //cell.player.isHidden = true
         //cell.youtubePlayerView.isHidden = true
         cell.youtubePlayerView.isUserInteractionEnabled = false
@@ -787,48 +740,126 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
         cell.touchBlockingView.isHidden = false
         cell.isSelected = false
         cell.cellSelected = false
-        if bandMedia.count == 0{
-            cell.layer.borderColor = UIColor.white.cgColor
-            cell.layer.borderWidth = 2
-            cell.removeVideoButton.isHidden = true
-            cell.videoURL = nil
-            cell.player?.view.isHidden = true
-            cell.youtubePlayerView.isHidden = true
-            //cell.youtubePlayerView.loadVideoURL(videoURL: self.youtubeArray[indexPath.row])
-            cell.removeVideoButton.isHidden = true
-            cell.noVideosLabel.isHidden = false
-        }else {
-            
-            cell.touchBlockingView.isHidden = false
-            cell.layer.borderColor = UIColor.clear.cgColor
-            cell.layer.borderWidth = 0
-            
-            //cell.youtubePlayerView.isHidden = true
-            cell.removeVideoButton.isHidden = true
-            cell.noVideosLabel.isHidden = true
-            
-            
-            
-            
-            cell.videoURL =  self.bandMedia[indexPath.row] as NSURL?
-            if(String(describing: cell.videoURL).contains("youtube") || String(describing: cell.videoURL).contains("youtu.be")){
-                print("youtubeSelected")
-                cell.youtubePlayerView.loadVideoURL(cell.videoURL as! URL)
-               // cell.youtubePlayerView.isHidden = true
-                cell.player?.view.isHidden = true
-                cell.playPauseButton.isHidden = true
-                cell.isYoutube = true
-            }else{
-                print("vidFromPhoneSelected")
-                cell.player?.setUrl(cell.videoURL as! URL)
-                cell.player?.view.isHidden = false
-               // cell.youtubePlayerView.isHidden = true
-                cell.playPauseButton.isHidden = true
-                cell.isYoutube = false
+        if collectionView != soloVidCollect{
+            if self.bandType == "band"{
+                if bandMedia.count == 0{
+                    cell.layer.borderColor = UIColor.white.cgColor
+                    cell.layer.borderWidth = 2
+                    cell.removeVideoButton.isHidden = true
+                    cell.videoURL = nil
+                    cell.player?.view.isHidden = true
+                    cell.youtubePlayerView.isHidden = true
+                    //cell.youtubePlayerView.loadVideoURL(videoURL: self.youtubeArray[indexPath.row])
+                    cell.removeVideoButton.isHidden = true
+                    cell.noVideosLabel.isHidden = false
+                }else {
+                    
+                    cell.touchBlockingView.isHidden = false
+                    cell.layer.borderColor = UIColor.clear.cgColor
+                    cell.layer.borderWidth = 0
+                    
+                    //cell.youtubePlayerView.isHidden = true
+                    cell.removeVideoButton.isHidden = true
+                    cell.noVideosLabel.isHidden = true
+                    cell.videoURL =  self.bandMedia[indexPath.row] as NSURL?
+                    if(String(describing: cell.videoURL).contains("youtube") || String(describing: cell.videoURL).contains("youtu.be")){
+                        print("youtubeSelected")
+                        cell.youtubePlayerView.loadVideoURL(cell.videoURL as! URL)
+                       // cell.youtubePlayerView.isHidden = true
+                        cell.player?.view.isHidden = true
+                        cell.playPauseButton.isHidden = true
+                        cell.isYoutube = true
+                    }else{
+                        print("vidFromPhoneSelected")
+                        cell.player?.setUrl(cell.videoURL as! URL)
+                        cell.player?.view.isHidden = false
+                       // cell.youtubePlayerView.isHidden = true
+                        cell.playPauseButton.isHidden = true
+                        cell.isYoutube = false
+                    }
+                }
+            } else if self.bandType == "onb"{
+                if onbMediaArray.count == 0{
+                    cell.layer.borderColor = UIColor.white.cgColor
+                    cell.layer.borderWidth = 2
+                    cell.removeVideoButton.isHidden = true
+                    cell.videoURL = nil
+                    cell.player?.view.isHidden = true
+                    cell.youtubePlayerView.isHidden = true
+                    //cell.youtubePlayerView.loadVideoURL(videoURL: self.youtubeArray[indexPath.row])
+                    cell.removeVideoButton.isHidden = true
+                    cell.noVideosLabel.isHidden = false
+                }else {
+                    
+                    cell.touchBlockingView.isHidden = false
+                    cell.layer.borderColor = UIColor.clear.cgColor
+                    cell.layer.borderWidth = 0
+                    
+                    //cell.youtubePlayerView.isHidden = true
+                    cell.removeVideoButton.isHidden = true
+                    cell.noVideosLabel.isHidden = true
+                    cell.videoURL =  NSURL(string: self.onbMediaArray[indexPath.row])
+                    if(String(describing: cell.videoURL).contains("youtube") || String(describing: cell.videoURL).contains("youtu.be")){
+                        print("youtubeSelected")
+                        //cell.youtubePlayerView.loadVideoURL(cell.videoURL as! URL)
+                        // cell.youtubePlayerView.isHidden = true
+                        cell.player?.view.isHidden = true
+                        cell.playPauseButton.isHidden = true
+                        cell.isYoutube = true
+                    }else{
+                        print("vidFromPhoneSelected")
+                        cell.player?.setUrl(cell.videoURL as! URL)
+                        cell.player?.view.isHidden = false
+                        // cell.youtubePlayerView.isHidden = true
+                        cell.playPauseButton.isHidden = true
+                        cell.isYoutube = false
+                    }
+                }
             }
-            //print(self.vidArray[indexPath.row])
-            //cell.youtubePlayerView.loadVideoURL(self.vidArray[indexPath.row] as URL)
-            //self.group.leave()
+        } else {
+            if soloVidURLArray.count == 0{
+                cell.layer.borderColor = UIColor.white.cgColor
+                cell.layer.borderWidth = 2
+                cell.removeVideoButton.isHidden = true
+                cell.videoURL = nil
+                cell.player?.view.isHidden = true
+                cell.youtubePlayerView.isHidden = true
+                //cell.youtubePlayerView.loadVideoURL(videoURL: self.youtubeArray[indexPath.row])
+                cell.removeVideoButton.isHidden = true
+                cell.noVideosLabel.isHidden = false
+            }else {
+                
+                cell.touchBlockingView.isHidden = false
+                cell.layer.borderColor = UIColor.clear.cgColor
+                cell.layer.borderWidth = 0
+                
+                //cell.youtubePlayerView.isHidden = true
+                cell.removeVideoButton.isHidden = true
+                cell.noVideosLabel.isHidden = true
+                
+                
+                
+                
+                cell.videoURL =  self.soloVidURLArray[indexPath.row] as NSURL?
+                if(String(describing: cell.videoURL).contains("youtube") || String(describing: cell.videoURL).contains("youtu.be")){
+                    print("youtubeSelected")
+                    cell.youtubePlayerView.loadVideoURL(cell.videoURL as! URL)
+                    // cell.youtubePlayerView.isHidden = true
+                    cell.player?.view.isHidden = true
+                    cell.playPauseButton.isHidden = true
+                    cell.isYoutube = true
+                }else{
+                    print("vidFromPhoneSelected")
+                    cell.player?.setUrl(cell.videoURL as! URL)
+                    cell.player?.view.isHidden = false
+                    // cell.youtubePlayerView.isHidden = true
+                    cell.playPauseButton.isHidden = true
+                    cell.isYoutube = false
+                }
+                //print(self.vidArray[indexPath.row])
+                //cell.youtubePlayerView.loadVideoURL(self.vidArray[indexPath.row] as URL)
+                //self.group.leave()
+            }
         }
         
 
@@ -851,7 +882,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                
                 
         })
-        
+        self.bandType = "solo"
         self.soloPicker.isHidden = false
         self.soloPickerUsed = true
         self.yourBandsCollect.isHidden = true
@@ -1008,7 +1039,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
     @IBAction func uploadSoloPressed(_ sender: Any) {
         if (self.selectedSoloVidArray.count != 0 || self.selectedSoloPicArray.count != 0) && self.soloSessTextView.text.isEmpty == false && self.soloSessionNameTextView.text?.isEmpty == false{
             soloPressed = true
-            SwiftOverlays.showBlockingTextOverlay("Uploading Session to Feed")
+            SwiftOverlays.showBlockingWaitOverlayWithText("Uploading to Feed") //showBlockingWaitTextOverlay("Uploading Session to Feed")
             
             uploadMovieToFirebaseStorage()
             
@@ -1022,7 +1053,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
     }
  
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if soloSessTextView.textColor == UIColor.gray {
+        if soloSessTextView.textColor == UIColor.black {
             soloSessTextView.text = nil
             soloSessTextView.textColor = ONBPink
         }
@@ -1030,7 +1061,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
     func textViewDidEndEditing(_ textView: UITextView) {
         if soloSessTextView.text.isEmpty {
             soloSessTextView.text = "Give a little background on the session you are uploading."
-            soloSessTextView.textColor = UIColor.gray
+            soloSessTextView.textColor = UIColor.black
         }
     }
     
@@ -1062,86 +1093,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
 
         removeAnimate()
     }
-    /*@IBAction func finalizeTouched(_ sender: AnyObject) {
-        if(sessionImageView.image != nil && sessionNameTextField.text != "" && sessionBioTextView.text != "tap to add a little info about the type of session you are trying to create."){
-            let imageName = NSUUID().uuidString
-            let storageRef = Storage.storage().reference().child("session_images").child("\(imageName).jpg")
-            
-            if let sessionImage = self.sessionImageView.image, let uploadData = UIImageJPEGRepresentation(sessionImage, 0.1) {
-                storageRef.put(uploadData, metadata: nil, completion: { (metadata, error) in
-                    if error != nil {
-                        print(error)
-                        return
-                    }
-                    if let sessionImageUrl = metadata?.downloadURL()?.absoluteString {
-                        var tempArray = [String]()
-                        var tempArray2 = [String]()
-                        var values = Dictionary<String, Any>()
-                        tempArray2.append((Auth.auth().currentUser?.uid)! as String)
-                        values["sessionName"] =  self.sessionNameTextField.text
-                        values["sessionArtists"] = tempArray2
-                        values["sessionBio"] = self.sessionBioTextView.text
-                        values["sessionPictureURL"] = sessionImageUrl
-                        values["sessionMedia"] = ""
-                        let dateformatter = DateFormatter()
-                        
-                        dateformatter.dateStyle = DateFormatter.Style.short
-                        
-                        //dateformatter.timeStyle = DateFormatter.Style.short
-                        
-                        let now = dateformatter.string(from: self.datePicker.date)
-                        values["sessionDate"] = now
-                        
-                        
-                        let ref = Database.database().reference()
-                        let sessReference = ref.child("sessions").childByAutoId()
-                        
-                        let sessReferenceAnyObject = sessReference.key
-                        values["sessionUID"] = sessReferenceAnyObject
-                        tempArray.append(sessReferenceAnyObject)
-                        //print(sessReference.key)
-                        //sessReference.childByAutoId()
-                        sessReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
-                            if err != nil {
-                                print(err)
-                                return
-                            }
-                        })
-                        let user = Auth.auth().currentUser?.uid
-                        //var sessionVals = Dictionary
-                        //let userSessRef = ref.child("users").child(user).child("activeSessions")
-                        self.ref.child("users").child(user!).child("activeSessions").observeSingleEvent(of: .value, with: { (snapshot) in
-                            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                                for snap in snapshots{
-                                    tempArray.append(snap.value! as! String)
-                                }
-                            }
-                            var tempDict = [String : Any]()
-                            tempDict["activeSessions"] = tempArray
-                            let userRef = ref.child("users").child(user!)
-                            userRef.updateChildValues(tempDict, withCompletionBlock: {(err, ref) in
-                                if err != nil {
-                                    print(err)
-                                    return
-                                }
-                            })
-                            self.dismissalDelegate?.finishedShowing(viewController: self)
-                            self.removeAnimate()
-                            //this is ridiculously stupid way to reload currentSession data. find someway to fix
-                            self.performSegue(withIdentifier: "FinalizeSessionToProfile", sender: self)
-                            self.performSegue(withIdentifier: "CreateSessionPopupToCurrentSession", sender: self)
-                        })
-                    }
-                })
-            }
-            
-            
-        }else{
-            let alert = UIAlertController(title: "Error", message: "Missing Information", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-    }*/
+    
     
     func dateFormatted(dateString: String)->Date{
         
@@ -1161,25 +1113,6 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
     
     
     
-    /*@IBAction func addMediaSelected(_ sender: AnyObject) {
-        imagePickerController.sourceType = .photoLibrary
-        
-        imagePickerController.mediaTypes = ["public.movie"]
-        imagePickerController.delegate = self
-        
-        
-        present(imagePickerController, animated: true, completion: nil)
-
-    }*/
-       
-    /*func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        self.videoURL = info["UIImagePickerControllerReferenceURL"] as? NSURL
-        print(videoURL)
-        print("picker done")
-        
-        imagePickerController.dismiss(animated: true, completion: nil)
-    }*/
-
     var sessionVideoURL: String?
     var downloadURL: URL?
     var mediaArray = [String]()
@@ -1193,7 +1126,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                 uploadMovieToFirebaseStorage()
            // }
         }else{
-            let alert = UIAlertController(title: "No Session Selected", message: "Select a session above from either your solo sessions or one of your band's sessions. Upload the entire session or handpick which videos get added to the feed.", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "Missing Info", message: "Select upload type at top of screen and make sure all required forms are filled.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
@@ -1203,6 +1136,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
     var bandType = String()
     func uploadMovieToFirebaseStorage(){
         if bandType == "solo"{
+            print("in Solo, sender: \(bandType)")
             let recipient = self.ref.child("sessionFeed")
             let recipient2 = self.ref.child("users")
             var values = Dictionary<String, Any>()
@@ -1214,13 +1148,24 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
             values["sessionDate"] = ""
             values["sessionID"] = ""
             values["bandID"] = self.userID
-            values["bandName"] = self.currentUserNameLabel.text
+            values["pickedBool"] = "false"
+            values["bandType"] = "solo"
+                self.ref.child("users").child(userID!).observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                        for snap in snapshots{
+                            if snap.key == "name"{
+                                
+                                values["bandName"] = snap.value as! String
+                            }
+                        }
+                    }
+                })
+
+            
+           // values["bandName"] = self.ref.child("users").child(userID!).child("name").observeSingleEvent(of: .value, with: snapshot)
             
             var tempArray = [String]()
-            for pic in selectedSoloPicArray{
-                tempArray.append(String(describing: pic))
-            }
-            values["sessionPictureURL"] = tempArray
+            
             values["picks"] = 0
             var tempVidArray = [String]()
             for vid in selectedSoloVidArray{
@@ -1251,7 +1196,9 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                 }
             }
             for pic in selectedSoloPicArray{
-                print("soloPic:\(pic)")
+               // print("soloPic:\(pic)")
+            //soloPic
+            
                 let imageName = NSUUID().uuidString
                 let storageRef = Storage.storage().reference().child("profile_images/").child("\(imageName).jpg")
                 if let uploadData = UIImageJPEGRepresentation(pic, 0.1) {
@@ -1260,6 +1207,8 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                             print(error!)
                             return
                         }
+                        tempArray.append((metadata?.downloadURL()?.absoluteString)!)
+                        values["sessionPictureURL"] = tempArray
                     })
                 }
             }
@@ -1271,7 +1220,10 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
             self.ref.child("sessionFeed").observeSingleEvent(of: .value, with: { (snapshot) in
                 if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
                     for snap in snapshots{
-                        self.feedArray.append(snap.value as! SessionFeedSess)
+                        var tempDict = snap.value as! [String:Any]
+                        var tempSess = SessionFeedSess()
+                        tempSess.setValuesForKeys(tempDict)
+                        self.feedArray.append(tempSess)
                     }
                 }
                 var mult = Int()
@@ -1285,28 +1237,39 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                 button.setYPosition(yPosition: (3 - CGFloat(mult)) * 2.3)
                 button.sessionFeedKey = keyString
                 button.isDisplayed = Bool()
-                button.sessionName = self.selectedSession.sessionName//self.soloSessionNameTextView.text
+                button.sessionName = self.soloSessionNameTextView.text
                 values["button"] = [String:Any]()
-                sessionFeedSess.setValuesForKeys(values)
+                
                 //button.session = values
                 let tap = UITapGestureRecognizer(target: self, action: #selector(SessionFeedViewController.scrollToPin))
-                button.tap = tap
+                
                 tap.numberOfTapsRequired = 1
+                //button.tap = tap
                 button.addGestureRecognizer(tap)
                 button.isUserInteractionEnabled = true
                 
                 button.picks = 0
-
+                //sessionFeedSess.button = button.dictionaryWithValues(forKeys: <#T##[String]#>)
                 
                 
+                var buttonDict = [String: Any]()
+                buttonDict["lane"] = button.lane
+                buttonDict["sessionName"] = button.sessionName
+                //buttonDict["session"] = values
+                buttonDict["picks"] = 0
+                buttonDict["isDisplayed"] = button.isDisplayed
+                //buttonDict["tap"] = NSObject()
+                buttonDict["_yPosition"] = button._yPosition
+                buttonDict["_slope"] = button._slope
+                buttonDict["_baseX"] = button._baseX
+                buttonDict["sessionFeedKey"] = button.sessionFeedKey
+                buttonDict["kStartY"] = button.kStartY
+                buttonDict["kMaxY"] = button.kMaxY
+                //buttonDict["isUserInteractionEnabled"] = button.isUserInteractionEnabled
                 
-                values["button"] = button
+                values["button"] = buttonDict
                 
-                
-               
-            values2["soloSessKeysOnFeed"] = [String(describing: autoId)]
-            //self.autoIdString = String(describing: autoId)
-            print("valuesB4Upload: \(values)")
+                print("valuesb4theUpload: \(values)")
             autoId.updateChildValues(values, withCompletionBlock: {(err, ref) in
                 if err != nil {
                     print(err as Any)
@@ -1328,6 +1291,154 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                 })
         }
         if bandType == "onb"{
+            let recipient = self.ref.child("sessionFeed")
+            let recipient2 = self.ref.child("oneNightBands").child(self.mostRecentONBSelected.onbID)
+            let recipient3 = self.ref.child("sessions").child(self.mostRecentSessionSelected.sessionUID)
+            //print("mrss.sessionUID: \(self.mostRecentSessionSelected.sessionUID)")
+            var selectedMediaAsString = [String]()
+            for url in self.selectedSessionMediaArray{
+                selectedMediaAsString.append(String(describing: url))
+            }
+            
+            var values = Dictionary<String, Any>()
+            var values2 = Dictionary<String, Any>()
+            var values3 = Dictionary<String, Any>()
+            values["bandID"] = self.mostRecentONBSelected.onbID
+            values["sessionName"] = ""//self.mostRecentBandSelected.bandName
+            values["bandName"] = self.mostRecentONBSelected.onbName
+            values["sessionArtists"] = self.mostRecentONBSelected.onbArtists
+            values["sessionInfo"] = self.mostRecentONBSelected.onbInfo
+            values["sessionDate"] = self.mostRecentONBSelected.onbDate
+            values["sessionID"] = ""//self.mostRecentONBSelected.sessionUID
+            values["pickedBool"] = "false"
+            values["soloSessBool"] = "false"
+            //values["bandType"] = self.bandType
+            ///
+            values["sessionPictureURL"] = self.mostRecentSessionSelected.sessionPictureURL
+            values["picks"] = 0
+            var tempVidArray = [String]()
+            for vid in selectedSessionMediaArray{
+                tempVidArray.append(String(describing: vid))
+            }
+            
+            values["sessionMedia"] = tempVidArray
+            
+            var tempSessArray = (self.mostRecentBandSelected.sessionsOnFeed)
+            tempSessArray.append(self.mostRecentSessionSelected.sessionUID)
+            values2["sessionsOnFeed"] = tempSessArray
+            
+            var tempURLArray = self.mostRecentSessionSelected.sessFeedMedia
+            if tempURLArray == nil{
+                tempURLArray = [String]()
+            }
+            for url in self.selectedSessionMediaArray{
+                if tempURLArray?.count != 0{
+                    
+                    tempURLArray!.append(String(describing: url))
+                    
+                } else {
+                    tempURLArray!.append(String(describing: url))
+                }
+                let videoName = NSUUID().uuidString
+                let storageRef = Storage.storage().reference(withPath: "onb_videos/").child("\(videoName).mov")
+                let uploadMetadata = StorageMetadata()
+                uploadMetadata.contentType = "video/quicktime"
+                let uploadTask = storageRef.putFile(from: url as URL, metadata: uploadMetadata){(metadata, error) in
+                    if(error != nil){
+                        print("got an error: \(error)")
+                    }else{
+                        print("upload complete: metadata = \(metadata)")
+                        print("download url = \(metadata?.downloadURL())")
+                    }
+                }
+                
+            }
+            values3["sessFeedMedia"] = tempURLArray
+            
+            let autoId = recipient.childByAutoId()
+            
+            var keyString = autoId.key
+            var sessionFeedSess = SessionFeedSess()
+            
+            self.ref.child("sessionFeed").observeSingleEvent(of: .value, with: { (snapshot) in
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                    for snap in snapshots{
+                        var tempDict = snap.value as! [String:Any]
+                        var tempSess = SessionFeedSess()
+                        tempSess.setValuesForKeys(tempDict)
+                        self.feedArray.append(tempSess)
+                    }
+                }
+                var mult = self.feedArray.count + 1
+                let button = ONBGuitarButton()
+                button.initWithLane(lane: Int(arc4random_uniform(6)))
+                button.setYPosition(yPosition: (3 - CGFloat(mult)) * 2.3)
+                button.sessionFeedKey = keyString
+                button.isDisplayed = false
+                button.sessionName = self.soloSessionNameTextView.text
+                values["button"] = [String:Any]()
+                sessionFeedSess.setValuesForKeys(values)
+                // button.session = values
+                let tap = UITapGestureRecognizer(target: self, action: #selector(SessionFeedViewController.scrollToPin))
+                
+                tap.numberOfTapsRequired = 1
+                //button.tap = tap
+                button.addGestureRecognizer(tap)
+                button.isUserInteractionEnabled = true
+                
+                button.picks = 0
+                //sessionFeedSess.button = button.dictionaryWithValues(forKeys: <#T##[String]#>)
+                
+                
+                var buttonDict = [String: Any]()
+                buttonDict["lane"] = button.lane
+                buttonDict["sessionName"] = button.sessionName
+                //buttonDict["session"] = values
+                buttonDict["picks"] = 0
+                buttonDict["isDisplayed"] = button.isDisplayed
+                //buttonDict["tap"] = NSObject()
+                buttonDict["_yPosition"] = button._yPosition
+                buttonDict["_slope"] = button._slope
+                buttonDict["_baseX"] = button._baseX
+                buttonDict["sessionFeedKey"] = button.sessionFeedKey
+                buttonDict["kStartY"] = button.kStartY
+                buttonDict["kMaxY"] = button.kMaxY
+                //buttonDict["isUserInteractionEnabled"] = button.isUserInteractionEnabled
+                
+                values["button"] = buttonDict
+                
+                
+                //self.autoIdString = String(describing: autoId)
+                autoId.updateChildValues(values, withCompletionBlock: {(err, ref) in
+                    if err != nil {
+                        print(err as Any)
+                        return
+                    }
+                })
+                recipient2.updateChildValues(values2, withCompletionBlock: {(err, ref) in
+                    if err != nil {
+                        print(err)
+                        return
+                    }
+                })
+                recipient3.updateChildValues(values3, withCompletionBlock: {(err, ref) in
+                    if err != nil {
+                        print(err)
+                        return
+                    }
+                    self.performSegue(withIdentifier: "CancelPressed", sender: self)
+                })
+                /*uploadTask.observe(.progress){[weak self] (snapshot) in
+                 guard let strongSelf = self else {return}
+                 guard let progress = snapshot.progress else {return}
+                 strongSelf.progressView.progress = Float(progress.fractionCompleted)
+                 print("Uploaded \(progress.completedUnitCount) so far")
+                 
+                 }*/
+                
+            })
+        
+
     
         }
         if bandType == "band"{

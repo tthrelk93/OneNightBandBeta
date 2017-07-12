@@ -85,7 +85,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                     sess.pickedBool = "false"
                     cButton.picks! -= 1
                 }
-                self.pickCount.text = cButton.picks as! String
+                self.pickCount.text = String(describing: cButton.picks!)
                 break
             }
         }
@@ -388,7 +388,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                 for snap in snapshots{
                     
                     let tempSess = SessionFeedSess()
-                    let dictionary = snap.value as? [String: AnyObject]
+                    var dictionary = snap.value as? [String: Any]
                     if dictionary?["soloSessBool"] as! String == "false"{
                     
                  
@@ -398,10 +398,20 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
                         self.sessFeedKeyArray.append(snap.key as String)
                         }
                     else{
+                        self.ref.child("users").child(self.userID!).observeSingleEvent(of: .value, with: {(snapshot) in
+                            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                                for snap in snapshots{
+                                    if snap.key == "profileImageUrl"{
+                                        dictionary?["sessionPictureURL"] = ([(snap.value as! [String]).first!] as AnyObject?)
+                                    }
+                                }
+                            }
+                        })
+                        print(dictionary)
                         tempSess.setValuesForKeys(dictionary!)
-                        self.soloViewArray.append(tempSess.picks)
-                        self.soloSessionArray.append(tempSess)
-                        self.soloSessFeedKeyArray.append(snap.key as String)
+                        self.viewArray.append(tempSess.picks)
+                        self.sessionArray.append(tempSess)
+                        self.sessFeedKeyArray.append(snap.key as String)
                     }
                     }
                 }
@@ -536,9 +546,9 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         }
         if segue.identifier == "FeedToProfile"{
             if let vc = segue.destination as? profileRedesignViewController{
-                print("notTab")
+                print("feed")
                 //print(self.cellTouchedArtistUID)
-                vc.sender = self.sender
+                vc.sender = "feed"
                 vc.artistID = cellTouchedArtistUID
                 vc.userID = cellTouchedArtistUID
                 SwiftOverlays.showBlockingWaitOverlayWithText("Loading Profile") //showBlockingTextOverlay("Loading Profile")
@@ -733,7 +743,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         self.sessionBioTextView.text = self.curSess.sessionBio
         self.sessionBioTextView.isEditable = false
         self.cityNameLabel.text = "City: --"
-        self.pickCount.text = cButton.picks as! String
+        self.pickCount.text = String(describing: cButton.picks!)
                 //self.sessionNameLabel2.text = ("Session Name: \(tempLabel
                // self.sessionViewsLabel2.text = String(describing: cButton.sessionViews!)
                 for (key, value) in (self.curSess.sessionArtists){
@@ -1046,7 +1056,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
         if collectionView != self.picCollect{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "VideoCollectionViewCell", for: indexPath as IndexPath) as! VideoCollectionViewCell
             self.configureVidCell(cell, forIndexPath: indexPath as NSIndexPath)
-            cell.player?.playerView.playerLayer.frame =  cell.youtubePlayerView.bounds
+            cell.player?.playerView.playerLayer.bounds =  cell.youtubePlayerView.bounds
             cell.indexPath = indexPath
             
             //self.curIndexPath.append(indexPath)

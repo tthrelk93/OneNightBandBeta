@@ -107,7 +107,7 @@ class AddMediaToSession: UIViewController, UITextViewDelegate, UINavigationContr
     @IBAction func addYoutubeVideoButtonPressed(_ sender: AnyObject) {
         var tempArray = [String]()
         if senderView == "main"{
-            if youtubeLinkField == nil{
+            if youtubeLinkField.text == nil || youtubeLinkField.text == ""{
                 print("youtube field empty")
             } else {
                 self.currentYoutubeLink = NSURL(string: self.youtubeLinkField.text!)
