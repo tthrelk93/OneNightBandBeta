@@ -241,6 +241,7 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
     var currentButton = String()
     
     @IBAction func backButtonPressed(_ sender: Any) {
+        self.backButtonPressed = true
         if self.sender == "bandBoard"{
             performSegue(withIdentifier: "ONBToBandBoard", sender: self)
         }
@@ -248,7 +249,7 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
             performSegue(withIdentifier: "ONBToFeed", sender: self)
         }
         if self.sender == "profile"{
-            performSegue(withIdentifier: "ONBToProf", sender: self)
+            performSegue(withIdentifier: "ONBToBandMemberProfile", sender: self)
         }
     }
     //var vidCellBool: Bool?
@@ -451,6 +452,7 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
         
 
     }
+    var artistID = String()
     func configureCell(_ cell: PictureCollectionViewCell, forIndexPath indexPath: NSIndexPath) {
         cell.picImageView.image = self.picArray[indexPath.row]
         cell.deleteButton.isHidden = true
@@ -511,13 +513,18 @@ class OneNightBandViewController: UIViewController, UINavigationControllerDelega
         if (segue.identifier! as String) == "ONBToBandMemberProfile"{
             if let vc = segue.destination as? profileRedesignViewController{
                 vc.sender = "onb"
-                vc.artistID = self.tableViewCellTouched
+                if backButtonPressed == false {
+                    vc.artistID = self.tableViewCellTouched
+                } else {
+                    vc.artistID = self.artistID
+                }
                 vc.senderID = self.onbID
             }
         }
         
         
     }
+    var backButtonPressed = false
 
  
 

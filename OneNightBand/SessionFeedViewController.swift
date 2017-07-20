@@ -564,7 +564,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             }
 
             if let vc = segue.destination as? SessionMakerViewController{
-                vc.sender = self.sender
+                vc.sender = "feed"
                 vc.sessionID = tempSess.bandID
             }
             
@@ -580,7 +580,7 @@ class SessionFeedViewController: UIViewController, UIGestureRecognizerDelegate,U
             }
 
             if let vc = segue.destination as? OneNightBandViewController{
-                vc.sender = self.sender
+                vc.sender = "feed"
                 vc.onbID = tempSess.bandID
                 
             }

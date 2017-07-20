@@ -210,7 +210,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
     var menuViewOrigin = CGPoint()
     var shiftViewBounds = CGRect()
     var shiftViewOrigin = CGPoint()
-    
+    var backToSM = false
     var infoViewBounds = CGRect()
     var infoViewOrigin = CGPoint()
     var infoShiftViewBounds = CGRect()
@@ -399,12 +399,16 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
             self.notUser = true
             //self.tabBar.isHidden = true
             self.backButton.isHidden = false
+            self.notificationBubble1.isHidden = true
+            self.notificationBubble2.isHidden = true
                 self.logoutButton.isHidden = true
                 self.notYourProfView.isHidden = false
             
         } else {
             self.notUser = false
            // self.tabBar.isHidden = false
+            self.notificationBubble1.isHidden = false
+            self.notificationBubble2.isHidden = false
             self.backButton.isHidden = true
             self.logoutButton.isHidden = false
             
@@ -769,7 +773,8 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                     viewController.curUser = self.userID
                     viewController.sessionID = self.bandIDArray[tempIndex]
                 }
-                
+                viewController.artistID = self.artistID
+
                 viewController.sender = self.sender
                 
             }
@@ -784,6 +789,7 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
                     viewController.onbID = self.onbIDArray[tempIndex]
                     viewController.curUser = self.userID
                 }
+                viewController.artistID = self.artistID
                  viewController.sender = self.sender
             }
         }
@@ -1183,7 +1189,11 @@ class profileRedesignViewController: UIViewController, UITabBarDelegate, UIColle
         if self.sender == "onb"{
             self.performSegue(withIdentifier: "ProfileToONB", sender: self)
         } else if self.sender == "feed" || self.sender == "tab"{
-            performSegue(withIdentifier: "redesignProfileToFeed", sender: self)
+            if self.backToSM == false {
+                performSegue(withIdentifier: "redesignProfileToFeed", sender: self)
+            } else {
+                performSegue(withIdentifier: "ProfileToSessionMaker", sender: self)
+            }
         } else if self.sender == "af"{
             performSegue(withIdentifier: "ProfileToFindMusicians", sender: self)
         } else if self.sender == "band" {

@@ -22,22 +22,30 @@ class TutorialViewController: UIViewController, UICollectionViewDataSource, UICo
     var pageTexts = [String]()
     var currentIndex = 0
     var selectedCount = 0
+    
     let dropDown = DropDown()
+    
     let dropDown2 = DropDown()
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "LoginSegue"{
+            if let vc = segue.destination as? profileRedesignViewController {
+                vc.artistID = (Auth.auth().currentUser?.uid)!
+                vc.userID = (Auth.auth().currentUser?.uid)!
+            }
+        }
+        
+    }
     
    
     @IBOutlet weak var backButton: UIButton!
     
     @IBAction func backButtonTapped(_ sender: AnyObject) {
-        infoTextLabel.text = "What Instrument(s) do you play? Select an instrument if you feel comfortable playing it with other musicians in a jam environment."
+        infoTextLabel.text = "What Instrument(s) do you play? Select an instrument if you feel comfortable playing it with other musicians in a live environment."
         startExploringButton.isHidden = true
        
             self.collectionView.isHidden = false
             self.editBioTextView.isHidden = true
-        
-            
-       
-
         continueButton.isHidden = false
         
         backButton.isHidden = true
@@ -61,7 +69,7 @@ class TutorialViewController: UIViewController, UICollectionViewDataSource, UICo
         }else{
             startExploringButton.isEnabled = false
             //startExploringButton.isHidden = true
-            startExploringButton.titleLabel?.text = "Fill Out Missing Info to Continue"
+            startExploringButton.titleLabel?.text = "Missing Info"
         }
         
         

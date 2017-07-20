@@ -53,15 +53,16 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
         popOverVC.didMove(toParentViewController: self)
         
     }
-    
+    var backPressed = false
     @IBAction func backPressed(_ sender: Any) {
+        self.backPressed = true
         if self.sender == "bandBoard"{
             performSegue(withIdentifier: "BandToBandBoard", sender: self)
         }
         else if self.sender == "feed"{
             performSegue(withIdentifier: "BandToFeed", sender: self)
         } else {
-            performSegue(withIdentifier: "TabBarBandToProfile", sender: self)
+            performSegue(withIdentifier: "BandToArtistProfile", sender: self)
         }
         
     }
@@ -74,7 +75,7 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
     @IBOutlet weak var sessionInfoTextView: UITextView!
     @IBOutlet weak var editSessionInfoButton: UIButton!
     @IBOutlet weak var removeArtistButton: UIButton!
-    
+    var artistID = String()
     @IBOutlet weak var bandNameLabel: UILabel!
     @IBOutlet weak var becomeFanButton: UIButton!
     @IBAction func becomeFanPressed(_ sender: Any) {
@@ -82,6 +83,7 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
     @IBOutlet weak var editSessionButton: UIButton!
     var cellTouchedArtistUID = String()
     var sender = "band"
+    var backToSM = false 
     var tableViewCellTouched = String()
     @IBOutlet weak var uploadSessionToFeed: UIButton!
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -100,23 +102,15 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
                 vc.bandType = "band"
                 vc.senderScreen = "band"
                 vc.sender = "band"
-                
             }
         }
         if (segue.identifier! as String) == "SessionToChat"{
             if let vc = segue.destination as? ChatContainer{
                 let userID = Auth.auth().currentUser?.uid
-                
                 vc.name = self.name
                 vc.sessionID = self.sessionID!
                 vc.userID = userID!
                 vc.bandType = "band"
-                
-                
-
-                
-                
-            
             }
         }
         if (segue.identifier! as String) == "ArtistCellTouched"{
@@ -128,7 +122,14 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
             if let vc = segue.destination as? profileRedesignViewController{
                 vc.sender = self.sender
                 vc.senderID = self.sessionID!
-                vc.artistID = self.cellTouchedArtistUID
+                
+                if self.backToSM == true {
+                    vc.artistID = self.cellTouchedArtistUID
+                    
+                } else {
+                    vc.artistID = self.artistID
+                }
+
             }
         }
         if (segue.identifier! as String) == "SessionToMP3"{
@@ -630,7 +631,7 @@ class SessionMakerViewController: UIViewController, UINavigationControllerDelega
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
         //(tableView.cellForRow(at: indexPath) as ArtistCell).artistUID
-        
+        self.backToSM = true
         self.cellTouchedArtistUID = (tableView.cellForRow(at: indexPath) as! ArtistCell).artistUID
         performSegue(withIdentifier: "BandToArtistProfile", sender: self)
     }

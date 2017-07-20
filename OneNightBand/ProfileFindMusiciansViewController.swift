@@ -627,7 +627,8 @@ class ProfileFindMusiciansViewController: UIViewController, UICollectionViewDele
         }
         if segue.identifier == "PFMToProfile"{
             if let vc = segue.destination as? profileRedesignViewController{
-                
+                vc.userID = (Auth.auth().currentUser?.uid)!
+                vc.artistID = (Auth.auth().currentUser?.uid)!
                 if self.cancelPressed != true{
                     vc.sender = "wantedAdCreated"
                 }
