@@ -203,7 +203,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.78823529410000004" green="0.14901960780000001" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
-                                        <state key="normal" title="Auditions Accepted">
+                                        <state key="normal" title="Accepted Auditions">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -2725,41 +2725,41 @@
                                         </cells>
                                     </collectionView>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YG9-Bv-gmu">
-                                        <rect key="frame" x="176" y="410" width="191" height="141"/>
+                                        <rect key="frame" x="176" y="410" width="191" height="78"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Picks:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uhy-Te-gKo">
-                                                <rect key="frame" x="0.0" y="98.5" width="63.5" height="29.5"/>
+                                                <rect key="frame" x="-2.5" y="54" width="66" height="16.5"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="City:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XTh-q1-g6f">
-                                                <rect key="frame" x="0.0" y="48.5" width="63.5" height="36.5"/>
+                                                <rect key="frame" x="-2.5" y="25.5" width="66" height="21.5"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sHD-NV-Asu">
-                                                <rect key="frame" x="67.5" y="48.5" width="114.5" height="36.5"/>
+                                                <rect key="frame" x="64.5" y="25.5" width="116.5" height="21.5"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JaP-DN-d4K">
-                                                <rect key="frame" x="0.0" y="0.0" width="63.5" height="33.5"/>
+                                                <rect key="frame" x="-2.5" y="-1.5" width="66" height="21"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Jkr-mW-qv2">
-                                                <rect key="frame" x="67.5" y="-4" width="114.5" height="40.5"/>
+                                                <rect key="frame" x="64.5" y="-4.5" width="116.5" height="25"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nv9-BR-hoW">
-                                                <rect key="frame" x="67.5" y="98.5" width="114.5" height="27"/>
+                                                <rect key="frame" x="64.5" y="54" width="116.5" height="14.5"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="highlightedColor"/>
@@ -4649,19 +4649,19 @@
         <image name="tick-blue" width="256" height="256"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="DS5-l8-epR"/>
-        <segue reference="h8B-u6-hgh"/>
-        <segue reference="qod-Gm-zvv"/>
-        <segue reference="oxs-N4-4FF"/>
-        <segue reference="Drd-XR-2Bn"/>
-        <segue reference="IyT-n4-NBS"/>
-        <segue reference="w4T-bo-8Y1"/>
-        <segue reference="x29-f1-80R"/>
-        <segue reference="3Xi-GS-BzJ"/>
-        <segue reference="9wv-3l-4LX"/>
-        <segue reference="CZX-b4-CEM"/>
-        <segue reference="a0v-5g-bOY"/>
+        <segue reference="Rbe-lL-zBA"/>
         <segue reference="qyH-TF-vWu"/>
+        <segue reference="rco-sc-E13"/>
+        <segue reference="1p0-wG-pkf"/>
+        <segue reference="zhk-cq-M3o"/>
+        <segue reference="iXK-zI-Vtt"/>
+        <segue reference="3Xi-GS-BzJ"/>
         <segue reference="vLT-2a-Gs0"/>
+        <segue reference="Gmv-vT-YbY"/>
+        <segue reference="x54-WP-gdZ"/>
+        <segue reference="Drd-XR-2Bn"/>
+        <segue reference="JUy-us-Qrb"/>
+        <segue reference="oxs-N4-4FF"/>
+        <segue reference="w4T-bo-8Y1"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -1293,7 +1293,7 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
         if bandType == "onb"{
             let recipient = self.ref.child("sessionFeed")
             let recipient2 = self.ref.child("oneNightBands").child(self.mostRecentONBSelected.onbID)
-            let recipient3 = self.ref.child("sessions").child(self.mostRecentSessionSelected.sessionUID)
+           // let recipient3 = self.ref.child("sessions").child(self.mostRecentSessionSelected.sessionUID)
             //print("mrss.sessionUID: \(self.mostRecentSessionSelected.sessionUID)")
             var selectedMediaAsString = [String]()
             for url in self.selectedSessionMediaArray{
@@ -1421,13 +1421,13 @@ class UploadSessionPopup: UIViewController, UICollectionViewDelegate, UICollecti
                         return
                     }
                 })
-                recipient3.updateChildValues(values3, withCompletionBlock: {(err, ref) in
+                /*recipient3.updateChildValues(values3, withCompletionBlock: {(err, ref) in
                     if err != nil {
                         print(err)
                         return
                     }
                     self.performSegue(withIdentifier: "CancelPressed", sender: self)
-                })
+                })*/
                 /*uploadTask.observe(.progress){[weak self] (snapshot) in
                  guard let strongSelf = self else {return}
                  guard let progress = snapshot.progress else {return}
